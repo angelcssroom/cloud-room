@@ -168,18 +168,15 @@ body{
 .preview-image-wrap{
   margin-top:14px;
   border:1px solid var(--line);
-  border-radius:12px;
-  background:#fff;
+  border-radius:14px;
+  background:#fafafa;
   overflow:hidden;
-}
-.preview-image-wrap{
-  height:min(360px,52vh);
-  min-height:280px;
   display:flex;
   align-items:center;
   justify-content:center;
-  background:#fafafa;
+  padding:10px;
   cursor:zoom-in;
+  width:100%;
 }
 .preview-image-wrap img{
   display:block;
@@ -187,7 +184,37 @@ body{
   height:100%;
   object-fit:contain;
   object-position:center;
+  border-radius:10px;
+  background:#fff;
   filter:saturate(.96) brightness(1.01);
+}
+.preview-image-wrap.ratio-tall{
+  width:min(100%,340px);
+  height:min(520px,62vh);
+  margin-inline:auto;
+}
+.preview-image-wrap.ratio-square{
+  width:min(100%,420px);
+  height:min(400px,52vh);
+  margin-inline:auto;
+}
+.preview-image-wrap.ratio-wide{
+  height:min(300px,42vh);
+}
+.preview-image-wrap.ratio-banner{
+  height:min(240px,34vh);
+}
+.preview-image-wrap.ratio-regular{
+  height:min(400px,54vh);
+}
+.preview-image-wrap.ratio-fitted img{
+  box-shadow:0 1px 0 rgba(0,0,0,.02);
+}
+@media (max-width:480px){
+  .preview-image-wrap.ratio-tall{height:min(500px,58vh);}
+  .preview-image-wrap.ratio-square{height:min(360px,46vh);}
+  .preview-image-wrap.ratio-wide{height:min(270px,36vh);}
+  .preview-image-wrap.ratio-regular{height:min(360px,48vh);}
 }
 .preview-missing{
   margin-top:14px;
@@ -283,7 +310,12 @@ textarea{
 .variant-slug{margin:5px 0 0;color:var(--muted);font-size:9.5px;line-height:1.4;}
 .variant-tag{flex:0 0 auto;padding:4px 8px;border-radius:999px;border:1px solid var(--line);background:#fbfbfb;color:#858a91;font-size:9.5px;font-weight:560;}
 .variant-card .preview-image-wrap,.variant-card .preview-missing{margin-top:11px;}
-.variant-card .preview-image-wrap{height:min(320px,46vh);min-height:240px;}
+.variant-card .preview-image-wrap{padding:8px;}
+.variant-card .preview-image-wrap.ratio-tall{width:min(100%,300px);height:min(470px,56vh);}
+.variant-card .preview-image-wrap.ratio-square{width:min(100%,360px);height:min(330px,43vh);}
+.variant-card .preview-image-wrap.ratio-wide{height:min(250px,33vh);}
+.variant-card .preview-image-wrap.ratio-banner{height:min(210px,28vh);}
+.variant-card .preview-image-wrap.ratio-regular{height:min(320px,41vh);}
 .variant-card .action-row{margin-top:10px;}
 .variant-card .btn{min-height:34px;font-size:10.5px;}
 
@@ -519,6 +551,19 @@ function closeImageLightbox(event, force){
   document.body.style.overflow = '';
 }
 
+function fitPreviewFrame(img){
+  const wrap = img.closest('.preview-image-wrap');
+  if(!wrap || !img.naturalWidth || !img.naturalHeight) return;
+  wrap.classList.remove('ratio-tall','ratio-square','ratio-wide','ratio-banner','ratio-regular');
+  const ratio = img.naturalWidth / img.naturalHeight;
+  let cls = 'ratio-regular';
+  if(ratio <= 0.72) cls = 'ratio-tall';
+  else if(ratio <= 1.08) cls = 'ratio-square';
+  else if(ratio >= 1.9) cls = 'ratio-banner';
+  else if(ratio >= 1.35) cls = 'ratio-wide';
+  wrap.classList.add(cls,'ratio-fitted');
+}
+
 function previewFallback(img){
   const wrap = img.closest('.preview-image-wrap');
   if(!wrap) return;
@@ -538,7 +583,7 @@ function renderVariant(theme, query=''){
         ${colorTag ? `<span class="variant-tag">${highlightText(colorTag, query)}</span>` : ''}
       </div>
       ${theme.note ? `<div class="micro">${highlightText(theme.note, query)}</div>` : ''}
-      ${theme.previewFile ? `<div class="preview-image-wrap"><img src="${escapeHtml(theme.previewFile)}" alt="${escapeHtml(theme.title)} preview" loading="lazy" decoding="async" onerror="previewFallback(this)" onclick="openImageLightbox(this.src,this.alt)" /></div>` : `<div class="preview-missing">暂无预览</div>`}
+      ${theme.previewFile ? `<div class="preview-image-wrap"><img src="${escapeHtml(theme.previewFile)}" alt="${escapeHtml(theme.title)} preview" loading="lazy" decoding="async" onload="fitPreviewFrame(this)" onerror="previewFallback(this)" onclick="openImageLightbox(this.src,this.alt)" /></div>` : `<div class="preview-missing">暂无预览</div>`}
       <div class="action-row">
         <button class="btn copy" type="button" onclick="copyFile('${escapeHtml(theme.cssFile)}','wrap-${escapeHtml(theme.slug)}')">复制</button>
         <button class="btn open" type="button" onclick="previewFile('${escapeHtml(theme.cssFile)}','wrap-${escapeHtml(theme.slug)}','area-${escapeHtml(theme.slug)}')">代码</button>
@@ -564,7 +609,7 @@ function renderSingleTheme(theme, query, number){
       </div>
       ${tagsHtml ? `<div class="keywords">${tagsHtml}</div>` : ''}
       ${theme.note ? `<div class="micro">${highlightText(theme.note, query)}</div>` : ''}
-      ${theme.previewFile ? `<div class="preview-image-wrap"><img src="${escapeHtml(theme.previewFile)}" alt="${escapeHtml(theme.title)} preview" loading="lazy" decoding="async" onerror="previewFallback(this)" onclick="openImageLightbox(this.src,this.alt)" /></div>` : `<div class="preview-missing">暂无预览</div>`}
+      ${theme.previewFile ? `<div class="preview-image-wrap"><img src="${escapeHtml(theme.previewFile)}" alt="${escapeHtml(theme.title)} preview" loading="lazy" decoding="async" onload="fitPreviewFrame(this)" onerror="previewFallback(this)" onclick="openImageLightbox(this.src,this.alt)" /></div>` : `<div class="preview-missing">暂无预览</div>`}
       <div class="action-row">
         <button class="btn copy" type="button" onclick="copyFile('${escapeHtml(theme.cssFile)}','wrap-${escapeHtml(theme.slug)}')">复制</button>
         <button class="btn open" type="button" onclick="previewFile('${escapeHtml(theme.cssFile)}','wrap-${escapeHtml(theme.slug)}','area-${escapeHtml(theme.slug)}')">代码</button>
