@@ -422,6 +422,7 @@ const themeList = document.getElementById('themeList');
 const search = document.getElementById('themeSearch');
 const count = document.getElementById('resultCount');
 let themes = [];
+const cssTextCache = new Map();
 
 function escapeHtml(str){
   return String(str || '').replace(/[&<>"']/g, s => ({
@@ -444,7 +445,12 @@ function rawUrl(fileName){
   return `https://raw.githubusercontent.com/${repoOwner}/${repoName}/${branch}/${encodeURIComponent(fileName)}`;
 }
 async function fetchTextFile(fileName){
-  const res = await fetch(rawUrl(fileName) + '?v=' + Date.now());
+  const safePath = String(fileName).split('/').map(encodeURIComponent).join('/');
+  const localUrl = new URL('./' + safePath, window.location.href).href;
+  let res = await fetch(localUrl + '?v=' + Date.now(), {cache:'no-store'});
+  if(!res.ok){
+    res = await fetch(rawUrl(fileName) + '?v=' + Date.now(), {cache:'no-store'});
+  }
   if(!res.ok) throw new Error('file not found: ' + fileName);
   return await res.text();
 }
@@ -624,17 +630,57 @@ function clearThemeSearch(){
 }
 search.addEventListener('input', updateThemeSearch);
 
-async function copyFile(fileName, wrapId){
-  try{
-    const text = await fetchTextFile(fileName);
-    await navigator.clipboard.writeText(text);
-    const wrap = document.getElementById(wrapId);
-    if(wrap) wrap.classList.remove('open');
-    showToast('已复制全部代码');
-  }catch(err){
-    showToast('复制失败，请检查 CSS 文件名');
-    console.error(err);
+function legacyCopyText(text){
+  const area = document.createElement('textarea');
+  area.value = text;
+  area.setAttribute('readonly', '');
+  area.style.position = 'fixed';
+  area.style.left = '0';
+  area.style.top = '0';
+  area.style.width = '1px';
+  area.style.height = '1px';
+  area.style.opacity = '0.01';
+  area.style.fontSize = '16px';
+  document.body.appendChild(area);
+  area.focus({preventScroll:true});
+  area.select();
+  area.setSelectionRange(0, area.value.length);
+  let copied = false;
+  try{ copied = document.execCommand('copy'); }catch(err){ console.error(err); }
+  area.remove();
+  return copied;
+}
+
+function finishCopy(wrapId){
+  const wrap = document.getElementById(wrapId);
+  if(wrap) wrap.classList.remove('open');
+  showToast('已复制全部代码');
+}
+
+function copyFile(fileName, wrapId){
+  const text = cssTextCache.get(fileName);
+  if(typeof text !== 'string'){
+    showToast('代码正在加载，请再点一次');
+    fetchTextFile(fileName).then(value => cssTextCache.set(fileName, value)).catch(console.error);
+    return;
   }
+
+  if(legacyCopyText(text)){
+    finishCopy(wrapId);
+    return;
+  }
+
+  if(navigator.clipboard && window.isSecureContext){
+    navigator.clipboard.writeText(text)
+      .then(() => finishCopy(wrapId))
+      .catch(err => {
+        console.error(err);
+        showToast('复制失败，请重新点一次');
+      });
+    return;
+  }
+
+  showToast('复制失败，请重新点一次');
 }
 async function previewFile(fileName, wrapId, areaId){
   const wrap = document.getElementById(wrapId);
@@ -674,6 +720,14 @@ async function loadThemes(){
     const names = files.map(f => f.name);
     const cssRegex = new RegExp('^css-' + typePrefix + '-.+\\.txt$', 'i');
     const cssNames = names.filter(n => cssRegex.test(n));
+
+    await Promise.all(cssNames.map(async cssFile => {
+      try{
+        cssTextCache.set(cssFile, await fetchTextFile(cssFile));
+      }catch(err){
+        console.error('CSS preload failed:', cssFile, err);
+      }
+    }));
 
     const loaded = await Promise.all(cssNames.map(async cssFile => {
       const slug = cssFile.replace(new RegExp('^css-' + typePrefix + '-', 'i'), '').replace(/\.txt$/i, '');
