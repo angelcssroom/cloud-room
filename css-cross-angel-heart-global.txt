@@ -1,0 +1,1116 @@
+/* ========================================================= */
+/* 消息列表页美化 V4 */
+/* 作者：天使 */
+/* ========================================================= */
+
+/* 小尺寸时间轴排版 / 精致紧凑 / 配套聊天页灰白蓝主题 */
+
+/* 不改点击逻辑，不改分组展开逻辑 */
+
+/* ========================================================= */
+
+:root {
+
+    --angel-timeline-bg: #F3F3F4;
+
+    --angel-timeline-card: rgba(255, 255, 255, 0.58);
+
+    --angel-timeline-line: #DDE5EC;
+
+    --angel-timeline-line-soft: #EEF2F6;
+
+    --angel-timeline-text: #626A74;
+
+    --angel-timeline-sub: #A2A9B2;
+
+    --angel-timeline-blue: #B9CBDC;
+
+    --angel-timeline-icon: url("https://i.postimg.cc/44Wqk59j/0D0FE159-F282-4A67-9C0E-072BF655C0F6.png");
+
+    --angel-timeline-top: url("https://i.postimg.cc/5y2BS89G/IMG-3008.jpg");
+
+}
+
+/* 页面底色 */
+
+#phone-screen #chat-list-screen,
+
+#phone-screen #messages-view,
+
+#phone-screen #chat-list {
+
+    background:
+
+        linear-gradient(180deg, rgba(255,255,255,0.9) 0%, #F3F3F4 38%, #EFEFF1 100%) !important;
+
+}
+
+/* 列表滚动区：缩小横向留白，做时间轴空间 */
+
+#phone-screen #chat-list {
+
+    position: relative !important;
+
+    padding-left: 18px !important;
+
+    padding-right: 16px !important;
+
+    padding-bottom: 96px !important;
+
+    box-sizing: border-box !important;
+
+}
+
+/* 整体左侧时间轴线 */
+
+#phone-screen #chat-list::before {
+
+    content: "" !important;
+
+    position: absolute !important;
+
+    left: 43px !important;
+
+    top: 84px !important;
+
+    bottom: 88px !important;
+
+    width: 1px !important;
+
+    background:
+
+        linear-gradient(
+
+            180deg,
+
+            rgba(221,229,236,0),
+
+            rgba(185,203,220,0.72) 8%,
+
+            rgba(221,229,236,0.88) 92%,
+
+            rgba(221,229,236,0)
+
+        ) !important;
+
+    pointer-events: none !important;
+
+}
+
+/* ========================================================= */
+
+/* 顶栏：薄雾背景，不做厚重卡片 */
+
+/* ========================================================= */
+
+#phone-screen #chat-list-screen > .header {
+
+    background:
+
+        linear-gradient(180deg, rgba(255,255,255,0.58), rgba(255,255,255,0.94)),
+
+        var(--angel-timeline-top) center top / cover no-repeat !important;
+
+    border-bottom: 1px solid rgba(222,229,235,0.72) !important;
+
+    box-shadow: none !important;
+
+    backdrop-filter: blur(14px) !important;
+
+    -webkit-backdrop-filter: blur(14px) !important;
+
+}
+
+#phone-screen #chat-list-title,
+
+#phone-screen #chat-list-screen .header span,
+
+#phone-screen #chat-list-screen .header .title {
+
+    color: #5E6671 !important;
+
+    font-weight: 720 !important;
+
+    letter-spacing: 0.4px !important;
+
+}
+
+#phone-screen #chat-list-screen .header .back-btn,
+
+#phone-screen #chat-list-screen .header .action-btn,
+
+#phone-screen #chat-list-screen .header button {
+
+    color: #717A86 !important;
+
+}
+
+/* 顶栏牙齿装饰，小一点 */
+
+#phone-screen #chat-list-screen > .header::before,
+
+#phone-screen #chat-list-screen > .header::after {
+
+    content: "" !important;
+
+    position: absolute !important;
+
+    bottom: 11px !important;
+
+    width: 20px !important;
+
+    height: 20px !important;
+
+    background-image: var(--angel-timeline-icon) !important;
+
+    background-size: contain !important;
+
+    background-repeat: no-repeat !important;
+
+    background-position: center !important;
+
+    opacity: 0.26 !important;
+
+    pointer-events: none !important;
+
+}
+
+#phone-screen #chat-list-screen > .header::before {
+
+    left: 30px !important;
+
+}
+
+#phone-screen #chat-list-screen > .header::after {
+
+    right: 30px !important;
+
+}
+
+/* ========================================================= */
+
+/* 分组：小标题 + 细分隔，不再做大胶囊 */
+
+/* ========================================================= */
+
+#phone-screen #chat-list .chat-group-container,
+
+#phone-screen .chat-group-container {
+
+    margin: 0 0 8px 0 !important;
+
+    padding: 0 !important;
+
+    border: none !important;
+
+    background: transparent !important;
+
+}
+
+#phone-screen #chat-list .chat-group-header,
+
+#phone-screen .chat-group-header {
+
+    position: relative !important;
+
+    height: 26px !important;
+
+    margin: 12px 0 5px 0 !important;
+
+    padding: 0 0 0 52px !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    background: transparent !important;
+
+    border: none !important;
+
+    border-radius: 0 !important;
+
+    box-shadow: none !important;
+
+    box-sizing: border-box !important;
+
+}
+
+/* 分组横线 */
+
+#phone-screen #chat-list .chat-group-header::before,
+
+#phone-screen .chat-group-header::before {
+
+    content: "" !important;
+
+    position: absolute !important;
+
+    left: 74px !important;
+
+    right: 0 !important;
+
+    top: 50% !important;
+
+    height: 1px !important;
+
+    background: rgba(221, 229, 236, 0.82) !important;
+
+    pointer-events: none !important;
+
+}
+
+/* 分组前的小牙齿点 */
+
+#phone-screen #chat-list .chat-group-header::after,
+
+#phone-screen .chat-group-header::after {
+
+    content: "" !important;
+
+    position: absolute !important;
+
+    left: 16px !important;
+
+    top: 50% !important;
+
+    width: 16px !important;
+
+    height: 16px !important;
+
+    transform: translateY(-50%) !important;
+
+    background-image: var(--angel-timeline-icon) !important;
+
+    background-size: contain !important;
+
+    background-position: center !important;
+
+    background-repeat: no-repeat !important;
+
+    opacity: 0.38 !important;
+
+    pointer-events: none !important;
+
+}
+
+/* 分组箭头 */
+
+#phone-screen #chat-list .chat-group-header .arrow,
+
+#phone-screen .chat-group-header .arrow {
+
+    position: absolute !important;
+
+    left: 0 !important;
+
+    margin: 0 !important;
+
+    width: 13px !important;
+
+    color: #747D88 !important;
+
+    font-size: 11px !important;
+
+    line-height: 1 !important;
+
+}
+
+/* 分组名称 */
+
+#phone-screen #chat-list .chat-group-header .group-name,
+
+#phone-screen .chat-group-header .group-name {
+
+    position: relative !important;
+
+    z-index: 2 !important;
+
+    display: inline-flex !important;
+
+    align-items: center !important;
+
+    padding: 0 8px 0 0 !important;
+
+    background: var(--angel-timeline-bg) !important;
+
+    color: #717A85 !important;
+
+    font-size: 13px !important;
+
+    line-height: 1 !important;
+
+    font-weight: 620 !important;
+
+    letter-spacing: 0.2px !important;
+
+}
+
+/* ========================================================= */
+
+/* 列表项：小型时间轴消息，不再是大卡片 */
+
+/* ========================================================= */
+
+#phone-screen #chat-list .chat-list-item,
+
+#phone-screen #messages-view .chat-list-item,
+
+#phone-screen #char-chat-list .chat-list-item,
+
+#phone-screen .chat-list-view .chat-list-item,
+
+#phone-screen .chat-list-item {
+
+    position: relative !important;
+
+    min-height: 58px !important;
+
+    display: grid !important;
+
+    grid-template-columns: 38px minmax(0, 1fr) 20px !important;
+
+    align-items: center !important;
+
+    column-gap: 10px !important;
+
+    margin: 0 0 8px 0 !important;
+
+    padding: 6px 8px 6px 6px !important;
+
+    border: none !important;
+
+    border-radius: 15px !important;
+
+    background: transparent !important;
+
+    box-shadow: none !important;
+
+    box-sizing: border-box !important;
+
+    overflow: visible !important;
+
+    cursor: pointer !important;
+
+    transition:
+
+        background-color 0.16s ease,
+
+        transform 0.16s ease,
+
+        opacity 0.16s ease !important;
+
+}
+
+/* hover 才出现很淡的玻璃底 */
+
+#phone-screen #chat-list .chat-list-item:hover,
+
+#phone-screen #messages-view .chat-list-item:hover,
+
+#phone-screen .chat-list-item:hover {
+
+    background: rgba(255, 255, 255, 0.42) !important;
+
+}
+
+#phone-screen #chat-list .chat-list-item:active,
+
+#phone-screen #messages-view .chat-list-item:active,
+
+#phone-screen .chat-list-item:active {
+
+    transform: translateX(2px) scale(0.995) !important;
+
+}
+
+/* 每项的短横分隔线 */
+
+#phone-screen #chat-list .chat-list-item::before,
+
+#phone-screen #messages-view .chat-list-item::before,
+
+#phone-screen .chat-list-item::before {
+
+    content: "" !important;
+
+    position: absolute !important;
+
+    left: 54px !important;
+
+    right: 8px !important;
+
+    bottom: 0 !important;
+
+    height: 1px !important;
+
+    background: rgba(225, 231, 237, 0.72) !important;
+
+    pointer-events: none !important;
+
+}
+
+/* 右侧小状态：不是圆点卡片，做细小竖胶囊 */
+
+#phone-screen #chat-list .chat-list-item::after,
+
+#phone-screen #messages-view .chat-list-item::after,
+
+#phone-screen .chat-list-item::after {
+
+    content: "" !important;
+
+    grid-column: 3 !important;
+
+    justify-self: center !important;
+
+    width: 6px !important;
+
+    height: 22px !important;
+
+    border-radius: 999px !important;
+
+    background:
+
+        linear-gradient(180deg, #EEF3F7, #C9D7E4) !important;
+
+    border: 1px solid rgba(198, 210, 222, 0.86) !important;
+
+    box-shadow:
+
+        inset 0 1px 0 rgba(255,255,255,0.9) !important;
+
+    opacity: 0.82 !important;
+
+    pointer-events: none !important;
+
+}
+
+/* ========================================================= */
+
+/* 头像：小而清爽，像时间轴节点 */
+
+/* ========================================================= */
+
+#phone-screen #chat-list .chat-list-item .avatar-group,
+
+#phone-screen #messages-view .chat-list-item .avatar-group,
+
+#phone-screen #char-chat-list .chat-list-item .avatar-group,
+
+#phone-screen #chat-list-screen .avatar-group {
+
+    grid-column: 1 !important;
+
+    width: 38px !important;
+
+    height: 38px !important;
+
+    flex-shrink: 0 !important;
+
+    margin: 0 !important;
+
+    position: relative !important;
+
+    border-radius: 50% !important;
+
+}
+
+/* 时间轴节点外圈 */
+
+#phone-screen #chat-list .chat-list-item .avatar-group::before,
+
+#phone-screen #messages-view .chat-list-item .avatar-group::before,
+
+#phone-screen #chat-list-screen .avatar-group::before {
+
+    content: "" !important;
+
+    position: absolute !important;
+
+    inset: -4px !important;
+
+    border-radius: 50% !important;
+
+    background:
+
+        linear-gradient(180deg, rgba(255,255,255,0.92), rgba(238,243,248,0.82)) !important;
+
+    border: 1px solid rgba(217,226,234,0.95) !important;
+
+    box-shadow:
+
+        0 0 0 3px rgba(243,243,244,0.95),
+
+        inset 0 1px 0 rgba(255,255,255,0.9) !important;
+
+    pointer-events: none !important;
+
+}
+
+/* 头像图片 */
+
+#phone-screen #chat-list .chat-list-item .avatar,
+
+#phone-screen #messages-view .chat-list-item .avatar,
+
+#phone-screen #char-chat-list .chat-list-item .avatar,
+
+#phone-screen #chat-list-screen .avatar,
+
+#phone-screen #chat-list-screen .avatar-img {
+
+    position: relative !important;
+
+    z-index: 2 !important;
+
+    width: 38px !important;
+
+    height: 38px !important;
+
+    margin: 0 !important;
+
+    border-radius: 50% !important;
+
+    object-fit: cover !important;
+
+    background-color: #EEF1F4 !important;
+
+    border: 1px solid rgba(222, 229, 235, 0.96) !important;
+
+    box-shadow:
+
+        inset 0 0 0 1px rgba(255,255,255,0.68) !important;
+
+}
+
+/* 头像框兼容 */
+
+#phone-screen #chat-list-screen .avatar-group.has-frame .avatar-with-frame,
+
+#phone-screen #chat-list-screen .avatar-group.has-frame .avatar-img {
+
+    width: 38px !important;
+
+    height: 38px !important;
+
+}
+
+/* 正在行动状态 */
+
+#phone-screen #chat-list .chat-list-item .avatar.is-acting,
+
+#phone-screen .chat-list-item .avatar.is-acting {
+
+    border-color: #B9CBDC !important;
+
+    box-shadow:
+
+        0 0 0 3px rgba(185,203,220,0.36),
+
+        0 0 10px rgba(185,203,220,0.42) !important;
+
+}
+
+/* ========================================================= */
+
+/* 文本：紧凑两行 */
+
+/* ========================================================= */
+
+#phone-screen #chat-list .chat-list-item .info,
+
+#phone-screen #messages-view .chat-list-item .info,
+
+#phone-screen #char-chat-list .chat-list-item .info,
+
+#phone-screen .chat-list-item .info {
+
+    grid-column: 2 !important;
+
+    min-width: 0 !important;
+
+    overflow: hidden !important;
+
+    padding: 0 !important;
+
+}
+
+/* 名字行 */
+
+#phone-screen #chat-list .chat-list-item .name-line,
+
+#phone-screen #messages-view .chat-list-item .name-line,
+
+#phone-screen .chat-list-item .name-line {
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    gap: 5px !important;
+
+    margin: 0 0 3px 0 !important;
+
+}
+
+/* 名字 */
+
+#phone-screen #chat-list .chat-list-item .name,
+
+#phone-screen #messages-view .chat-list-item .name,
+
+#phone-screen #char-chat-list .chat-list-item .name,
+
+#phone-screen .chat-list-item .name {
+
+    color: #5F6772 !important;
+
+    font-size: 14px !important;
+
+    line-height: 1.15 !important;
+
+    font-weight: 700 !important;
+
+    letter-spacing: 0.1px !important;
+
+    white-space: nowrap !important;
+
+    overflow: hidden !important;
+
+    text-overflow: ellipsis !important;
+
+}
+
+/* 最后一条消息：做成细小灰蓝标签，不是散的文字 */
+
+#phone-screen #chat-list .chat-list-item .last-msg,
+
+#phone-screen #messages-view .chat-list-item .last-msg,
+
+#phone-screen #char-chat-list .chat-list-item .last-msg,
+
+#phone-screen .chat-list-item .last-msg {
+
+    display: inline-block !important;
+
+    max-width: 100% !important;
+
+    padding: 2px 7px !important;
+
+    border-radius: 999px !important;
+
+    background: rgba(255,255,255,0.48) !important;
+
+    border: 1px solid rgba(226,232,238,0.72) !important;
+
+    color: #A0A8B2 !important;
+
+    font-size: 11px !important;
+
+    line-height: 1.25 !important;
+
+    font-weight: 520 !important;
+
+    white-space: nowrap !important;
+
+    overflow: hidden !important;
+
+    text-overflow: ellipsis !important;
+
+    box-sizing: border-box !important;
+
+}
+
+/* 群标签 */
+
+#phone-screen #chat-list .chat-list-item .group-tag,
+
+#phone-screen #messages-view .chat-list-item .group-tag,
+
+#phone-screen .chat-list-item .group-tag {
+
+    padding: 1px 5px !important;
+
+    border-radius: 999px !important;
+
+    background: #E8EEF4 !important;
+
+    color: #7B93A9 !important;
+
+    font-size: 9px !important;
+
+    line-height: 1.2 !important;
+
+    font-weight: 700 !important;
+
+}
+
+/* ========================================================= */
+
+/* 底部导航：更小巧的文字导航，不做大胶囊 */
+
+/* ========================================================= */
+
+#phone-screen #chat-list-bottom-nav {
+
+    position: absolute !important;
+
+    bottom: 0 !important;
+
+    left: 0 !important;
+
+    width: 100% !important;
+
+    z-index: 15 !important;
+
+    display: flex !important;
+
+    padding: 6px 18px calc(6px + env(safe-area-inset-bottom)) !important;
+
+    box-sizing: border-box !important;
+
+    border-top: 1px solid rgba(225,231,237,0.86) !important;
+
+    background: rgba(246,247,249,0.92) !important;
+
+    backdrop-filter: blur(16px) !important;
+
+    -webkit-backdrop-filter: blur(16px) !important;
+
+    box-shadow: 0 -3px 14px rgba(90,100,112,0.045) !important;
+
+}
+
+#phone-screen #chat-list-bottom-nav .nav-item,
+
+#phone-screen .nav-item {
+
+    position: relative !important;
+
+    flex: 1 !important;
+
+    padding: 8px 0 9px !important;
+
+    text-align: center !important;
+
+    color: #A0A8B2 !important;
+
+    font-size: 12px !important;
+
+    line-height: 1.2 !important;
+
+    font-weight: 620 !important;
+
+    cursor: pointer !important;
+
+    background: transparent !important;
+
+    border-radius: 0 !important;
+
+    transition: color 0.2s ease, transform 0.2s ease !important;
+
+}
+
+#phone-screen #chat-list-bottom-nav .nav-item.active,
+
+#phone-screen .nav-item.active {
+
+    color: #66717D !important;
+
+    font-weight: 760 !important;
+
+}
+
+/* 当前导航：小牙齿 + 细线，不用大块底色 */
+
+#phone-screen #chat-list-bottom-nav .nav-item.active::before,
+
+#phone-screen .nav-item.active::before {
+
+    content: "" !important;
+
+    position: absolute !important;
+
+    left: 50% !important;
+
+    top: -2px !important;
+
+    width: 13px !important;
+
+    height: 13px !important;
+
+    transform: translateX(-50%) !important;
+
+    background-image: var(--angel-timeline-icon) !important;
+
+    background-size: contain !important;
+
+    background-position: center !important;
+
+    background-repeat: no-repeat !important;
+
+    opacity: 0.34 !important;
+
+}
+
+#phone-screen #chat-list-bottom-nav .nav-item.active::after,
+
+#phone-screen .nav-item.active::after {
+
+    content: "" !important;
+
+    position: absolute !important;
+
+    left: 50% !important;
+
+    bottom: 3px !important;
+
+    width: 14px !important;
+
+    height: 2px !important;
+
+    transform: translateX(-50%) !important;
+
+    border-radius: 999px !important;
+
+    background: #AEBBC7 !important;
+
+}
+
+/* ========================================================= */
+
+/* 暗黑模式也保持浅色 */
+
+/* ========================================================= */
+
+#phone-screen.dark-mode #chat-list-screen,
+
+#phone-screen.dark-mode #messages-view,
+
+#phone-screen.dark-mode #chat-list {
+
+    background:
+
+        linear-gradient(180deg, rgba(255,255,255,0.9) 0%, #F3F3F4 38%, #EFEFF1 100%) !important;
+
+}
+
+#phone-screen.dark-mode #chat-list-screen > .header {
+
+    background:
+
+        linear-gradient(180deg, rgba(255,255,255,0.58), rgba(255,255,255,0.94)),
+
+        var(--angel-timeline-top) center top / cover no-repeat !important;
+
+    border-bottom-color: rgba(222,229,235,0.72) !important;
+
+}
+
+#phone-screen.dark-mode #chat-list .chat-list-item,
+
+#phone-screen.dark-mode #messages-view .chat-list-item,
+
+#phone-screen.dark-mode .chat-list-item {
+
+    background: transparent !important;
+
+    border-bottom-color: transparent !important;
+
+    box-shadow: none !important;
+
+}
+
+#phone-screen.dark-mode #chat-list .chat-list-item .name,
+
+#phone-screen.dark-mode #messages-view .chat-list-item .name,
+
+#phone-screen.dark-mode .chat-list-item .name,
+
+#phone-screen.dark-mode .chat-group-header .group-name {
+
+    color: #5F6772 !important;
+
+}
+
+#phone-screen.dark-mode #chat-list .chat-list-item .last-msg,
+
+#phone-screen.dark-mode #messages-view .chat-list-item .last-msg,
+
+#phone-screen.dark-mode .chat-list-item .last-msg {
+
+    color: #A0A8B2 !important;
+
+}
+
+#phone-screen.dark-mode #chat-list-bottom-nav {
+
+    background: rgba(246,247,249,0.92) !important;
+
+    border-top-color: rgba(225,231,237,0.86) !important;
+
+}
+/* ========================================================= */
+/* 列表页 V4 补丁 */
+/* 1. 顶栏按钮恢复原图标 */
+/* 2. 去掉多余牙齿 */
+/* 3. 右侧竖胶囊改小十字架 */
+/* 4. 简化头像层级 */
+/* ========================================================= */
+
+:root {
+    --angel-list-cross: url("https://i.postimg.cc/y6yFx1XS/AB3941A9-E24B-4D8A-B8DE-497C232F4BC8.png");
+}
+
+/* ========================================================= */
+/* 1) 列表页顶栏：不要左右牙齿装饰 */
+/* ========================================================= */
+
+#phone-screen #chat-list-screen > .header::before,
+#phone-screen #chat-list-screen > .header::after {
+    content: none !important;
+    display: none !important;
+}
+
+/* ========================================================= */
+/* 2) 列表页顶栏按钮恢复原图标 */
+/* 只限消息列表页，不影响聊天页顶栏 */
+/* ========================================================= */
+
+#phone-screen #chat-list-screen > .header .back-btn,
+#phone-screen #chat-list-screen > .header .action-btn,
+#phone-screen #chat-list-screen > .header button {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: #717A86 !important;
+    font-size: 20px !important;
+    line-height: 1 !important;
+    text-indent: 0 !important;
+    overflow: visible !important;
+}
+
+/* 干掉之前替换出来的牙齿按钮 */
+#phone-screen #chat-list-screen > .header .back-btn::before,
+#phone-screen #chat-list-screen > .header .action-btn::before,
+#phone-screen #chat-list-screen > .header button::before {
+    content: none !important;
+    display: none !important;
+    background: none !important;
+}
+
+/* 恢复原 svg / img */
+#phone-screen #chat-list-screen > .header .back-btn img,
+#phone-screen #chat-list-screen > .header .back-btn svg,
+#phone-screen #chat-list-screen > .header .action-btn img,
+#phone-screen #chat-list-screen > .header .action-btn svg,
+#phone-screen #chat-list-screen > .header button img,
+#phone-screen #chat-list-screen > .header button svg {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+
+    width: 20px !important;
+    height: 20px !important;
+
+    color: inherit !important;
+}
+
+/* 如果原来有 span 图标文字，也恢复 */
+#phone-screen #chat-list-screen > .header .back-btn span,
+#phone-screen #chat-list-screen > .header .action-btn span,
+#phone-screen #chat-list-screen > .header button span {
+    font-size: inherit !important;
+    line-height: inherit !important;
+    color: inherit !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* ========================================================= */
+/* 3) 右侧状态：竖胶囊改成小十字架 */
+/* 不要太大 */
+/* ========================================================= */
+
+#phone-screen #chat-list .chat-list-item::after,
+#phone-screen #messages-view .chat-list-item::after,
+#phone-screen .chat-list-item::after {
+    width: 11px !important;
+    height: 11px !important;
+
+    right: 10px !important;
+    top: 50% !important;
+
+    transform: translateY(-50%) scaleY(0.82) !important;
+    transform-origin: center center !important;
+
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+
+    background: var(--angel-list-cross) center/contain no-repeat !important;
+
+    opacity: 0.42 !important;
+}
+
+/* ========================================================= */
+/* 4) 头像简化：去掉太多重叠层 */
+/* ========================================================= */
+
+#phone-screen #chat-list .chat-list-item .avatar-group,
+#phone-screen #messages-view .chat-list-item .avatar-group,
+#phone-screen #char-chat-list .chat-list-item .avatar-group,
+#phone-screen #chat-list-screen .avatar-group {
+    width: 38px !important;
+    height: 38px !important;
+
+    background: transparent !important;
+    border: none !important;
+    border-radius: 50% !important;
+    box-shadow: none !important;
+}
+
+/* 去掉外面那层重叠底圈 */
+#phone-screen #chat-list .chat-list-item .avatar-group::before,
+#phone-screen #messages-view .chat-list-item .avatar-group::before,
+#phone-screen #chat-list-screen .avatar-group::before {
+    content: none !important;
+    display: none !important;
+}
+
+/* 头像本体只保留一层轻描边 + 很淡白边 */
+#phone-screen #chat-list .chat-list-item .avatar,
+#phone-screen #messages-view .chat-list-item .avatar,
+#phone-screen #char-chat-list .chat-list-item .avatar,
+#phone-screen #chat-list-screen .avatar,
+#phone-screen #chat-list-screen .avatar-img {
+    width: 38px !important;
+    height: 38px !important;
+
+    margin: 0 !important;
+
+    border-radius: 50% !important;
+    object-fit: cover !important;
+
+    background-color: #EEF1F4 !important;
+    border: 1px solid rgba(219, 226, 233, 0.92) !important;
+
+    box-shadow:
+        0 0 0 2px rgba(255,255,255,0.78) !important;
+}
+
+/* 头像框兼容 */
+#phone-screen #chat-list-screen .avatar-group.has-frame .avatar-with-frame,
+#phone-screen #chat-list-screen .avatar-group.has-frame .avatar-img {
+    width: 38px !important;
+    height: 38px !important;
+}
+
+/* acting 状态也轻一点 */
+#phone-screen #chat-list .chat-list-item .avatar.is-acting,
+#phone-screen .chat-list-item .avatar.is-acting {
+    border-color: #B9CBDC !important;
+    box-shadow:
+        0 0 0 2px rgba(185,203,220,0.30),
+        0 0 8px rgba(185,203,220,0.30) !important;
+}
