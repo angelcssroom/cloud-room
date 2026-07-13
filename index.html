@@ -1,8 +1,270 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/><title>Cross Room</title><style>*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-:root{--bg:#f6f6f5;--card:#fff;--text:#20242a;--sub:#7d838c;--light:#aeb4bd;--line:#eceef1;--blue-deep:#8ea8cf;--shadow:0 12px 30px rgba(42,47,56,.045);--radius:24px;}
-html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;}
-body{padding:22px 14px 52px}.main{max-width:720px;margin:0 auto}.shell{display:flex;flex-direction:column;gap:14px}.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}.footer{text-align:center;color:#bcc2ca;font-size:10px;padding:4px 0 0;line-height:1.8}
-.hero{padding:28px 22px 23px;text-align:center}.avatar{width:96px;height:96px;border-radius:50%;display:block;margin:0 auto 17px;object-fit:cover;filter:saturate(.82) brightness(1.06);box-shadow:0 8px 22px rgba(60,70,90,.06)}.name-jp{font-size:22px;font-weight:700;letter-spacing:.06em;margin:0}.subcopy{margin:9px 0 0;color:var(--sub);font-size:11px;letter-spacing:.02em}.eng{margin:20px 0 6px;font-size:13px;font-weight:600;letter-spacing:.02em}.meta{margin:4px 0;color:var(--text);font-size:11.5px;line-height:1.8;word-break:break-all}.meta small{color:var(--sub);font-size:10px;display:block;margin-top:4px}.notice{padding:18px 19px 20px}.notice-title{font-size:13.5px;font-weight:700;margin:0 0 13px;letter-spacing:.03em}.notice-body{color:var(--sub);font-size:11.5px;line-height:1.9}.notice-body p{margin:0}.notice-body p+p{margin-top:4px}.notice-note{margin-top:13px;color:var(--light);font-size:10px;letter-spacing:.04em}.link-card{display:block;text-decoration:none;color:inherit;padding:20px 21px;background:#fff;border:1px solid #eceef1;border-radius:20px;box-shadow:0 10px 24px rgba(30,35,42,.045)}.link-card+.link-card{margin-top:14px}.link-top{display:flex;align-items:center;justify-content:space-between;gap:10px}.link-left h3{margin:0;font-size:14px;letter-spacing:.01em}.link-left p{margin:6px 0 0;color:var(--sub);font-size:10.5px;line-height:1.6}.link-badge{padding:7px 11px;border-radius:999px;background:#f8f8f8;border:1px solid #eceef1;color:#8e949d;font-size:10px;font-weight:600;white-space:nowrap}.arrow{display:none}.link-list{display:flex;flex-direction:column;gap:0;background:transparent;border:0;box-shadow:none;overflow:visible}</style></head>
-<body><div class="main"><div class="shell"><section class="card hero"><img class="avatar" src="avatar.jpg" alt="avatar"/><h1 class="name-jp">天使</h1><p class="subcopy">純観賞用アーカイブ / for viewing only</p><div class="eng">Cross</div><p class="meta">xhs - 63006558821</p><p class="meta">ここは、忘れられた画面の保管室です。<small>soft archive / ios themes / private storage</small></p></section>
-<section class="card notice"><h2 class="notice-title">ご案内</h2><div class="notice-body"><p>仅供群内成员个人使用。</p><p>禁止商用、搬运、二传、倒卖及二次发布。</p><p>都是 iOS 机型的，请自行改适配。</p><p>不受理售后；有 bug 请复制代码发送给 AI 修改，群里管理可帮忙部分答疑。</p></div><div class="notice-note">for personal use only · repost / resale prohibited</div></section>
-<section class="link-list"><a class="link-card" href="archive.html"><div class="link-top"><div class="link-left"><h3>Cross Room</h3><p>Cross 整理的主题</p></div><div class="link-badge">2 themes</div></div><div class="arrow"></div></a><a class="link-card" href="community.html"><div class="link-top"><div class="link-left"><h3>Bunny Room</h3><p>来自小兔们的主题</p></div><div class="link-badge">1 theme</div></div><div class="arrow"></div></a></section><div class="footer">private viewing archive<br>all themes are for personal use only</div></div></div></body></html>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>天使</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+:root{
+  --bg:#fff;
+  --card:#fff;
+  --text:#171717;
+  --sub:#666b72;
+  --muted:#9da2a9;
+  --line:#ececec;
+  --shadow:0 4px 14px rgba(0,0,0,.038);
+  --radius:12px;
+}
+html,body{
+  margin:0;
+  min-height:100%;
+  background:var(--bg);
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue","Hiragino Sans","Hiragino Sans GB","PingFang SC",Arial,sans-serif;
+  font-weight:400;
+}
+body{
+  padding:32px 18px 46px;
+}
+.main{
+  max-width:680px;
+  margin:0 auto;
+}
+.profile{
+  text-align:center;
+  padding:0 2px 18px;
+}
+.avatar{
+  width:70px;
+  height:70px;
+  border-radius:50%;
+  object-fit:cover;
+  display:block;
+  margin:0 auto 15px;
+  filter:grayscale(1) contrast(.92) brightness(1.08);
+  box-shadow:0 5px 16px rgba(0,0,0,.035);
+}
+.avatar[alt]{
+  font-size:0;
+  color:transparent;
+}
+.logo{
+  margin:0;
+  font-size:20px;
+  line-height:1.18;
+  font-weight:650;
+  letter-spacing:-.02em;
+}
+.subline{
+  margin:9px 0 0;
+  color:var(--sub);
+  font-size:11px;
+  line-height:1.5;
+  font-weight:440;
+  letter-spacing:.01em;
+}
+.name{
+  margin:18px 0 0;
+  font-size:13px;
+  line-height:1.45;
+  font-weight:650;
+}
+.small{
+  margin:6px 0 0;
+  color:var(--text);
+  font-size:11px;
+  line-height:1.45;
+  font-weight:480;
+}
+.small a{
+  color:#111;
+  text-decoration:underline;
+  text-underline-offset:2px;
+  text-decoration-thickness:.8px;
+}
+.jp{
+  margin:7px 0 0;
+  color:#222;
+  font-size:11px;
+  line-height:1.45;
+  font-weight:540;
+}
+.en{
+  margin:7px 0 0;
+  color:var(--sub);
+  font-size:11px;
+  line-height:1.45;
+  font-weight:440;
+}
+.stack{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+}
+.notice{
+  padding:16px 17px 17px;
+}
+.notice-title{
+  margin:0 0 11px;
+  font-size:12px;
+  line-height:1.35;
+  font-weight:650;
+  letter-spacing:-.01em;
+}
+.notice p{
+  margin:0;
+  color:var(--sub);
+  font-size:11px;
+  line-height:1.82;
+  font-weight:430;
+}
+.notice .foot{
+  margin-top:14px;
+  color:var(--muted);
+  letter-spacing:.035em;
+  font-size:9.5px;
+  line-height:1.55;
+}
+.link-card{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  min-height:64px;
+  padding:14px 17px;
+  text-decoration:none;
+  color:inherit;
+}
+.link-card:active{
+  transform:scale(.992);
+}
+.link-title{
+  margin:0;
+  font-size:13px;
+  line-height:1.28;
+  font-weight:650;
+  letter-spacing:-.015em;
+}
+.link-sub{
+  margin:5px 0 0;
+  color:var(--sub);
+  font-size:11px;
+  line-height:1.35;
+  font-weight:430;
+}
+.badge{
+  flex:0 0 auto;
+  min-width:68px;
+  text-align:center;
+  padding:6px 9px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  color:var(--sub);
+  background:#fbfbfb;
+  font-size:10px;
+  line-height:1.2;
+  font-weight:560;
+}
+.footer{
+  margin-top:14px;
+  text-align:center;
+  color:#c2c5ca;
+  font-size:9px;
+  line-height:1.6;
+  letter-spacing:.035em;
+}
+</style>
+</head>
+<body>
+<main class="main">
+  <section class="profile">
+    <img class="avatar" src="avatar.jpg" alt="" onerror="this.style.visibility='hidden'">
+    <h1 class="logo">天使</h1>
+    <p class="subline">纯观赏用アーカイブ / for viewing only</p>
+
+    <div class="name">Cross</div>
+    <p class="small">xhs - <a href="https://www.xiaohongshu.com/user/profile/63006558821">63006558821</a></p>
+    <p class="jp">ここは、忘れられた画面の保管室です。</p>
+    <p class="en">soft archive / ios themes / private storage</p>
+  </section>
+
+  <div class="stack">
+    <section class="card notice">
+      <h2 class="notice-title">ご案内</h2>
+      <p>仅供群内成员个人使用。</p>
+      <p>禁止商用、搬运、二传、倒卖及二次发布。</p>
+      <p>都是 iOS 机型的，请自行改适配。</p>
+      <p>不受理售后；有 bug 请复制代码发送给 AI 修改，群里管理可帮忙部分答疑。</p>
+      <p class="foot">for personal use only · repost / resale prohibited</p>
+    </section>
+
+    <a class="card link-card" href="archive.html">
+      <div>
+        <h3 class="link-title">Cross Room</h3>
+        <p class="link-sub">Cross 整理的主题</p>
+      </div>
+      <div class="badge" id="crossCount">loading</div>
+    </a>
+
+    <a class="card link-card" href="community.html">
+      <div>
+        <h3 class="link-title">Bunny Room</h3>
+        <p class="link-sub">来自小兔们的主题</p>
+      </div>
+      <div class="badge" id="communityCount">loading</div>
+    </a>
+  </div>
+
+  <div class="footer">angelcssroom.github.io/cloud-room</div>
+</main>
+
+<script>
+const repoOwner = "angelcssroom";
+const repoName = "cloud-room";
+const branch = "main";
+
+function themeLabel(n){
+  return n === 1 ? "1 theme" : n + " themes";
+}
+
+async function updateThemeCounts(){
+  const crossEl = document.getElementById("crossCount");
+  const communityEl = document.getElementById("communityCount");
+
+  try{
+    const api = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/?ref=${branch}`;
+    let res = await fetch(api + "&v=" + Date.now());
+    if(!res.ok){
+      await new Promise(r => setTimeout(r, 1200));
+      res = await fetch(api + "&v=" + Date.now());
+    }
+    if(!res.ok) throw new Error("repo list failed");
+
+    const files = await res.json();
+    const names = files.map(f => f.name);
+
+    const crossCount = names.filter(n => /^css-cross-.+\.txt$/i.test(n)).length;
+    const communityCount = names.filter(n =>
+      /^css-community-.+\.txt$/i.test(n) &&
+      !/^css-community-sample\.txt$/i.test(n)
+    ).length;
+
+    crossEl.textContent = themeLabel(crossCount);
+    communityEl.textContent = themeLabel(communityCount);
+  }catch(e){
+    crossEl.textContent = "themes";
+    communityEl.textContent = "themes";
+    console.error(e);
+  }
+}
+updateThemeCounts();
+</script>
+</body>
+</html>
