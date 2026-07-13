@@ -367,15 +367,6 @@ textarea{
 #themeList{
   min-height:min(720px,72vh);
 }
-#themeList.content-enter{
-  opacity:0;
-  transform:translateY(4px);
-}
-#themeList.content-enter.content-visible{
-  opacity:1;
-  transform:translateY(0);
-  transition:opacity .18s ease, transform .18s ease;
-}
 .loading-card{
   padding:16px 17px 17px;
 }
@@ -492,7 +483,6 @@ let themes = [];
 const cssTextCache = new Map();
 const cssLoadingTasks = new Map();
 let cssObserver = null;
-let initialThemeRenderDone = false;
 
 function escapeHtml(str){
   return String(str || '').replace(/[&<>"']/g, s => ({
@@ -779,18 +769,6 @@ function renderThemes(list, query=''){
   count.textContent = visibleGroups ? String(visibleGroups) : '0';
   setupLazyCssLoading();
 
-  if(!initialThemeRenderDone){
-    initialThemeRenderDone = true;
-    themeList.classList.add('content-enter');
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        themeList.classList.add('content-visible');
-        setTimeout(() => {
-          themeList.classList.remove('content-enter', 'content-visible');
-        }, 220);
-      });
-    });
-  }
 }
 function updateThemeSearch(){
   renderThemes(themes, search.value.trim());
