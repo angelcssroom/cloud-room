@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/><title>小兔事务档案</title><style>*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/><title>Bunny Room</title><style>*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 :root{--bg:#f6f6f5;--card:#fff;--text:#20242a;--sub:#7d838c;--light:#aeb4bd;--line:#eceef1;--blue-deep:#8ea8cf;--shadow:0 12px 30px rgba(42,47,56,.045);--radius:24px;}
 html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;}
 body{padding:22px 14px 52px}.main{max-width:720px;margin:0 auto}.shell{display:flex;flex-direction:column;gap:14px}.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}.footer{text-align:center;color:#bcc2ca;font-size:10px;padding:4px 0 0;line-height:1.8}
@@ -10,13 +10,40 @@ body{padding:22px 14px 52px}.main{max-width:720px;margin:0 auto}.shell{display:f
 .code-wrap{display:none;margin-top:13px}.code-wrap.open{display:block}.code-head{font-size:10px;color:var(--light);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}textarea{width:100%;min-height:280px;border-radius:18px;border:1px solid var(--line);background:#fbfbfc;color:#2b3036;padding:13px;font-size:10px;line-height:1.65;resize:vertical;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace}
 .variant-list{display:flex;flex-direction:column;gap:14px;margin-top:14px}.variant{border:1px solid var(--line);border-radius:20px;background:#fff;padding:12px}.variant.hidden{display:none}.variant-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.variant-head h4{margin:0;font-size:14px}.variant-head p{margin:4px 0 0;color:var(--light);font-size:10px}.variant-head span{font-size:10px;color:#8c949f;background:#f8f9fa;border:1px solid var(--line);padding:5px 8px;border-radius:999px}
 .template-note{padding:15px 16px;color:var(--sub);font-size:11px;line-height:1.9}.template-note code{font-size:10px;background:#f8f9fa;border:1px solid var(--line);border-radius:6px;padding:1px 4px;color:#555b64}.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(16px);opacity:0;background:#16191e;color:#fff;font-size:11px;padding:10px 13px;border-radius:999px;pointer-events:none;transition:.22s ease;z-index:99}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}@media(max-width:560px){body{padding:18px 12px 42px}.action-row{flex-direction:column}.btn{width:100%}}</style></head><body><div class="main"><div class="shell">
-<section class="card header"><a class="back" href="index.html">← back home</a><h1 class="archive-title">小兔事务档案</h1><p class="archive-sub">这里收录来自天国事务所小兔们的美化主题。请尊重每一位小兔的创作，禁止搬运、倒卖及二次发布。</p></section>
+<section class="card header"><a class="back" href="index.html">← back home</a><h1 class="archive-title">Bunny Room</h1><p class="archive-sub">来自天国事务所小兔们的美化主题。请尊重每一位小兔的创作，禁止搬运、倒卖及二次发布。</p></section>
 <section class="card search-card"><div class="search-row"><input id="themeSearch" type="search" placeholder="搜索：主题名 / 小兔名 / 标签 / 330" autocomplete="off"/><button class="clear-btn" type="button" onclick="clearThemeSearch()">清空</button></div><div class="result-count" id="resultCount">1 result</div></section>
-<section class="card template-note"><p><strong>新增小兔主题时：</strong>上传 <code>preview-community-主题名.jpg</code> 和 <code>css-community-主题名.txt</code>，再复制下面模板卡片改文字和文件名。</p><p>小兔作者名可以写成 <code>🐇 小莓</code> 这种格式。</p></section>
-<!-- 新增小兔主题时，复制下面这一整段。 -->
-<!-- 小兔主题模板：从这里复制 -->
-<article class="card theme-card" data-search="sample bunny room 小兔 示例 蓝色 极简 330"><div class="theme-top"><div><h3 class="theme-name">sample bunny room</h3><p class="theme-alt">🐇 小兔示例</p></div><div class="theme-no">01</div></div><div class="keywords"><span class="keyword">蓝色</span><span class="keyword">极简</span><span class="keyword">330</span></div><div class="micro">submitted by 🐇 · 天国事务所</div><div class="preview-image-wrap"><img src="preview-community-sample.jpg" alt="community theme preview"/></div><div class="action-row"><button class="btn copy" type="button" onclick="copyFile('css-community-sample.txt')">复制全部代码</button><button class="btn open" type="button" onclick="previewFile('css-community-sample.txt','wrap-community-sample','area-community-sample')">展开代码</button></div><div class="code-wrap" id="wrap-community-sample"><div class="code-head">external css / css-community-sample.txt</div><textarea id="area-community-sample" readonly></textarea></div></article>
-<!-- 小兔主题模板：到这里结束 -->
+<!-- 小兔主题已添加在这里。新增主题时，复制下面任意一整段 article 卡片，粘贴到 footer 上面。 -->
+<article class="card theme-card" data-search="Tempest's Whisper tempests whisper 芷 简约 低饱和 330 小兔 天国事务所">
+  <div class="theme-top">
+    <div>
+      <h3 class="theme-name">Tempest's Whisper</h3>
+      <p class="theme-alt">🐇 芷</p>
+    </div>
+    <div class="theme-no">01</div>
+  </div>
+
+  <div class="keywords">
+    <span class="keyword">简约</span>
+    <span class="keyword">低饱和</span>
+    <span class="keyword">330</span>
+  </div>
+
+  <div class="micro">这个什么屌丝几百年前美化呵呵 · submitted by 🐇 · 天国事务所</div>
+
+  <div class="preview-image-wrap">
+    <img src="preview-community-tempests-whisper.jpg" alt="Tempest's Whisper preview" />
+  </div>
+
+  <div class="action-row">
+    <button class="btn copy" type="button" onclick="copyFile('css-community-tempests-whisper.txt')">复制全部代码</button>
+    <button class="btn open" type="button" onclick="previewFile('css-community-tempests-whisper.txt','wrap-community-tempests-whisper','area-community-tempests-whisper')">展开代码</button>
+  </div>
+
+  <div class="code-wrap" id="wrap-community-tempests-whisper">
+    <div class="code-head">external css / css-community-tempests-whisper.txt</div>
+    <textarea id="area-community-tempests-whisper" readonly></textarea>
+  </div>
+</article>
 <div class="footer">for personal use only · repost / resale prohibited</div></div></div><div class="toast" id="toast">已复制</div><script>const search=document.getElementById('themeSearch');const cards=Array.from(document.querySelectorAll('.theme-card'));const count=document.getElementById('resultCount');const colorGroups={yellow:['黄','黄色','yellow'],blue:['蓝','蓝色','blue'],purple:['紫','紫色','purple'],pink:['粉','粉色','pink'],black:['黑','黑色','black']};
 function detectColorQuery(q){if(!q)return null;for(const [c,ws] of Object.entries(colorGroups)){if(ws.some(w=>q.includes(w.toLowerCase())))return c;}return null;}
 function updateThemeSearch(){const q=search.value.trim().toLowerCase();const colorQuery=detectColorQuery(q);let visible=0;cards.forEach(card=>{const hay=card.dataset.search.toLowerCase();const variants=Array.from(card.querySelectorAll('.variant'));if(!q){card.classList.remove('hidden');variants.forEach(v=>v.classList.remove('hidden'));visible++;return;}if(variants.length){let shown=0;variants.forEach(v=>{const vc=v.dataset.color.toLowerCase();let ok=colorQuery?vc.includes(colorQuery):hay.includes(q);v.classList.toggle('hidden',!ok);if(ok)shown++;});const show=shown>0||(!colorQuery&&hay.includes(q));card.classList.toggle('hidden',!show);if(show){if(!colorQuery&&shown===0)variants.forEach(v=>v.classList.remove('hidden'));visible++;}return;}const ok=hay.includes(q);card.classList.toggle('hidden',!ok);if(ok)visible++;});count.textContent=visible+' result'+(visible===1?'':'s');}
