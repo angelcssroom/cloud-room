@@ -1,0 +1,538 @@
+/*
+title: Tempest's Whisper
+author: 芷
+tags: 简约 / 低饱和 / 330
+note: 这个什么屌丝几百年前美化呵呵
+*/
+
+/* Tempest's Whisper by芷/
+/* 源代码ee 整理代码喵个弥 菜单清寒二改愫小白狗 引用二改愫 感谢以上伟大的老师们 没经过我本人吃到的你给我小心点 半夜最好睁眼睡👁️👅意思是不准二传*/
+/* 可以二改适配！可以改成喜欢的样子 但是不可以大改 里面用🔥标注了一些方便你改的 */
+
+/* ============================================================
+   第一部分：顶栏 (Header)
+   ============================================================ */
+
+
+/* 1. 强制穿透所有容器背景 */
+#chat-interface-screen .header, 
+#chat-interface-screen #chat-header,
+.header-wrapper, 
+.header-container {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    
+    /* 强行杀掉边框和阴影 */
+    border: none !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+
+    /* 强行杀掉毛玻璃/磨砂感 */
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    filter: none !important;
+}
+
+/* 2. 清理备注文字外层的“胶囊”背景 */
+#chat-header-title-wrapper {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* 3. 彻底杀掉状态栏小方块 */
+#chat-header-status, 
+.status-bar {
+    display: none !important;
+}
+
+/* 返回按钮 */
+#chat-interface-screen .header .back-btn#back-to-list-btn {
+  background-image: url('https://i.postimg.cc/C5JmW6j2/retouch-2026041500103127.png');
+  background-size: 20px 10px; 
+  background-repeat: no-repeat;
+  background-position: center;
+  font-size: 0; 
+  color: transparent;
+  width: 40px; 
+  height: 40px;
+}
+
+/* 聊天设置按钮 */
+#chat-settings-btn {
+  background-image: url('https://i.postimg.cc/02Tw90cW/retouch-2026041500100387.png');
+  background-size: contain; 
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 20px; 
+  height: 20px;
+}
+#chat-settings-btn img {
+  display: none; 
+}
+
+/* 一起听按钮*/
+
+#listen-together-btn img {
+  /* 1. 核心：透明但保留点击功能 */
+  opacity: 0 !important;
+  pointer-events: auto !important;
+
+  /* 2. 维持大小（根据你之前的设置） */
+  width: 32px !important;
+  height: 32px !important;
+  object-fit: contain !important;
+  
+  /* 3. 彻底杀掉背景和边框 */
+  background: transparent !important;
+  border: none !important;
+  animation: none !important; 
+}
+
+/* 确保容器也能穿透点击 */
+#listen-together-btn {
+  background: transparent !important;
+  border: none !important;
+  pointer-events: auto !important;
+}
+
+/* 长期记忆按钮 */
+#open-memory-screen-btn {
+  /* 1. 核心：透明但保留点击 */
+  opacity: 0 !important;
+  pointer-events: auto !important;
+
+  /* 2. 维持你设定的背景逻辑（虽然看不见，但保留结构） */
+  background-image: url('YOUR_IMAGE_URL_HERE') !important;
+  background-size: 24px 24px !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  
+  /* 3. 彻底去掉边框和背景色 */
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* 隐藏原本的图标 */
+#open-memory-screen-btn svg {
+  display: none !important;
+}
+
+/* --- 最终切断补丁：渐变抹除法 --- */
+
+#chat-messages, 
+.message-list, 
+[class*="Scroll"], 
+[class*="Container"] {
+    /* 🔥🔥强制在顶部 0 到 100px 的区域内不显示任何内容🔥🔥 */
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0px, transparent 100px, black 100px) !important;
+    mask-image: linear-gradient(to bottom, transparent 0px, transparent 100px, black 100px) !important;
+    
+    /* 必须确保它不是静态定位，否则遮罩可能不生效 */
+    position: relative !important;
+}
+
+/* 备注美化：白色 + 极细字体 */
+#chat-header-title {
+    color: #ffffff !important;
+    font-weight: 200 !important;/*调粗细🔥🔥🔥*/
+    text-shadow: none !important;
+    letter-spacing: 0.5px !important;
+    opacity: 0.95 !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    font-size: 15px !important;/*调大小🔥🔥🔥*/
+}
+
+/* 图标复活补丁：保住透明 + 恢复点击 */
+
+/* 1. 强行提升图标层级，确保它们在最前面 */
+#listen-together-btn, 
+#open-memory-screen-btn,
+.header .icon-button {
+    /* 必须是 auto，否则点不到 */
+    pointer-events: auto !important;
+    /* 提到最高，不准被备注文字挡住 */
+    z-index: 99999 !important;
+    /* 确保有点击区域 */
+    min-width: 44px !important;
+    min-height: 44px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+/* 2. 让备注文字容器“隐身穿透” */
+/* 这是为了防止备注文字那个长条框横在中间挡住左右两边的图标 */
+#chat-header-title-wrapper {
+    pointer-events: none !important;
+}
+
+/* 3. 单独恢复备注文字的点击（如果你想点它改名） */
+#chat-header-title {
+    pointer-events: auto !important;
+}
+
+/* ============================================================
+   第二部分：底栏 (Footer & Menu)
+   ============================================================ */
+
+/* 1. 底栏大容器彻底全透 */
+#phone-screen #chat-footer, #chat-footer, .footer-container, #chat-input-area {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+/* 2. 透明菜单：替换现有逻辑，仅将触发点设为透明 */
+#chat-input-actions-top {
+    position: absolute !important;
+    left: 3px !important;
+    bottom: -9px !important;
+    width: 53px !important;
+    height: 60px !important;
+    z-index: 1000 !important;
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    border-radius: 16px !important;
+    transition: all 0.2s ease !important;
+    pointer-events: auto !important; 
+}
+
+/* 透明触发点 */
+#chat-input-actions-top::before {
+    content: '' !important;
+    position: absolute !important;
+    width: 29px !important;
+    height: 29px !important;
+    left: 10px !important; 
+    top: 6px !important;
+    background: transparent !important;
+    cursor: pointer !important;
+    z-index: 1001 !important;
+    pointer-events: auto !important;
+    transition: opacity 0.2s !important;
+}
+
+/* 展开状态：严格保留原始 4列 grid 布局 */
+#chat-input-actions-top:hover,
+#chat-input-actions-top.menu-open {
+    width: auto !important;
+    min-width: 260px !important;
+    max-width: 92vw !important;
+    height: auto !important;
+    background: #FFFFFF !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2) !important;
+    border: 1px solid var(--kakao-border) !important;
+    padding: 8px !important;
+    left: 10px !important;
+    bottom: 42px !important;
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    grid-auto-rows: auto !important;
+    column-gap: 6px !important;
+    row-gap: 6px !important;
+    pointer-events: auto !important;
+    border-radius: 12px !important;
+}
+
+/* 展开时隐藏触发点 */
+#chat-input-actions-top:hover::before,
+#chat-input-actions-top.menu-open::before {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+/* 菜单内按钮：严格保留动画逻辑 */
+#chat-input-actions-top .chat-action-icon-btn,
+#chat-input-actions-top #reroll-btn {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transform: translateY(10px) scale(0.95) !important;
+    pointer-events: none !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    height: 36px !important;
+    background: transparent !important;
+    border: 1px solid #e0e0e0 !important;
+    border-radius: 6px !important;
+    transition: opacity 0.2s ease 0.05s, transform 0.2s ease 0.05s, visibility 0s 0.25s !important;
+}
+
+#chat-input-actions-top:hover .chat-action-icon-btn,
+#chat-input-actions-top:hover #reroll-btn,
+#chat-input-actions-top.menu-open .chat-action-icon-btn,
+#chat-input-actions-top.menu-open #reroll-btn {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) scale(1) !important;
+    pointer-events: auto !important;
+}
+
+/* 图标大小屏蔽 */
+#chat-input-actions-top [id*="-btn"] img, 
+#chat-input-actions-top [id*="-btn"] svg {
+    width: 20px !important;
+    height: 20px !important;
+    display: block !important;
+}
+[id*="-btn"]::after { display: none !important; }
+
+/* 3. 输入框与发送键：全透且隐形 */
+.input-container {
+    flex: none !important;
+    width: 50% !important;
+    margin-left: 65px !important;
+    margin-right: auto !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+#chat-input { background: transparent !important; color: #fff !important; }
+#chat-input::placeholder { color: transparent !important; font-size: 0 !important; }
+
+#send-btn {
+    background: transparent !important;
+    color: transparent !important;
+    font-size: 0 !important;
+    opacity: 0 !important;
+    pointer-events: auto !important;
+}
+
+/* 4. 彻底隐藏“等待回复”小猫图标（替换法 + 透明底色） */
+#wait-reply-btn, #reroll-btn, .chat-action-icon-btn {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    opacity: 0 !important;          /* 整体隐形 */
+    pointer-events: auto !important;
+}
+#wait-reply-btn img, #reroll-btn img, .chat-action-icon-btn img {
+    content: url('data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7') !important;
+}
+
+
+/* ============================================================
+   第三部分：气泡、引用、转账 (Bubble & Special)
+   ============================================================ */
+
+/* --- 1. 气泡通用样式（皮肤） --- */
+.message-bubble .content {
+    background: rgba(255, 255, 255, 0.22) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    border-radius: 12px !important;
+    color: #ffffff !important;
+    padding: 6px 11px !important;/* 🔥🔥调字体贴边间距🔥🔥🔥*/
+    line-height: 1.35 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+
+    display: inline-block !important;
+    max-width: 75% !important;
+    word-wrap: break-word !important;
+    position: relative !important; /* 开启定位模式 */
+}
+
+/* --- 2. 核心对齐逻辑：左归左，右归右 --- */
+
+/* “我”发送的（右侧） */
+.message-bubble.user {
+    display: flex !important;
+    justify-content: flex-end !important; /* 强制内容向右对齐 */
+    width: 100% !important;
+    margin-bottom: 10px !important;
+}
+.message-bubble.user .content {
+    right: -38px !important; /* 往右偏移，占据头像位 */
+}
+
+/* “对方”发送的（左侧） */
+.message-bubble.ai {
+    display: flex !important;
+    justify-content: flex-start !important; /* 强制内容向左对齐 */
+    width: 100% !important;
+    margin-bottom: 10px !important;
+}
+.message-bubble.ai .content {
+    left: -38px !important; /* 往左偏移，占据头像位 */
+}
+
+/* --- 3. 彻底清除杂项 --- */
+.avatar, .avatar-container, .timestamp, .message-time, .extra-mesgs, .time {
+    display: none !important;
+}
+
+/* 防止父级容器有内边距导致对不齐 */
+.message-wrapper, .message-bubble {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+/* 连续说话间距🔥🔥修正 */
+.message-wrapper.user + .message-wrapper.user,
+.message-wrapper:not(.user) + .message-wrapper:not(.user) {
+    margin-top: -18px !important; 
+}
+
+
+/*
+============================================================
+   【极简引用】去掉“回复：”字样，只留纯净内容
+   ============================================================ */
+
+/* 1. 引用容器：毛玻璃风格保持一致 */
+.message-bubble .quoted-message {
+    position: absolute !important;
+    top: calc(100% + 6px) !important;
+    left: 0 !important;
+    max-width: 140px !important; /* 稍微放宽一点宽度 */
+    min-width: 40px !important;
+    box-sizing: border-box !important;
+    background-color: rgba(255, 255, 255, 0.18) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    border: 0.5px solid rgba(255, 255, 255, 0.3) !important; /* 极细边框 */
+    border-radius: 6px !important;
+    padding: 3px 8px !important;
+    z-index: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    
+    /* 核心：通过字号归零隐藏“回复：”字样 */
+    font-size: 0 !important; 
+}
+
+/* 2. 隐藏发送者名字（如果也不需要显示是谁说的） */
+.message-bubble .quoted-message .quoted-sender {
+    display: none !important;
+}
+
+/* 3. 精准恢复内容字号：只让内容显示出来 */
+.message-bubble .quoted-message .quoted-content {
+    display: inline-block !important;
+    font-size: 11px !important; /* 恢复你想要的字号 */
+    color: rgba(255, 255, 255, 0.9) !important; 
+    font-weight: 200 !important;
+    letter-spacing: 0.3px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    max-width: 100% !important;
+}
+
+/* 4. 位置修正 */
+.message-bubble.user .quoted-message {
+    left: auto !important;
+    right: 0 !important;
+}
+
+/* 5. 间距修正 */
+.message-bubble:has(.quoted-message) {
+    margin-bottom: 30px !important;
+}
+
+
+/* ============================================================
+   【转账/红包：左右分离精准修正版】
+   基于你满意的磨砂版，彻底解决左右不对称问题
+   ============================================================ */
+
+/* 1. 基础外框（完全保留你满意的大小和磨砂感） */
+.message-wrapper .content.red-packet-card, 
+.message-wrapper .content.transfer-card,
+.message-wrapper .content.transfer-content {
+    width: 200px !important; 
+    min-width: 200px !important; 
+    background: rgba(255, 255, 255, 0.15) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    border: 0.5px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 10px !important;
+    padding: 15px !important; /* 统一内边距 */
+    display: flex !important;
+    flex-direction: column !important; 
+    box-sizing: border-box !important;
+}
+
+/* 2. 物理切断：杀掉所有可能挡路的图标 */
+.red-packet-card::before, .transfer-card::before,
+[class*="red-packet"] i, [class*="transfer"] i,
+.red-packet-title, .transfer-title {
+    display: none !important;
+    content: none !important;
+}
+
+/* 3. 核心：左右对齐分离（这里是关键！） */
+
+/* --- 【右边：你发的转账】 --- */
+.message-wrapper.user [class*="packet"], 
+.message-wrapper.user [class*="transfer"] {
+    align-items: center !important;  
+    margin-right: -15px !important; 
+    position: relative !important;
+    right: -0px !important; /* 这是你调好的金额位置，保持不动 */
+}
+
+/* 针对右边下面那行字（已收款/已存入）进行位移 */
+.message-wrapper.user .red-packet-status, 
+.message-wrapper.user .transfer-status {
+    text-align: center !important;
+    width: 100% !important;
+    position: relative !important;
+    /* 如果字还偏右，就把 -15px 改成 -20px */
+    left: -25px !important; 
+}
+
+/* --- 【左边：对方发的转账】 --- */
+.message-wrapper:not(.user) [class*="packet"], 
+.message-wrapper:not(.user) [class*="transfer"] {
+    align-items: center !important; 
+    margin-left: -25px !important; 
+    position: relative !important;
+    left: 25px !important; 
+}
+
+/* 针对左边下面那行字进行位移 */
+.message-wrapper:not(.user) .red-packet-status, 
+.message-wrapper:not(.user) .transfer-status {
+    text-align: center !important;
+    width: 100% !important;
+    position: relative !important;
+    /* 如果字还偏左，就把 15px 改成 20px */
+    left: 15px !important; 
+}
+
+/* 4. 深度穿透 */
+[class*="red-packet"] *, [class*="transfer"] * {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+}
+
+/* 5. 字体样式 */
+.red-packet-amount, .transfer-amount {
+    color: #ffffff !important;
+    font-size: 16px !important;
+    font-weight: 300 !important;
+}
+.red-packet-status, .transfer-status {
+    color: rgba(255, 255, 255, 0.5) !important;
+    font-size: 11px !important;
+}
