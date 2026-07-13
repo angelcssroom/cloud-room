@@ -173,11 +173,13 @@ body{
   overflow:hidden;
 }
 .preview-image-wrap{
-  height:220px;
+  height:min(360px,52vh);
+  min-height:280px;
   display:flex;
   align-items:center;
   justify-content:center;
   background:#fafafa;
+  cursor:zoom-in;
 }
 .preview-image-wrap img{
   display:block;
@@ -281,9 +283,47 @@ textarea{
 .variant-slug{margin:5px 0 0;color:var(--muted);font-size:9.5px;line-height:1.4;}
 .variant-tag{flex:0 0 auto;padding:4px 8px;border-radius:999px;border:1px solid var(--line);background:#fbfbfb;color:#858a91;font-size:9.5px;font-weight:560;}
 .variant-card .preview-image-wrap,.variant-card .preview-missing{margin-top:11px;}
-.variant-card .preview-image-wrap{height:190px;}
+.variant-card .preview-image-wrap{height:min(320px,46vh);min-height:240px;}
 .variant-card .action-row{margin-top:10px;}
 .variant-card .btn{min-height:34px;font-size:10.5px;}
+
+
+.image-lightbox{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:rgba(255,255,255,.96);
+  backdrop-filter:blur(10px);
+}
+.image-lightbox.show{display:flex;}
+.image-lightbox img{
+  max-width:100%;
+  max-height:92vh;
+  object-fit:contain;
+  border-radius:14px;
+  box-shadow:0 10px 40px rgba(0,0,0,.10);
+}
+.image-lightbox-close{
+  position:fixed;
+  top:calc(14px + env(safe-area-inset-top));
+  right:16px;
+  width:34px;
+  height:34px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:#fff;
+  color:#222;
+  font-size:18px;
+  line-height:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:var(--shadow);
+}
 
 .footer{
   text-align:center;
@@ -345,7 +385,6 @@ textarea{
     <section class="card header">
       <a class="back" href="index.html">← back home</a>
       <h1 class="archive-title">Bunny Room</h1>
-      <p class="archive-sub">来自天国事务所小兔们的美化主题。请尊重每一位小兔的创作，禁止搬运、倒卖及二次发布。</p>
     </section>
 
     <section class="card search-card">
@@ -363,6 +402,12 @@ textarea{
 </div>
 
 <div class="toast" id="toast">已复制</div>
+
+
+<div class="image-lightbox" id="imageLightbox" onclick="closeImageLightbox(event)">
+  <button class="image-lightbox-close" type="button" aria-label="关闭" onclick="closeImageLightbox(event,true)">×</button>
+  <img id="imageLightboxImg" alt="" />
+</div>
 
 <script>
 const repoOwner = 'angelcssroom';
@@ -458,6 +503,22 @@ function buildGroups(allThemes){
 function isNew(ts){
   return !!ts && (Date.now() - ts) <= newDays * 86400000;
 }
+
+function openImageLightbox(src, alt){
+  const box = document.getElementById('imageLightbox');
+  const img = document.getElementById('imageLightboxImg');
+  img.src = src;
+  img.alt = alt || '预览图';
+  box.classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+function closeImageLightbox(event, force){
+  const box = document.getElementById('imageLightbox');
+  if(!force && event && event.target !== box) return;
+  box.classList.remove('show');
+  document.body.style.overflow = '';
+}
+
 function previewFallback(img){
   const wrap = img.closest('.preview-image-wrap');
   if(!wrap) return;
@@ -477,7 +538,7 @@ function renderVariant(theme, query=''){
         ${colorTag ? `<span class="variant-tag">${highlightText(colorTag, query)}</span>` : ''}
       </div>
       ${theme.note ? `<div class="micro">${highlightText(theme.note, query)}</div>` : ''}
-      ${theme.previewFile ? `<div class="preview-image-wrap"><img src="${escapeHtml(theme.previewFile)}" alt="${escapeHtml(theme.title)} preview" loading="lazy" decoding="async" onerror="previewFallback(this)" /></div>` : `<div class="preview-missing">暂无预览</div>`}
+      ${theme.previewFile ? `<div class="preview-image-wrap"><img src="${escapeHtml(theme.previewFile)}" alt="${escapeHtml(theme.title)} preview" loading="lazy" decoding="async" onerror="previewFallback(this)" onclick="openImageLightbox(this.src,this.alt)" /></div>` : `<div class="preview-missing">暂无预览</div>`}
       <div class="action-row">
         <button class="btn copy" type="button" onclick="copyFile('${escapeHtml(theme.cssFile)}','wrap-${escapeHtml(theme.slug)}')">复制</button>
         <button class="btn open" type="button" onclick="previewFile('${escapeHtml(theme.cssFile)}','wrap-${escapeHtml(theme.slug)}','area-${escapeHtml(theme.slug)}')">代码</button>
@@ -503,7 +564,7 @@ function renderSingleTheme(theme, query, number){
       </div>
       ${tagsHtml ? `<div class="keywords">${tagsHtml}</div>` : ''}
       ${theme.note ? `<div class="micro">${highlightText(theme.note, query)}</div>` : ''}
-      ${theme.previewFile ? `<div class="preview-image-wrap"><img src="${escapeHtml(theme.previewFile)}" alt="${escapeHtml(theme.title)} preview" loading="lazy" decoding="async" onerror="previewFallback(this)" /></div>` : `<div class="preview-missing">暂无预览</div>`}
+      ${theme.previewFile ? `<div class="preview-image-wrap"><img src="${escapeHtml(theme.previewFile)}" alt="${escapeHtml(theme.title)} preview" loading="lazy" decoding="async" onerror="previewFallback(this)" onclick="openImageLightbox(this.src,this.alt)" /></div>` : `<div class="preview-missing">暂无预览</div>`}
       <div class="action-row">
         <button class="btn copy" type="button" onclick="copyFile('${escapeHtml(theme.cssFile)}','wrap-${escapeHtml(theme.slug)}')">复制</button>
         <button class="btn open" type="button" onclick="previewFile('${escapeHtml(theme.cssFile)}','wrap-${escapeHtml(theme.slug)}','area-${escapeHtml(theme.slug)}')">代码</button>
