@@ -364,6 +364,69 @@ textarea{
   border-radius:4px;
   padding:0 .12em;
 }
+#themeList{
+  min-height:min(720px,72vh);
+}
+#themeList.content-enter{
+  opacity:0;
+  transform:translateY(4px);
+}
+#themeList.content-enter.content-visible{
+  opacity:1;
+  transform:translateY(0);
+  transition:opacity .18s ease, transform .18s ease;
+}
+.loading-card{
+  padding:16px 17px 17px;
+}
+.loading-line{
+  height:12px;
+  border-radius:999px;
+  background:#f1f1f1;
+}
+.loading-line.title{
+  width:42%;
+  height:18px;
+}
+.loading-line.sub{
+  width:24%;
+  height:9px;
+  margin-top:9px;
+}
+.loading-tags{
+  display:flex;
+  gap:6px;
+  margin-top:14px;
+}
+.loading-tag{
+  width:46px;
+  height:22px;
+  border-radius:999px;
+  background:#f4f4f4;
+  border:1px solid #eeeeee;
+}
+.loading-preview{
+  margin-top:14px;
+  height:min(430px,50vh);
+  border-radius:14px;
+  border:1px solid var(--line);
+  background:#fafafa;
+}
+.loading-actions{
+  display:flex;
+  gap:8px;
+  margin-top:12px;
+}
+.loading-action{
+  flex:1;
+  height:36px;
+  border-radius:999px;
+  background:#f3f3f3;
+}
+.loading-action:first-child{
+  background:#e8e8e8;
+}
+
 .new-badge{
   display:inline-flex;
   align-items:center;
@@ -429,6 +492,7 @@ let themes = [];
 const cssTextCache = new Map();
 const cssLoadingTasks = new Map();
 let cssObserver = null;
+let initialThemeRenderDone = false;
 
 function escapeHtml(str){
   return String(str || '').replace(/[&<>"']/g, s => ({
@@ -714,6 +778,19 @@ function renderThemes(list, query=''){
   });
   count.textContent = visibleGroups ? String(visibleGroups) : '0';
   setupLazyCssLoading();
+
+  if(!initialThemeRenderDone){
+    initialThemeRenderDone = true;
+    themeList.classList.add('content-enter');
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        themeList.classList.add('content-visible');
+        setTimeout(() => {
+          themeList.classList.remove('content-enter', 'content-visible');
+        }, 220);
+      });
+    });
+  }
 }
 function updateThemeSearch(){
   renderThemes(themes, search.value.trim());
@@ -803,23 +880,21 @@ function showToast(msg){
   window.__toastTimer = setTimeout(()=>t.classList.remove('show'), 1500);
 }
 
-async function refreshThemeDates(){
-  if(!themes.length) return;
-
+async function mapWithConcurrency(items, limit, mapper){
+  const results = new Array(items.length);
   let cursor = 0;
-  const workers = Math.min(4, themes.length);
 
   async function worker(){
-    while(cursor < themes.length){
+    while(true){
       const index = cursor++;
-      const theme = themes[index];
-      theme.updatedAt = await fetchLastUpdated(theme.cssFile);
+      if(index >= items.length) return;
+      results[index] = await mapper(items[index], index);
     }
   }
 
-  await Promise.all(Array.from({length: workers}, worker));
-  themes.sort((a,b) => (b.updatedAt || 0) - (a.updatedAt || 0) || a.title.localeCompare(b.title, 'zh-CN'));
-  renderThemes(themes, search.value);
+  const workerCount = Math.min(limit, items.length);
+  await Promise.all(Array.from({length: workerCount}, worker));
+  return results;
 }
 
 async function loadThemes(){
@@ -836,26 +911,49 @@ async function loadThemes(){
     const cssRegex = new RegExp('^css-' + typePrefix + '-.+\\.txt$', 'i');
     const cssNames = names.filter(n => cssRegex.test(n));
 
-    const loaded = await Promise.all(cssNames.map(async cssFile => {
+    count.textContent = 'loading...';
+    themeList.innerHTML = `
+      <section class="card loading-card" aria-hidden="true">
+        <div class="loading-line title"></div>
+        <div class="loading-line sub"></div>
+        <div class="loading-tags">
+          <span class="loading-tag"></span>
+          <span class="loading-tag"></span>
+          <span class="loading-tag"></span>
+        </div>
+        <div class="loading-preview"></div>
+        <div class="loading-actions">
+          <span class="loading-action"></span>
+          <span class="loading-action"></span>
+        </div>
+      </section>`;
+
+    const loaded = await mapWithConcurrency(cssNames, 6, async cssFile => {
       const slug = cssFile.replace(new RegExp('^css-' + typePrefix + '-', 'i'), '').replace(/\.txt$/i, '');
       const safeSlug = escapeRegExp(slug);
       const previewFile = names.find(n => new RegExp('^preview-' + typePrefix + '-' + safeSlug + '\\.(jpg|jpeg|png|webp)$', 'i').test(n)) || '';
       const infoFile = names.find(n => new RegExp('^info-' + typePrefix + '-' + safeSlug + '\\.txt$', 'i').test(n)) || '';
-      let meta = {title: slugToTitle(slug), author: defaultAuthor, tags: [], note: '', wallpaper: ''};
-      if(infoFile){
-        try{ meta = parseInfo(await fetchTextFile(infoFile), slug); }catch(e){}
-      }
-      const updatedAt = 0;
+
+      const metaPromise = infoFile
+        ? fetchTextFile(infoFile)
+            .then(text => parseInfo(text, slug))
+            .catch(() => ({title: slugToTitle(slug), author: defaultAuthor, tags: [], note: '', wallpaper: ''}))
+        : Promise.resolve({title: slugToTitle(slug), author: defaultAuthor, tags: [], note: '', wallpaper: ''});
+
+      const [meta, updatedAt] = await Promise.all([
+        metaPromise,
+        fetchLastUpdated(cssFile)
+      ]);
+
       return {
         slug, cssFile, previewFile, updatedAt,
         title: meta.title, author: meta.author, tags: meta.tags, note: meta.note, wallpaper: meta.wallpaper,
         searchText: [meta.title, meta.author, meta.tags.join(' '), meta.note, slug].join(' ')
       };
-    }));
+    });
 
-    themes = loaded.sort((a,b) => a.title.localeCompare(b.title, 'zh-CN'));
+    themes = loaded.sort((a,b) => (b.updatedAt || 0) - (a.updatedAt || 0) || a.title.localeCompare(b.title, 'zh-CN'));
     renderThemes(themes, search.value);
-    setTimeout(() => refreshThemeDates().catch(console.error), 900);
   }catch(err){
     count.textContent = 'refreshing needed';
     themeList.innerHTML = '<section class="card theme-card"><div class="micro">GitHub 还没刷新出来。等半分钟后重新打开页面，或者在网址后面换一个 ?v=数字。</div></section>';
