@@ -172,10 +172,19 @@ body{
   background:#fff;
   overflow:hidden;
 }
+.preview-image-wrap{
+  height:220px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#fafafa;
+}
 .preview-image-wrap img{
   display:block;
   width:100%;
-  height:auto;
+  height:100%;
+  object-fit:contain;
+  object-position:center;
   filter:saturate(.96) brightness(1.01);
 }
 .preview-missing{
@@ -184,7 +193,8 @@ body{
   border-radius:12px;
   background:#fbfbfb;
   color:#a4abb4;
-  min-height:150px;
+  height:160px;
+  min-height:0;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -271,6 +281,7 @@ textarea{
 .variant-slug{margin:5px 0 0;color:var(--muted);font-size:9.5px;line-height:1.4;}
 .variant-tag{flex:0 0 auto;padding:4px 8px;border-radius:999px;border:1px solid var(--line);background:#fbfbfb;color:#858a91;font-size:9.5px;font-weight:560;}
 .variant-card .preview-image-wrap,.variant-card .preview-missing{margin-top:11px;}
+.variant-card .preview-image-wrap{height:190px;}
 .variant-card .action-row{margin-top:10px;}
 .variant-card .btn{min-height:34px;font-size:10.5px;}
 
@@ -334,7 +345,7 @@ textarea{
     <section class="card header">
       <a class="back" href="index.html">← back home</a>
       <h1 class="archive-title">Cross Room</h1>
-      <p class="archive-sub">Cross 整理的主题。复制代码后按需自用，请勿搬运、倒卖及二次发布。</p>
+      <p class="archive-sub">主题存档。仅供自用。</p>
     </section>
 
     <section class="card search-card">
@@ -347,7 +358,7 @@ textarea{
 
     <div id="themeList" class="shell"></div>
 
-    <div class="footer">for personal use only · repost / resale prohibited</div>
+    <div class="footer">personal use only</div>
   </div>
 </div>
 
@@ -452,36 +463,56 @@ function previewFallback(img){
   if(!wrap) return;
   const box = document.createElement('div');
   box.className = 'preview-missing';
-  box.innerHTML = '预览图暂时没加载出来<br>CSS 仍然可以复制';
+  box.textContent = '暂无预览';
   wrap.replaceWith(box);
 }
 function renderVariant(theme, query=''){
-  const tagsHtml = theme.tags.map(t => `<span class="keyword">${highlightText(t, query)}</span>`).join('');
-  const wallpaperBtn = theme.wallpaper ? `<a class="btn wallpaper" href="${escapeHtml(theme.wallpaper)}" download>下载壁纸附件</a>` : '';
+  const wallpaperBtn = theme.wallpaper ? `<a class="btn wallpaper" href="${escapeHtml(theme.wallpaper)}" download>壁纸</a>` : '';
   const colorTag = theme.tags.find(t => /^(黄|蓝|紫|粉|黑|白|红|绿|灰|棕|橙|pink|blue|black|yellow|purple|red|green)$/i.test(t)) || '';
   const newBadge = isNew(theme.updatedAt) ? '<span class="new-badge">NEW</span>' : '';
   return `
     <section class="variant-card" data-variant-search="${escapeHtml(theme.searchText.toLowerCase())}">
       <div class="variant-top">
-        <div>
-          <h4 class="variant-name">${highlightText(theme.title, query)}${newBadge}</h4>
-          <p class="variant-slug">${highlightText(theme.slug, query)}</p>
-        </div>
+        <h4 class="variant-name">${highlightText(theme.title, query)}${newBadge}</h4>
         ${colorTag ? `<span class="variant-tag">${highlightText(colorTag, query)}</span>` : ''}
       </div>
-      ${tagsHtml ? `<div class="keywords">${tagsHtml}</div>` : ''}
       ${theme.note ? `<div class="micro">${highlightText(theme.note, query)}</div>` : ''}
-      ${theme.previewFile ? `<div class="preview-image-wrap"><img src="${escapeHtml(theme.previewFile)}" alt="${escapeHtml(theme.title)} preview" loading="lazy" decoding="async" onerror="previewFallback(this)" /></div>` : `<div class="preview-missing">没有找到同名预览图<br>请检查 ${previewLabel}-${escapeHtml(theme.slug)}.jpg</div>`}
+      ${theme.previewFile ? `<div class="preview-image-wrap"><img src="${escapeHtml(theme.previewFile)}" alt="${escapeHtml(theme.title)} preview" loading="lazy" decoding="async" onerror="previewFallback(this)" /></div>` : `<div class="preview-missing">暂无预览</div>`}
       <div class="action-row">
-        <button class="btn copy" type="button" onclick="copyFile('${escapeHtml(theme.cssFile)}','wrap-${escapeHtml(theme.slug)}')">复制全部代码</button>
-        <button class="btn open" type="button" onclick="previewFile('${escapeHtml(theme.cssFile)}','wrap-${escapeHtml(theme.slug)}','area-${escapeHtml(theme.slug)}')">展开代码</button>
+        <button class="btn copy" type="button" onclick="copyFile('${escapeHtml(theme.cssFile)}','wrap-${escapeHtml(theme.slug)}')">复制</button>
+        <button class="btn open" type="button" onclick="previewFile('${escapeHtml(theme.cssFile)}','wrap-${escapeHtml(theme.slug)}','area-${escapeHtml(theme.slug)}')">代码</button>
         ${wallpaperBtn}
       </div>
       <div class="code-wrap" id="wrap-${escapeHtml(theme.slug)}">
-        <div class="code-head">external css / ${escapeHtml(theme.cssFile)}</div>
-        <textarea id="area-${escapeHtml(theme.slug)}" readonly></textarea>
+        <textarea id="area-${escapeHtml(theme.slug)}" readonly aria-label="CSS code"></textarea>
       </div>
     </section>`;
+}
+function renderSingleTheme(theme, query, number){
+  const tagsHtml = theme.tags.map(t => `<span class="keyword">${highlightText(t, query)}</span>`).join('');
+  const wallpaperBtn = theme.wallpaper ? `<a class="btn wallpaper" href="${escapeHtml(theme.wallpaper)}" download>壁纸</a>` : '';
+  const newBadge = isNew(theme.updatedAt) ? '<span class="new-badge">NEW</span>' : '';
+  return `
+    <article class="card theme-card">
+      <div class="theme-top">
+        <div>
+          <h3 class="theme-name">${highlightText(theme.title, query)}${newBadge}</h3>
+          <p class="theme-alt">@${highlightText(theme.author, query)}</p>
+        </div>
+        <div class="theme-no">${String(number).padStart(2, '0')}</div>
+      </div>
+      ${tagsHtml ? `<div class="keywords">${tagsHtml}</div>` : ''}
+      ${theme.note ? `<div class="micro">${highlightText(theme.note, query)}</div>` : ''}
+      ${theme.previewFile ? `<div class="preview-image-wrap"><img src="${escapeHtml(theme.previewFile)}" alt="${escapeHtml(theme.title)} preview" loading="lazy" decoding="async" onerror="previewFallback(this)" /></div>` : `<div class="preview-missing">暂无预览</div>`}
+      <div class="action-row">
+        <button class="btn copy" type="button" onclick="copyFile('${escapeHtml(theme.cssFile)}','wrap-${escapeHtml(theme.slug)}')">复制</button>
+        <button class="btn open" type="button" onclick="previewFile('${escapeHtml(theme.cssFile)}','wrap-${escapeHtml(theme.slug)}','area-${escapeHtml(theme.slug)}')">代码</button>
+        ${wallpaperBtn}
+      </div>
+      <div class="code-wrap" id="wrap-${escapeHtml(theme.slug)}">
+        <textarea id="area-${escapeHtml(theme.slug)}" readonly aria-label="CSS code"></textarea>
+      </div>
+    </article>`;
 }
 function renderThemes(list, query=''){
   themeList.innerHTML = '';
@@ -499,11 +530,13 @@ function renderThemes(list, query=''){
       }
     }
     visibleGroups++;
+    if(!group.isSeries){
+      themeList.insertAdjacentHTML('beforeend', renderSingleTheme(visibleItems[0], query, visibleGroups));
+      return;
+    }
     const article = document.createElement('article');
     article.className = 'card series-card';
-    const commonTags = group.isSeries
-      ? group.items[0].tags.filter(tag => group.items.every(item => item.tags.includes(tag)))
-      : group.items[0].tags;
+    const commonTags = group.items[0].tags.filter(tag => group.items.every(item => item.tags.includes(tag)));
     const tagsHtml = commonTags.map(t => `<span class="keyword">${highlightText(t, query)}</span>`).join('');
     const newBadge = isNew(group.updatedAt) ? '<span class="new-badge">NEW</span>' : '';
     article.innerHTML = `
@@ -518,7 +551,7 @@ function renderThemes(list, query=''){
       <div class="series-list">${visibleItems.map(item => renderVariant(item, query)).join('')}</div>`;
     themeList.appendChild(article);
   });
-  count.textContent = visibleGroups + ' result' + (visibleGroups === 1 ? '' : 's');
+  count.textContent = visibleGroups ? String(visibleGroups) : '0';
 }
 function updateThemeSearch(){
   renderThemes(themes, search.value.trim());
