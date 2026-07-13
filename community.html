@@ -170,6 +170,7 @@ body{
   border:1px solid var(--line);
   border-radius:14px;
   background:#fafafa;
+  transition:background-color .22s ease,border-color .22s ease;
   overflow:hidden;
   display:flex;
   align-items:center;
@@ -185,7 +186,7 @@ body{
   object-fit:contain;
   object-position:center;
   border-radius:10px;
-  background:#fff;
+  background:transparent;
   filter:saturate(.96) brightness(1.01);
 }
 .preview-image-wrap.ratio-tall{
@@ -562,6 +563,42 @@ function fitPreviewFrame(img){
   else if(ratio >= 1.9) cls = 'ratio-banner';
   else if(ratio >= 1.35) cls = 'ratio-wide';
   wrap.classList.add(cls,'ratio-fitted');
+  setAdaptivePreviewBackground(img, wrap);
+}
+
+function setAdaptivePreviewBackground(img, wrap){
+  try{
+    const canvas = document.createElement('canvas');
+    const size = 24;
+    canvas.width = size;
+    canvas.height = size;
+    const ctx = canvas.getContext('2d', {willReadFrequently:true});
+    ctx.drawImage(img, 0, 0, size, size);
+    const data = ctx.getImageData(0, 0, size, size).data;
+    let r=0,g=0,b=0,n=0;
+    const edge = 3;
+    for(let y=0;y<size;y++){
+      for(let x=0;x<size;x++){
+        if(x<edge || y<edge || x>=size-edge || y>=size-edge){
+          const i=(y*size+x)*4;
+          if(data[i+3] < 32) continue;
+          r += data[i]; g += data[i+1]; b += data[i+2]; n++;
+        }
+      }
+    }
+    if(!n) return;
+    r=Math.round(r/n); g=Math.round(g/n); b=Math.round(b/n);
+    const lum=(0.2126*r+0.7152*g+0.0722*b)/255;
+    const mix = lum < .38 ? .10 : .04;
+    r=Math.round(r+(255-r)*mix);
+    g=Math.round(g+(255-g)*mix);
+    b=Math.round(b+(255-b)*mix);
+    wrap.style.backgroundColor=`rgb(${r},${g},${b})`;
+    const borderLum = lum < .45 ? 255 : 0;
+    wrap.style.borderColor = lum < .45 ? 'rgba(255,255,255,.28)' : 'rgba(0,0,0,.07)';
+  }catch(e){
+    wrap.style.backgroundColor='#fafafa';
+  }
 }
 
 function previewFallback(img){
