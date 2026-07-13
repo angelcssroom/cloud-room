@@ -1,23 +1,242 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/><title>Angel Theme Archive</title><style>*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-:root{--bg:#f6f6f5;--card:#fff;--text:#20242a;--sub:#7d838c;--light:#aeb4bd;--line:#eceef1;--blue-deep:#8ea8cf;--shadow:0 12px 30px rgba(42,47,56,.045);--radius:24px;}
-html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;}
-body{padding:22px 14px 52px}.main{max-width:720px;margin:0 auto}.shell{display:flex;flex-direction:column;gap:14px}.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}.footer{text-align:center;color:#bcc2ca;font-size:10px;padding:4px 0 0;line-height:1.8}
-.header{padding:19px}.back{display:inline-flex;text-decoration:none;color:var(--sub);font-size:11px;margin-bottom:14px}.archive-title{margin:0;font-size:22px;letter-spacing:-.035em}.archive-sub{margin:7px 0 0;color:var(--sub);font-size:11px;line-height:1.7}
-.search-card{padding:14px}.search-row{display:flex;gap:8px}#themeSearch{flex:1;height:40px;border:1px solid var(--line);border-radius:999px;background:#fff;padding:0 13px;outline:none;color:var(--text);font-size:16px}#themeSearch::placeholder{color:#b5bbc3;font-size:12px}.clear-btn{width:60px;height:40px;border:1px solid var(--line);border-radius:999px;background:#f8f9fa;color:#8d949e;font-size:11px}.result-count{margin:8px 0 0 4px;color:var(--light);font-size:10px;letter-spacing:.04em}
-.theme-card{padding:16px}.theme-card.hidden{display:none}.theme-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}.theme-name{margin:0;font-size:20px;font-weight:760;letter-spacing:-.03em}.theme-alt{margin:5px 0 0;color:var(--sub);font-size:11px}.theme-no{font-size:11px;color:var(--light);font-family:Georgia,"Times New Roman",serif;padding-top:4px}.keywords{display:flex;gap:5px;flex-wrap:wrap;margin-top:12px}.keyword{padding:4px 7px;border-radius:999px;background:#f8f9fa;border:1px solid var(--line);color:#8b929b;font-size:9.5px}.micro{margin-top:11px;color:#8b9098;font-size:10px;line-height:1.75}
-.preview-image-wrap,.variant-preview{margin-top:13px;border:1px solid var(--line);border-radius:19px;background:#fff;overflow:hidden}.preview-image-wrap img,.variant-preview img{display:block;width:100%;height:auto;filter:saturate(.92) brightness(1.02)}
-.action-row{display:flex;gap:9px;margin-top:14px}.btn{appearance:none;border:none;border-radius:999px;min-height:39px;padding:0 16px;font-size:12px;font-weight:700;cursor:pointer}.btn.copy{background:#16191e;color:#fff;flex:1}.btn.open{background:#f4f7fb;color:#88a3ca;border:1px solid #e2ebf7;flex:1}
-.code-wrap{display:none;margin-top:13px}.code-wrap.open{display:block}.code-head{font-size:10px;color:var(--light);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}textarea{width:100%;min-height:280px;border-radius:18px;border:1px solid var(--line);background:#fbfbfc;color:#2b3036;padding:13px;font-size:10px;line-height:1.65;resize:vertical;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace}
-.variant-list{display:flex;flex-direction:column;gap:14px;margin-top:14px}.variant{border:1px solid var(--line);border-radius:20px;background:#fff;padding:12px}.variant.hidden{display:none}.variant-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.variant-head h4{margin:0;font-size:14px}.variant-head p{margin:4px 0 0;color:var(--light);font-size:10px}.variant-head span{font-size:10px;color:#8c949f;background:#f8f9fa;border:1px solid var(--line);padding:5px 8px;border-radius:999px}
-.template-note{padding:15px 16px;color:var(--sub);font-size:11px;line-height:1.9}.template-note code{font-size:10px;background:#f8f9fa;border:1px solid var(--line);border-radius:6px;padding:1px 4px;color:#555b64}.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(16px);opacity:0;background:#16191e;color:#fff;font-size:11px;padding:10px 13px;border-radius:999px;pointer-events:none;transition:.22s ease;z-index:99}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}@media(max-width:560px){body{padding:18px 12px 42px}.action-row{flex-direction:column}.btn{width:100%}}</style></head><body><div class="main"><div class="shell">
-<section class="card header"><a class="back" href="index.html">← back home</a><h1 class="archive-title">Angel Theme Archive</h1><p class="archive-sub">天使主题收纳页。搜索主题名、关键词、编号或颜色，点击即可复制外部 txt 里的完整 CSS。</p></section>
-<section class="card search-card"><div class="search-row"><input id="themeSearch" type="search" placeholder="搜索：粉 / 蓝 / 黑 / 玉桂狗 / 330" autocomplete="off"/><button class="clear-btn" type="button" onclick="clearThemeSearch()">清空</button></div><div class="result-count" id="resultCount">2 results</div></section>
-<article class="card theme-card" data-search="Cinnamoroll 玉桂狗 蓝白 淡黄 萌物 三丽鸥 Sanrio cinnamonroll cute blue white low saturation clinic soft 330"><div class="theme-top"><div><h3 class="theme-name">Cinnamoroll</h3><p class="theme-alt">玉桂狗</p></div><div class="theme-no">01</div></div><div class="keywords"><span class="keyword">蓝白</span><span class="keyword">淡黄</span><span class="keyword">萌物</span><span class="keyword">玉桂狗</span><span class="keyword">330</span></div><div class="micro">author : 天使 · clinic soft / cute low saturation</div><div class="preview-image-wrap"><img src="preview-cinnamoroll.jpg" alt="Cinnamoroll theme preview"/></div><div class="action-row"><button class="btn copy" type="button" onclick="copyFile('css-cinnamoroll.txt')">复制全部代码</button><button class="btn open" type="button" onclick="previewFile('css-cinnamoroll.txt','wrap-cinnamoroll','area-cinnamoroll')">展开代码</button></div><div class="code-wrap" id="wrap-cinnamoroll"><div class="code-head">external css / css-cinnamoroll.txt</div><textarea id="area-cinnamoroll" readonly></textarea></div></article>
-<article class="card theme-card" data-search="mamegoma 豆芝麻 豆芝麻海豹 海豹 萌物 五色 330 黄 黄色 yellow 蓝 蓝色 blue 紫 紫色 purple 粉 粉色 pink 黑 黑色 black"><div class="theme-top"><div><h3 class="theme-name">mamegoma</h3><p class="theme-alt">豆芝麻海豹</p></div><div class="theme-no">02</div></div><div class="keywords"><span class="keyword">豆芝麻海豹</span><span class="keyword">萌物</span><span class="keyword">五色</span><span class="keyword">330</span></div><div class="micro">五色版本顺序：黄 / 蓝 / 紫 / 粉 / 黑</div><div class="variant-list"><div class="variant" data-color="黄 yellow"><div class="variant-head"><div><h4>黄色版</h4><p>yellow version</p></div><span>黄</span></div><div class="variant-preview"><img src="preview-mamegoma-yellow.jpg" alt="mamegoma yellow preview"/></div><div class="action-row"><button class="btn copy" type="button" onclick="copyFile('css-mamegoma-yellow.txt')">复制黄色版</button><button class="btn open" type="button" onclick="previewFile('css-mamegoma-yellow.txt','wrap-mamegoma-yellow','area-mamegoma-yellow')">展开代码</button></div><div class="code-wrap" id="wrap-mamegoma-yellow"><div class="code-head">external css / css-mamegoma-yellow.txt</div><textarea id="area-mamegoma-yellow" readonly></textarea></div></div><div class="variant" data-color="蓝 blue"><div class="variant-head"><div><h4>蓝色版</h4><p>blue version</p></div><span>蓝</span></div><div class="variant-preview"><img src="preview-mamegoma-blue.jpg" alt="mamegoma blue preview"/></div><div class="action-row"><button class="btn copy" type="button" onclick="copyFile('css-mamegoma-blue.txt')">复制蓝色版</button><button class="btn open" type="button" onclick="previewFile('css-mamegoma-blue.txt','wrap-mamegoma-blue','area-mamegoma-blue')">展开代码</button></div><div class="code-wrap" id="wrap-mamegoma-blue"><div class="code-head">external css / css-mamegoma-blue.txt</div><textarea id="area-mamegoma-blue" readonly></textarea></div></div><div class="variant" data-color="紫 purple"><div class="variant-head"><div><h4>紫色版</h4><p>purple version</p></div><span>紫</span></div><div class="variant-preview"><img src="preview-mamegoma-purple.jpg" alt="mamegoma purple preview"/></div><div class="action-row"><button class="btn copy" type="button" onclick="copyFile('css-mamegoma-purple.txt')">复制紫色版</button><button class="btn open" type="button" onclick="previewFile('css-mamegoma-purple.txt','wrap-mamegoma-purple','area-mamegoma-purple')">展开代码</button></div><div class="code-wrap" id="wrap-mamegoma-purple"><div class="code-head">external css / css-mamegoma-purple.txt</div><textarea id="area-mamegoma-purple" readonly></textarea></div></div><div class="variant" data-color="粉 pink"><div class="variant-head"><div><h4>粉色版</h4><p>pink version</p></div><span>粉</span></div><div class="variant-preview"><img src="preview-mamegoma-pink.jpg" alt="mamegoma pink preview"/></div><div class="action-row"><button class="btn copy" type="button" onclick="copyFile('css-mamegoma-pink.txt')">复制粉色版</button><button class="btn open" type="button" onclick="previewFile('css-mamegoma-pink.txt','wrap-mamegoma-pink','area-mamegoma-pink')">展开代码</button></div><div class="code-wrap" id="wrap-mamegoma-pink"><div class="code-head">external css / css-mamegoma-pink.txt</div><textarea id="area-mamegoma-pink" readonly></textarea></div></div><div class="variant" data-color="黑 black"><div class="variant-head"><div><h4>黑色版</h4><p>black version</p></div><span>黑</span></div><div class="variant-preview"><img src="preview-mamegoma-black.jpg" alt="mamegoma black preview"/></div><div class="action-row"><button class="btn copy" type="button" onclick="copyFile('css-mamegoma-black.txt')">复制黑色版</button><button class="btn open" type="button" onclick="previewFile('css-mamegoma-black.txt','wrap-mamegoma-black','area-mamegoma-black')">展开代码</button></div><div class="code-wrap" id="wrap-mamegoma-black"><div class="code-head">external css / css-mamegoma-black.txt</div><textarea id="area-mamegoma-black" readonly></textarea></div></div></div></article><div class="footer">for personal use only · repost / resale prohibited</div></div></div><div class="toast" id="toast">已复制</div><script>const search=document.getElementById('themeSearch');const cards=Array.from(document.querySelectorAll('.theme-card'));const count=document.getElementById('resultCount');const colorGroups={yellow:['黄','黄色','yellow'],blue:['蓝','蓝色','blue'],purple:['紫','紫色','purple'],pink:['粉','粉色','pink'],black:['黑','黑色','black']};
-function detectColorQuery(q){if(!q)return null;for(const [c,ws] of Object.entries(colorGroups)){if(ws.some(w=>q.includes(w.toLowerCase())))return c;}return null;}
-function updateThemeSearch(){const q=search.value.trim().toLowerCase();const colorQuery=detectColorQuery(q);let visible=0;cards.forEach(card=>{const hay=card.dataset.search.toLowerCase();const variants=Array.from(card.querySelectorAll('.variant'));if(!q){card.classList.remove('hidden');variants.forEach(v=>v.classList.remove('hidden'));visible++;return;}if(variants.length){let shown=0;variants.forEach(v=>{const vc=v.dataset.color.toLowerCase();let ok=colorQuery?vc.includes(colorQuery):hay.includes(q);v.classList.toggle('hidden',!ok);if(ok)shown++;});const show=shown>0||(!colorQuery&&hay.includes(q));card.classList.toggle('hidden',!show);if(show){if(!colorQuery&&shown===0)variants.forEach(v=>v.classList.remove('hidden'));visible++;}return;}const ok=hay.includes(q);card.classList.toggle('hidden',!ok);if(ok)visible++;});count.textContent=visible+' result'+(visible===1?'':'s');}
-function clearThemeSearch(){search.value='';search.blur();updateThemeSearch();}if(search)search.addEventListener('input',updateThemeSearch);
-async function fetchTextFile(fileName){const res=await fetch(fileName+'?v='+Date.now());if(!res.ok)throw new Error('file not found: '+fileName);return await res.text();}
-async function copyFile(fileName){try{const text=await fetchTextFile(fileName);await navigator.clipboard.writeText(text);showToast('已复制全部代码');}catch(err){showToast('复制失败，请检查文件名');console.error(err);}}
-async function previewFile(fileName,wrapId,areaId){const wrap=document.getElementById(wrapId);const area=document.getElementById(areaId);try{if(!area.value)area.value=await fetchTextFile(fileName);wrap.classList.toggle('open');}catch(err){showToast('展开失败，请检查文件名');console.error(err);}}
-function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(window.__toastTimer);window.__toastTimer=setTimeout(()=>t.classList.remove('show'),1500);}updateThemeSearch();</script></body></html>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Cross Room</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+:root{
+  --bg:#f6f6f5;
+  --card:#fff;
+  --text:#20242a;
+  --sub:#7d838c;
+  --light:#aeb4bd;
+  --line:#eceef1;
+  --shadow:0 12px 30px rgba(42,47,56,.045);
+  --radius:24px;
+}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Microsoft YaHei",sans-serif;}
+body{padding:18px 12px 48px;}
+.main{max-width:720px;margin:0 auto;}
+.shell{display:flex;flex-direction:column;gap:14px;}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;}
+.header{padding:20px 20px 22px;}
+.back{display:inline-flex;text-decoration:none;color:var(--sub);font-size:11px;margin-bottom:16px;}
+.archive-title{margin:0;font-size:34px;line-height:1.05;letter-spacing:-.065em;font-weight:850;}
+.archive-sub{margin:14px 0 0;color:var(--sub);font-size:13px;line-height:1.8;font-weight:650;}
+.search-card{padding:14px;}
+.search-row{display:flex;gap:8px;}
+#themeSearch{flex:1;height:42px;border:1px solid var(--line);border-radius:999px;background:#fff;padding:0 14px;outline:none;color:var(--text);font-size:16px;}
+#themeSearch::placeholder{color:#b5bbc3;font-size:12px;}
+.clear-btn{width:60px;height:42px;border:1px solid var(--line);border-radius:999px;background:#f8f9fa;color:#8d949e;font-size:11px;font-weight:700;}
+.result-count{margin:10px 0 0 5px;color:var(--light);font-size:11px;letter-spacing:.04em;font-weight:650;}
+.theme-card{padding:17px;}
+.theme-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;}
+.theme-name{margin:0;font-size:28px;font-weight:850;letter-spacing:-.06em;line-height:1.05;}
+.theme-alt{margin:8px 0 0;color:var(--sub);font-size:13px;font-weight:700;}
+.theme-no{font-size:12px;color:var(--light);font-family:Georgia,"Times New Roman",serif;padding-top:4px;}
+.keywords{display:flex;gap:7px;flex-wrap:wrap;margin-top:17px;}
+.keyword{padding:5px 9px;border-radius:999px;background:#fafafa;border:1px solid var(--line);color:#8b929b;font-size:11px;font-weight:700;}
+.micro{margin-top:16px;color:#8b9098;font-size:12px;line-height:1.8;font-weight:650;}
+.preview-image-wrap{margin-top:16px;border:1px solid var(--line);border-radius:20px;background:#fff;overflow:hidden;}
+.preview-image-wrap img{display:block;width:100%;height:auto;filter:saturate(.95) brightness(1.01);}
+.preview-missing{margin-top:16px;border:1px dashed #dfe3e8;border-radius:20px;background:#fbfbfc;color:#a4abb4;min-height:180px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:12px;line-height:1.8;font-weight:700;padding:20px;}
+.action-row{display:flex;gap:9px;margin-top:14px;flex-wrap:wrap;}
+.btn{appearance:none;border:none;border-radius:999px;min-height:40px;padding:0 16px;font-size:12px;font-weight:800;cursor:pointer;text-decoration:none;display:flex;align-items:center;justify-content:center;}
+.btn.copy{background:#16191e;color:#fff;flex:1;}
+.btn.open{background:#f4f7fb;color:#88a3ca;border:1px solid #e2ebf7;flex:1;}
+.btn.wallpaper{background:#f7f5f0;color:#87776b;border:1px solid #e9e1d8;flex:1 0 100%;}
+.code-wrap{display:none;margin-top:13px;}
+.code-wrap.open{display:block;}
+.code-head{font-size:10px;color:var(--light);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;}
+textarea{width:100%;min-height:260px;border-radius:18px;border:1px solid var(--line);background:#fbfbfc;color:#2b3036;padding:13px;font-size:10px;line-height:1.65;resize:vertical;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;}
+.footer{text-align:center;color:#bcc2ca;font-size:10px;padding:4px 0 0;line-height:1.8;}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(16px);opacity:0;background:#16191e;color:#fff;font-size:11px;padding:10px 13px;border-radius:999px;pointer-events:none;transition:.22s ease;z-index:99;box-shadow:0 8px 20px rgba(0,0,0,.12);}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+<div class="main">
+  <div class="shell">
+    <section class="card header">
+      <a class="back" href="index.html">← back home</a>
+      <h1 class="archive-title">Cross Room</h1>
+      <p class="archive-sub">Cross 整理的主题。复制代码后按需自用，请勿搬运、倒卖及二次发布。</p>
+    </section>
+
+    <section class="card search-card">
+      <div class="search-row">
+        <input id="themeSearch" type="search" placeholder="搜索：主题名 / 标签 / 330" autocomplete="off" />
+        <button class="clear-btn" type="button" onclick="clearThemeSearch()">清空</button>
+      </div>
+      <div class="result-count" id="resultCount">loading...</div>
+    </section>
+
+    <div id="themeList" class="shell"></div>
+
+    <div class="footer">for personal use only · repost / resale prohibited</div>
+  </div>
+</div>
+
+<div class="toast" id="toast">已复制</div>
+
+<script>
+const repoOwner = 'angelcssroom';
+const repoName = 'cloud-room';
+const branch = 'main';
+
+const themeList = document.getElementById('themeList');
+const search = document.getElementById('themeSearch');
+const count = document.getElementById('resultCount');
+let themes = [];
+
+function escapeHtml(str){
+  return String(str || '').replace(/[&<>"']/g, s => ({
+    '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
+  }[s]));
+}
+function slugToTitle(slug){
+  return slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+}
+function rawUrl(fileName){
+  return `https://raw.githubusercontent.com/${repoOwner}/${repoName}/${branch}/${encodeURIComponent(fileName)}`;
+}
+async function fetchTextFile(fileName){
+  const res = await fetch(rawUrl(fileName) + '?v=' + Date.now());
+  if(!res.ok) throw new Error('file not found: ' + fileName);
+  return await res.text();
+}
+function parseInfo(text, slug){
+  const get = key => {
+    const m = text.match(new RegExp('^\\s*' + key + '\\s*[:：]\\s*(.+)$', 'im'));
+    return m ? m[1].trim() : '';
+  };
+  const title = get('title') || slugToTitle(slug);
+  const author = get('author') || 'Cross';
+  const tagsRaw = get('tags') || '';
+  const note = get('note') || '';
+  const wallpaper = get('wallpaper') || '';
+  const tags = tagsRaw ? tagsRaw.split(/[\/、,，|]+/).map(x => x.trim()).filter(Boolean) : [];
+  return {title, author, tags, note, wallpaper};
+}
+function renderThemes(list){
+  themeList.innerHTML = '';
+  list.forEach((theme, index) => {
+    const tagsHtml = theme.tags.map(t => `<span class="keyword">${escapeHtml(t)}</span>`).join('');
+    const wallpaperBtn = theme.wallpaper ? `<a class="btn wallpaper" href="${escapeHtml(theme.wallpaper)}" download>下载壁纸附件</a>` : '';
+    const article = document.createElement('article');
+    article.className = 'card theme-card';
+    article.dataset.search = theme.searchText;
+    article.innerHTML = `
+      <div class="theme-top">
+        <div>
+          <h3 class="theme-name">${escapeHtml(theme.title)}</h3>
+          <p class="theme-alt">@${escapeHtml(theme.author)}</p>
+        </div>
+        <div class="theme-no">${String(index + 1).padStart(2, '0')}</div>
+      </div>
+      ${tagsHtml ? `<div class="keywords">${tagsHtml}</div>` : ''}
+      ${theme.note ? `<div class="micro">${escapeHtml(theme.note)}</div>` : ''}
+      ${theme.previewFile ? `
+      <div class="preview-image-wrap">
+        <img src="${escapeHtml(theme.previewFile)}" alt="${escapeHtml(theme.title)} preview" onerror="this.closest('.preview-image-wrap').outerHTML='<div class=&quot;preview-missing&quot;>预览图暂时没加载出来<br>CSS 仍然可以复制</div>'" />
+      </div>` : `
+      <div class="preview-missing">没有找到同名预览图<br>请检查 preview-cross-${escapeHtml(theme.slug)}.jpg</div>`}
+      <div class="action-row">
+        <button class="btn copy" type="button" onclick="copyFile('${escapeHtml(theme.cssFile)}')">复制全部代码</button>
+        <button class="btn open" type="button" onclick="previewFile('${escapeHtml(theme.cssFile)}','wrap-${escapeHtml(theme.slug)}','area-${escapeHtml(theme.slug)}')">展开代码</button>
+        ${wallpaperBtn}
+      </div>
+      <div class="code-wrap" id="wrap-${escapeHtml(theme.slug)}">
+        <div class="code-head">external css / ${escapeHtml(theme.cssFile)}</div>
+        <textarea id="area-${escapeHtml(theme.slug)}" readonly></textarea>
+      </div>
+    `;
+    themeList.appendChild(article);
+  });
+  count.textContent = list.length + ' result' + (list.length === 1 ? '' : 's');
+}
+function updateThemeSearch(){
+  const q = search.value.trim().toLowerCase();
+  const list = !q ? themes : themes.filter(t => t.searchText.toLowerCase().includes(q));
+  renderThemes(list);
+}
+function clearThemeSearch(){
+  search.value = '';
+  search.blur();
+  updateThemeSearch();
+}
+search.addEventListener('input', updateThemeSearch);
+
+async function copyFile(fileName){
+  try{
+    const text = await fetchTextFile(fileName);
+    await navigator.clipboard.writeText(text);
+    showToast('已复制全部代码');
+  }catch(err){
+    showToast('复制失败，请检查 CSS 文件名');
+    console.error(err);
+  }
+}
+async function previewFile(fileName, wrapId, areaId){
+  const wrap = document.getElementById(wrapId);
+  const area = document.getElementById(areaId);
+  try{
+    if(!area.value) area.value = await fetchTextFile(fileName);
+    wrap.classList.toggle('open');
+  }catch(err){
+    showToast('展开失败，请检查 CSS 文件名');
+    console.error(err);
+  }
+}
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(window.__toastTimer);
+  window.__toastTimer = setTimeout(()=>t.classList.remove('show'), 1500);
+}
+async function loadThemes(){
+  try{
+    const api = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/?ref=${branch}`;
+    let res = await fetch(api + '&v=' + Date.now());
+    if(!res.ok){
+      await new Promise(r => setTimeout(r, 1200));
+      res = await fetch(api + '&v=' + Date.now());
+    }
+    if(!res.ok) throw new Error('repo contents failed');
+    const files = await res.json();
+    const names = files.map(f => f.name);
+    const cssNames = names.filter(n => /^css-cross-.+\.txt$/i.test(n)).sort();
+
+    const loaded = [];
+    for(const cssFile of cssNames){
+      const slug = cssFile.replace(/^css-cross-/i, '').replace(/\.txt$/i, '');
+      const safeSlug = slug.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const previewFile = names.find(n => new RegExp('^preview-cross-' + safeSlug + '\\.(jpg|jpeg|png|webp)$', 'i').test(n)) || '';
+      const infoFile = names.find(n => new RegExp('^info-cross-' + safeSlug + '\\.txt$', 'i').test(n)) || '';
+      let meta = {title: slugToTitle(slug), author: 'Cross', tags: [], note: '', wallpaper: ''};
+      if(infoFile){
+        try{
+          meta = parseInfo(await fetchTextFile(infoFile), slug);
+        }catch(e){}
+      }
+      loaded.push({
+        slug, cssFile, previewFile,
+        title: meta.title, author: meta.author, tags: meta.tags, note: meta.note, wallpaper: meta.wallpaper,
+        searchText: [meta.title, meta.author, meta.tags.join(' '), meta.note, slug].join(' ')
+      });
+    }
+    themes = loaded;
+    renderThemes(themes);
+  }catch(err){
+    count.textContent = 'refreshing needed';
+    themeList.innerHTML = '<section class="card theme-card"><div class="micro">GitHub 还没刷新出来。等半分钟后重新打开页面，或者在网址后面换一个 ?v=数字。</div></section>';
+    console.error(err);
+  }
+}
+loadThemes();
+</script>
+</body>
+</html>
