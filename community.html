@@ -32,7 +32,6 @@ body{padding:18px 12px 48px;}
 .clear-btn{width:60px;height:42px;border:1px solid var(--line);border-radius:999px;background:#f8f9fa;color:#8d949e;font-size:11px;font-weight:700;}
 .result-count{margin:10px 0 0 5px;color:var(--light);font-size:11px;letter-spacing:.04em;font-weight:650;}
 .theme-card{padding:17px;}
-.theme-card.hidden{display:none;}
 .theme-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;}
 .theme-name{margin:0;font-size:28px;font-weight:850;letter-spacing:-.06em;line-height:1.05;}
 .theme-alt{margin:8px 0 0;color:var(--sub);font-size:13px;font-weight:700;}
@@ -42,6 +41,7 @@ body{padding:18px 12px 48px;}
 .micro{margin-top:16px;color:#8b9098;font-size:12px;line-height:1.8;font-weight:650;}
 .preview-image-wrap{margin-top:16px;border:1px solid var(--line);border-radius:20px;background:#fff;overflow:hidden;}
 .preview-image-wrap img{display:block;width:100%;height:auto;filter:saturate(.95) brightness(1.01);}
+.preview-missing{margin-top:16px;border:1px dashed #dfe3e8;border-radius:20px;background:#fbfbfc;color:#a4abb4;min-height:180px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:12px;line-height:1.8;font-weight:700;padding:20px;}
 .action-row{display:flex;gap:9px;margin-top:14px;}
 .btn{appearance:none;border:none;border-radius:999px;min-height:40px;padding:0 16px;font-size:12px;font-weight:800;cursor:pointer;}
 .btn.copy{background:#16191e;color:#fff;flex:1;}
@@ -53,24 +53,6 @@ textarea{width:100%;min-height:260px;border-radius:18px;border:1px solid var(--l
 .footer{text-align:center;color:#bcc2ca;font-size:10px;padding:4px 0 0;line-height:1.8;}
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(16px);opacity:0;background:#16191e;color:#fff;font-size:11px;padding:10px 13px;border-radius:999px;pointer-events:none;transition:.22s ease;z-index:99;box-shadow:0 8px 20px rgba(0,0,0,.12);}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-
-.preview-missing{
-  margin-top:16px;
-  border:1px dashed #dfe3e8;
-  border-radius:20px;
-  background:#fbfbfc;
-  color:#a4abb4;
-  min-height:180px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  font-size:12px;
-  line-height:1.8;
-  font-weight:700;
-  padding:20px;
-}
-
 </style>
 </head>
 <body>
@@ -113,33 +95,28 @@ function escapeHtml(str){
     '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
   }[s]));
 }
-
 function slugToTitle(slug){
   return slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 }
-
-function parseMeta(text, slug){
-  const head = text.slice(0, 900);
+function rawUrl(fileName){
+  return `https://raw.githubusercontent.com/${repoOwner}/${repoName}/${branch}/${encodeURIComponent(fileName)}`;
+}
+async function fetchTextFile(fileName){
+  const res = await fetch(rawUrl(fileName) + '?v=' + Date.now());
+  if(!res.ok) throw new Error('file not found: ' + fileName);
+  return await res.text();
+}
+function parseInfo(text, slug){
   const get = key => {
-    const m = head.match(new RegExp('^\\\\s*' + key + '\\\\s*[:：]\\\\s*(.+)$', 'im'));
+    const m = text.match(new RegExp('^\\\\s*' + key + '\\\\s*[:：]\\\\s*(.+)$', 'im'));
     return m ? m[1].trim() : '';
   };
   const title = get('title') || slugToTitle(slug);
-  const author = get('author') || '';
+  const author = get('author') || '小兔';
   const tagsRaw = get('tags') || '';
   const note = get('note') || '';
   const tags = tagsRaw ? tagsRaw.split(/[\\/、,，|]+/).map(x => x.trim()).filter(Boolean) : [];
   return {title, author, tags, note};
-}
-
-function cssRawUrl(fileName){
-  return `https://raw.githubusercontent.com/${repoOwner}/${repoName}/${branch}/${encodeURIComponent(fileName)}`;
-}
-
-async function fetchTextFile(fileName){
-  const res = await fetch(cssRawUrl(fileName) + '?v=' + Date.now());
-  if(!res.ok) throw new Error('file not found: ' + fileName);
-  return await res.text();
 }
 
 function renderThemes(list){
@@ -153,25 +130,21 @@ function renderThemes(list){
       <div class="theme-top">
         <div>
           <h3 class="theme-name">${escapeHtml(theme.title)}</h3>
-          <p class="theme-alt">${theme.author ? '🐇 ' + escapeHtml(theme.author) : '🐇'}</p>
+          <p class="theme-alt">🐇 ${escapeHtml(theme.author)}</p>
         </div>
         <div class="theme-no">${String(index + 1).padStart(2, '0')}</div>
       </div>
-
-      <div class="keywords">${tagsHtml}</div>
+      ${tagsHtml ? `<div class="keywords">${tagsHtml}</div>` : ''}
       ${theme.note ? `<div class="micro">${escapeHtml(theme.note)}</div>` : ''}
-
       ${theme.previewFile ? `
       <div class="preview-image-wrap">
         <img src="${escapeHtml(theme.previewFile)}" alt="${escapeHtml(theme.title)} preview" onerror="this.closest('.preview-image-wrap').outerHTML='<div class=&quot;preview-missing&quot;>预览图暂时没加载出来<br>CSS 仍然可以复制</div>'" />
       </div>` : `
       <div class="preview-missing">没有找到同名预览图<br>请检查 preview-community-${escapeHtml(theme.slug)}.jpg</div>`}
-
       <div class="action-row">
         <button class="btn copy" type="button" onclick="copyFile('${escapeHtml(theme.cssFile)}')">复制全部代码</button>
         <button class="btn open" type="button" onclick="previewFile('${escapeHtml(theme.cssFile)}','wrap-${escapeHtml(theme.slug)}','area-${escapeHtml(theme.slug)}')">展开代码</button>
       </div>
-
       <div class="code-wrap" id="wrap-${escapeHtml(theme.slug)}">
         <div class="code-head">external css / ${escapeHtml(theme.cssFile)}</div>
         <textarea id="area-${escapeHtml(theme.slug)}" readonly></textarea>
@@ -181,19 +154,16 @@ function renderThemes(list){
   });
   count.textContent = list.length + ' result' + (list.length === 1 ? '' : 's');
 }
-
 function updateThemeSearch(){
   const q = search.value.trim().toLowerCase();
   const list = !q ? themes : themes.filter(t => t.searchText.toLowerCase().includes(q));
   renderThemes(list);
 }
-
 function clearThemeSearch(){
   search.value = '';
   search.blur();
   updateThemeSearch();
 }
-
 search.addEventListener('input', updateThemeSearch);
 
 async function copyFile(fileName){
@@ -202,11 +172,10 @@ async function copyFile(fileName){
     await navigator.clipboard.writeText(text);
     showToast('已复制全部代码');
   }catch(err){
-    showToast('复制失败，请检查 txt 文件名');
+    showToast('复制失败，请检查 CSS 文件名');
     console.error(err);
   }
 }
-
 async function previewFile(fileName, wrapId, areaId){
   const wrap = document.getElementById(wrapId);
   const area = document.getElementById(areaId);
@@ -214,11 +183,10 @@ async function previewFile(fileName, wrapId, areaId){
     if(!area.value) area.value = await fetchTextFile(fileName);
     wrap.classList.toggle('open');
   }catch(err){
-    showToast('展开失败，请检查 txt 文件名');
+    showToast('展开失败，请检查 CSS 文件名');
     console.error(err);
   }
 }
-
 function showToast(msg){
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -226,7 +194,6 @@ function showToast(msg){
   clearTimeout(window.__toastTimer);
   window.__toastTimer = setTimeout(()=>t.classList.remove('show'), 1500);
 }
-
 async function loadThemes(){
   try{
     const api = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/?ref=${branch}`;
@@ -237,7 +204,6 @@ async function loadThemes(){
     }
     if(!res.ok) throw new Error('repo contents failed');
     const files = await res.json();
-
     const names = files.map(f => f.name);
     const cssNames = names.filter(n => /^css-community-.+\.txt$/i.test(n)).sort();
 
@@ -245,21 +211,19 @@ async function loadThemes(){
     for(const cssFile of cssNames){
       const slug = cssFile.replace(/^css-community-/i, '').replace(/\.txt$/i, '');
       const previewFile = names.find(n => new RegExp('^preview-community-' + slug.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\.(jpg|jpeg|png|webp)$', 'i').test(n)) || '';
-
-      const text = await fetchTextFile(cssFile);
-      const meta = parseMeta(text, slug);
+      const infoFile = names.find(n => new RegExp('^info-community-' + slug.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\.txt$', 'i').test(n)) || '';
+      let meta = {title: slugToTitle(slug), author: '小兔', tags: [], note: ''};
+      if(infoFile){
+        try{
+          meta = parseInfo(await fetchTextFile(infoFile), slug);
+        }catch(e){}
+      }
       loaded.push({
-        slug,
-        cssFile,
-        previewFile,
-        title: meta.title,
-        author: meta.author,
-        tags: meta.tags,
-        note: meta.note,
+        slug, cssFile, previewFile,
+        title: meta.title, author: meta.author, tags: meta.tags, note: meta.note,
         searchText: [meta.title, meta.author, meta.tags.join(' '), meta.note, slug].join(' ')
       });
     }
-
     themes = loaded;
     renderThemes(themes);
   }catch(err){
@@ -268,7 +232,6 @@ async function loadThemes(){
     console.error(err);
   }
 }
-
 loadThemes();
 </script>
 </body>
