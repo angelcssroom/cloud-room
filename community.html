@@ -233,6 +233,10 @@ body{
   color:#fff;
   flex:1;
 }
+.btn.copy:disabled{
+  opacity:.46;
+  cursor:default;
+}
 .btn.open{
   background:#fbfbfb;
   color:#7b8189;
@@ -423,6 +427,8 @@ const search = document.getElementById('themeSearch');
 const count = document.getElementById('resultCount');
 let themes = [];
 const cssTextCache = new Map();
+const cssLoadingTasks = new Map();
+let cssObserver = null;
 
 function escapeHtml(str){
   return String(str || '').replace(/[&<>"']/g, s => ({
@@ -546,7 +552,7 @@ function renderVariant(theme, query=''){
       ${theme.note ? `<div class="micro">${highlightText(theme.note, query)}</div>` : ''}
       ${theme.previewFile ? `<div class="preview-image-wrap"><img src="${escapeHtml(theme.previewFile)}" alt="${escapeHtml(theme.title)} preview" loading="lazy" decoding="async" onerror="previewFallback(this)" onclick="openImageLightbox(this.src,this.alt)" /></div>` : `<div class="preview-missing">暂无预览</div>`}
       <div class="action-row">
-        <button class="btn copy" type="button" onclick="copyFile('${escapeHtml(theme.cssFile)}','wrap-${escapeHtml(theme.slug)}')">复制</button>
+        <button class="btn copy" type="button" data-css-file="${escapeHtml(theme.cssFile)}" ${cssTextCache.has(theme.cssFile) ? '' : 'disabled'} onclick="copyFile('${escapeHtml(theme.cssFile)}','wrap-${escapeHtml(theme.slug)}')">${cssTextCache.has(theme.cssFile) ? '复制' : '载入中'}</button>
         <button class="btn open" type="button" onclick="previewFile('${escapeHtml(theme.cssFile)}','wrap-${escapeHtml(theme.slug)}','area-${escapeHtml(theme.slug)}')">代码</button>
         ${wallpaperBtn}
       </div>
@@ -572,7 +578,7 @@ function renderSingleTheme(theme, query, number){
       ${theme.note ? `<div class="micro">${highlightText(theme.note, query)}</div>` : ''}
       ${theme.previewFile ? `<div class="preview-image-wrap"><img src="${escapeHtml(theme.previewFile)}" alt="${escapeHtml(theme.title)} preview" loading="lazy" decoding="async" onerror="previewFallback(this)" onclick="openImageLightbox(this.src,this.alt)" /></div>` : `<div class="preview-missing">暂无预览</div>`}
       <div class="action-row">
-        <button class="btn copy" type="button" onclick="copyFile('${escapeHtml(theme.cssFile)}','wrap-${escapeHtml(theme.slug)}')">复制</button>
+        <button class="btn copy" type="button" data-css-file="${escapeHtml(theme.cssFile)}" ${cssTextCache.has(theme.cssFile) ? '' : 'disabled'} onclick="copyFile('${escapeHtml(theme.cssFile)}','wrap-${escapeHtml(theme.slug)}')">${cssTextCache.has(theme.cssFile) ? '复制' : '载入中'}</button>
         <button class="btn open" type="button" onclick="previewFile('${escapeHtml(theme.cssFile)}','wrap-${escapeHtml(theme.slug)}','area-${escapeHtml(theme.slug)}')">代码</button>
         ${wallpaperBtn}
       </div>
@@ -581,6 +587,94 @@ function renderSingleTheme(theme, query, number){
       </div>
     </article>`;
 }
+
+function setCopyReady(fileName){
+  document.querySelectorAll('button.copy[data-css-file]').forEach(button => {
+    if(button.dataset.cssFile === fileName){
+      button.disabled = false;
+      button.textContent = '复制';
+    }
+  });
+}
+
+function preloadCss(fileName){
+  if(cssTextCache.has(fileName)){
+    setCopyReady(fileName);
+    return Promise.resolve(cssTextCache.get(fileName));
+  }
+  if(cssLoadingTasks.has(fileName)){
+    return cssLoadingTasks.get(fileName);
+  }
+
+  const task = fetchTextFile(fileName)
+    .then(text => {
+      cssTextCache.set(fileName, text);
+      setCopyReady(fileName);
+      return text;
+    })
+    .catch(err => {
+      console.error('CSS preload failed:', fileName, err);
+      throw err;
+    })
+    .finally(() => {
+      cssLoadingTasks.delete(fileName);
+    });
+
+  cssLoadingTasks.set(fileName, task);
+  return task;
+}
+
+function setupLazyCssLoading(){
+  if(cssObserver){
+    cssObserver.disconnect();
+    cssObserver = null;
+  }
+
+  const buttons = [...document.querySelectorAll('button.copy[data-css-file]')];
+  if(!buttons.length) return;
+
+  buttons.forEach(button => {
+    const fileName = button.dataset.cssFile;
+    if(cssTextCache.has(fileName)){
+      setCopyReady(fileName);
+    }
+  });
+
+  const firstFiles = [...new Set(buttons.slice(0, 3).map(button => button.dataset.cssFile))];
+  firstFiles.forEach(fileName => preloadCss(fileName).catch(() => {}));
+
+  if('IntersectionObserver' in window){
+    cssObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if(!entry.isIntersecting) return;
+        const button = entry.target;
+        preloadCss(button.dataset.cssFile).catch(() => {});
+        cssObserver.unobserve(button);
+      });
+    }, {rootMargin:'900px 0px'});
+
+    buttons.forEach(button => {
+      if(!cssTextCache.has(button.dataset.cssFile)){
+        cssObserver.observe(button);
+      }
+    });
+    return;
+  }
+
+  const remaining = [...new Set(buttons.map(button => button.dataset.cssFile))]
+    .filter(fileName => !cssTextCache.has(fileName));
+
+  let index = 0;
+  const loadBatch = () => {
+    remaining.slice(index, index + 3).forEach(fileName => preloadCss(fileName).catch(() => {}));
+    index += 3;
+    if(index < remaining.length){
+      setTimeout(loadBatch, 180);
+    }
+  };
+  loadBatch();
+}
+
 function renderThemes(list, query=''){
   themeList.innerHTML = '';
   const groups = buildGroups(list);
@@ -619,6 +713,7 @@ function renderThemes(list, query=''){
     themeList.appendChild(article);
   });
   count.textContent = visibleGroups ? String(visibleGroups) : '0';
+  setupLazyCssLoading();
 }
 function updateThemeSearch(){
   renderThemes(themes, search.value.trim());
@@ -707,6 +802,26 @@ function showToast(msg){
   clearTimeout(window.__toastTimer);
   window.__toastTimer = setTimeout(()=>t.classList.remove('show'), 1500);
 }
+
+async function refreshThemeDates(){
+  if(!themes.length) return;
+
+  let cursor = 0;
+  const workers = Math.min(4, themes.length);
+
+  async function worker(){
+    while(cursor < themes.length){
+      const index = cursor++;
+      const theme = themes[index];
+      theme.updatedAt = await fetchLastUpdated(theme.cssFile);
+    }
+  }
+
+  await Promise.all(Array.from({length: workers}, worker));
+  themes.sort((a,b) => (b.updatedAt || 0) - (a.updatedAt || 0) || a.title.localeCompare(b.title, 'zh-CN'));
+  renderThemes(themes, search.value);
+}
+
 async function loadThemes(){
   try{
     const api = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/?ref=${branch}`;
@@ -721,14 +836,6 @@ async function loadThemes(){
     const cssRegex = new RegExp('^css-' + typePrefix + '-.+\\.txt$', 'i');
     const cssNames = names.filter(n => cssRegex.test(n));
 
-    await Promise.all(cssNames.map(async cssFile => {
-      try{
-        cssTextCache.set(cssFile, await fetchTextFile(cssFile));
-      }catch(err){
-        console.error('CSS preload failed:', cssFile, err);
-      }
-    }));
-
     const loaded = await Promise.all(cssNames.map(async cssFile => {
       const slug = cssFile.replace(new RegExp('^css-' + typePrefix + '-', 'i'), '').replace(/\.txt$/i, '');
       const safeSlug = escapeRegExp(slug);
@@ -738,7 +845,7 @@ async function loadThemes(){
       if(infoFile){
         try{ meta = parseInfo(await fetchTextFile(infoFile), slug); }catch(e){}
       }
-      const updatedAt = await fetchLastUpdated(cssFile);
+      const updatedAt = 0;
       return {
         slug, cssFile, previewFile, updatedAt,
         title: meta.title, author: meta.author, tags: meta.tags, note: meta.note, wallpaper: meta.wallpaper,
@@ -746,8 +853,9 @@ async function loadThemes(){
       };
     }));
 
-    themes = loaded.sort((a,b) => (b.updatedAt || 0) - (a.updatedAt || 0) || a.title.localeCompare(b.title, 'zh-CN'));
+    themes = loaded.sort((a,b) => a.title.localeCompare(b.title, 'zh-CN'));
     renderThemes(themes, search.value);
+    setTimeout(() => refreshThemeDates().catch(console.error), 900);
   }catch(err){
     count.textContent = 'refreshing needed';
     themeList.innerHTML = '<section class="card theme-card"><div class="micro">GitHub 还没刷新出来。等半分钟后重新打开页面，或者在网址后面换一个 ?v=数字。</div></section>';
