@@ -1,0 +1,5 @@
+/* sample bunny room
+Author: 🐇 小兔示例
+This is a placeholder file.
+Replace this card with a real community theme when needed.
+*/
