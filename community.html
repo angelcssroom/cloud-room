@@ -235,13 +235,13 @@ body{
 }
 .code-wrap{
   display:none;
-  margin-top: 10px;
+  margin-top:12px;
 }
 .code-wrap.open{
   display:block;
 }
 .code-head{
-  font-size: 9px;
+  font-size:9.5px;
   color:var(--muted);
   letter-spacing:.06em;
   text-transform:uppercase;
@@ -262,6 +262,18 @@ textarea{
   overflow:auto;
   font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;
 }
+
+.series-card{padding:16px 17px 17px;}
+.series-list{display:flex;flex-direction:column;gap:10px;margin-top:14px;}
+.variant-card{border:1px solid var(--line);border-radius:12px;padding:13px;background:#fff;}
+.variant-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
+.variant-name{margin:0;font-size:13px;font-weight:650;line-height:1.25;letter-spacing:-.01em;}
+.variant-slug{margin:5px 0 0;color:var(--muted);font-size:9.5px;line-height:1.4;}
+.variant-tag{flex:0 0 auto;padding:4px 8px;border-radius:999px;border:1px solid var(--line);background:#fbfbfb;color:#858a91;font-size:9.5px;font-weight:560;}
+.variant-card .preview-image-wrap,.variant-card .preview-missing{margin-top:11px;}
+.variant-card .action-row{margin-top:10px;}
+.variant-card .btn{min-height:34px;font-size:10.5px;}
+
 .footer{
   text-align:center;
   color:#bfc3c9;
@@ -291,7 +303,29 @@ textarea{
   transform:translateX(-50%) translateY(0);
 }
 
-.is-hidden{display:none!important;}
+.search-hit{
+  background:#ececec;
+  color:#111;
+  border-radius:4px;
+  padding:0 .12em;
+}
+.new-badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  margin-left:7px;
+  padding:3px 6px;
+  border-radius:999px;
+  border:1px solid #d8d8d8;
+  background:#f7f7f7;
+  color:#575757;
+  font-size:8.5px;
+  line-height:1;
+  font-weight:700;
+  letter-spacing:.06em;
+  vertical-align:2px;
+}
+
 </style>
 </head>
 <body>
@@ -320,46 +354,32 @@ textarea{
 <div class="toast" id="toast">已复制</div>
 
 <script>
-
-function shouldIgnoreThemeFile(name){
-  return /^css-community-sample\.txt$/i.test(name);
-}
-
 const repoOwner = 'angelcssroom';
 const repoName = 'cloud-room';
 const branch = 'main';
+const typePrefix = 'community';
+const defaultAuthor = '小兔';
+const previewLabel = 'preview-community';
+const newDays = 7;
 
 const themeList = document.getElementById('themeList');
 const search = document.getElementById('themeSearch');
 const count = document.getElementById('resultCount');
 let themes = [];
 
-const fallbackInfo = {
-  "fang-threads": {
-    title: "仿Threads",
-    author: "粥粥",
-    tags: ["简约", "仿软件", "330", "黑白"],
-    note: "禁止二传，仅可自用调适配二改。自定义的地方很多，直接看图。小bug不影响使用，介意问AI。"
-  },
-  "tempests-whisper": {
-    title: "Tempest's Whisper",
-    author: "芷",
-    tags: ["简约", "低饱和", "330"],
-    note: "这个什么屌丝几百年前美化呵呵"
-  },
-  "yujian-siyu": {
-    title: "隅间私语",
-    author: "Awful",
-    tags: ["粉", "uwu", "少女系"],
-    note: "可以让AI调试配呀"
-  }
-};
-
-
 function escapeHtml(str){
   return String(str || '').replace(/[&<>"']/g, s => ({
     '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
   }[s]));
+}
+function escapeRegExp(str){
+  return String(str || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+function highlightText(str, query){
+  const safe = escapeHtml(str);
+  const q = String(query || '').trim();
+  if(!q) return safe;
+  return safe.replace(new RegExp('(' + escapeRegExp(escapeHtml(q)) + ')', 'ig'), '<mark class="search-hit">$1</mark>');
 }
 function slugToTitle(slug){
   return slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
@@ -372,58 +392,136 @@ async function fetchTextFile(fileName){
   if(!res.ok) throw new Error('file not found: ' + fileName);
   return await res.text();
 }
+async function fetchLastUpdated(fileName){
+  try{
+    const url = `https://api.github.com/repos/${repoOwner}/${repoName}/commits?sha=${encodeURIComponent(branch)}&path=${encodeURIComponent(fileName)}&per_page=1`;
+    const res = await fetch(url);
+    if(!res.ok) return 0;
+    const data = await res.json();
+    const date = data?.[0]?.commit?.committer?.date || data?.[0]?.commit?.author?.date;
+    return date ? new Date(date).getTime() : 0;
+  }catch(e){
+    return 0;
+  }
+}
 function parseInfo(text, slug){
   const get = key => {
-    const m = text.match(new RegExp('^\\\\s*' + key + '\\\\s*[:：]\\\\s*(.+)$', 'im'));
+    const m = text.match(new RegExp('^\\s*' + key + '\\s*[:：]\\s*(.+)$', 'im'));
     return m ? m[1].trim() : '';
   };
   const title = get('title') || slugToTitle(slug);
-  const author = get('author') || '小兔';
+  const author = get('author') || defaultAuthor;
   const tagsRaw = get('tags') || '';
   const note = get('note') || '';
-  const tags = tagsRaw ? tagsRaw.split(/[\\/、,，|]+/).map(x => x.trim()).filter(Boolean) : [];
-  return {title, author, tags, note};
+  const wallpaper = get('wallpaper') || '';
+  const tags = tagsRaw ? tagsRaw.split(/[\/、,，|]+/).map(x => x.trim()).filter(Boolean) : [];
+  return {title, author, tags, note, wallpaper};
 }
-
-function renderThemes(list){
-  themeList.innerHTML = '';
-  list.forEach((theme, index) => {
-    const tagsHtml = theme.tags.map(t => `<span class="keyword">${escapeHtml(t)}</span>`).join('');
-    const article = document.createElement('article');
-    article.className = 'card theme-card';
-    article.dataset.search = theme.searchText;
-    article.innerHTML = `
-      <div class="theme-top">
+function getSeriesBase(slug, allThemes){
+  const parts = slug.split('-');
+  if(parts.length < 2) return slug;
+  const base = parts.slice(0, -1).join('-');
+  const siblings = allThemes.filter(t => t.slug.startsWith(base + '-'));
+  return siblings.length >= 2 ? base : slug;
+}
+function buildGroups(allThemes){
+  const map = new Map();
+  allThemes.forEach(theme => {
+    const base = getSeriesBase(theme.slug, allThemes);
+    if(!map.has(base)) map.set(base, []);
+    map.get(base).push(theme);
+  });
+  return [...map.entries()].map(([base, items]) => {
+    items.sort((a,b) => (b.updatedAt || 0) - (a.updatedAt || 0) || a.title.localeCompare(b.title, 'zh-CN'));
+    return {
+      base,
+      items,
+      isSeries: items.length > 1,
+      title: items.length > 1 ? slugToTitle(base) : items[0].title,
+      author: items[0].author,
+      updatedAt: Math.max(...items.map(x => x.updatedAt || 0)),
+      searchText: items.map(x => x.searchText).join(' ')
+    };
+  }).sort((a,b) => (b.updatedAt || 0) - (a.updatedAt || 0) || a.title.localeCompare(b.title, 'zh-CN'));
+}
+function isNew(ts){
+  return !!ts && (Date.now() - ts) <= newDays * 86400000;
+}
+function previewFallback(img){
+  const wrap = img.closest('.preview-image-wrap');
+  if(!wrap) return;
+  const box = document.createElement('div');
+  box.className = 'preview-missing';
+  box.innerHTML = '预览图暂时没加载出来<br>CSS 仍然可以复制';
+  wrap.replaceWith(box);
+}
+function renderVariant(theme, query=''){
+  const tagsHtml = theme.tags.map(t => `<span class="keyword">${highlightText(t, query)}</span>`).join('');
+  const wallpaperBtn = theme.wallpaper ? `<a class="btn wallpaper" href="${escapeHtml(theme.wallpaper)}" download>下载壁纸附件</a>` : '';
+  const colorTag = theme.tags.find(t => /^(黄|蓝|紫|粉|黑|白|红|绿|灰|棕|橙|pink|blue|black|yellow|purple|red|green)$/i.test(t)) || '';
+  const newBadge = isNew(theme.updatedAt) ? '<span class="new-badge">NEW</span>' : '';
+  return `
+    <section class="variant-card" data-variant-search="${escapeHtml(theme.searchText.toLowerCase())}">
+      <div class="variant-top">
         <div>
-          <h3 class="theme-name">${escapeHtml(theme.title)}</h3>
-          <p class="theme-alt">🐇 ${escapeHtml(theme.author)}</p>
+          <h4 class="variant-name">${highlightText(theme.title, query)}${newBadge}</h4>
+          <p class="variant-slug">${highlightText(theme.slug, query)}</p>
         </div>
-        <div class="theme-no">${String(index + 1).padStart(2, '0')}</div>
+        ${colorTag ? `<span class="variant-tag">${highlightText(colorTag, query)}</span>` : ''}
       </div>
       ${tagsHtml ? `<div class="keywords">${tagsHtml}</div>` : ''}
-      ${theme.note ? `<div class="micro">${escapeHtml(theme.note)}</div>` : ''}
-      ${theme.previewFile ? `
-      <div class="preview-image-wrap">
-        <img src="${escapeHtml(theme.previewFile)}" alt="${escapeHtml(theme.title)} preview" onerror="this.closest('.preview-image-wrap').outerHTML='<div class=&quot;preview-missing&quot;>预览图暂时没加载出来<br>CSS 仍然可以复制</div>'" />
-      </div>` : `
-      <div class="preview-missing">没有找到同名预览图<br>请检查 preview-community-${escapeHtml(theme.slug)}.jpg</div>`}
+      ${theme.note ? `<div class="micro">${highlightText(theme.note, query)}</div>` : ''}
+      ${theme.previewFile ? `<div class="preview-image-wrap"><img src="${escapeHtml(theme.previewFile)}" alt="${escapeHtml(theme.title)} preview" loading="lazy" decoding="async" onerror="previewFallback(this)" /></div>` : `<div class="preview-missing">没有找到同名预览图<br>请检查 ${previewLabel}-${escapeHtml(theme.slug)}.jpg</div>`}
       <div class="action-row">
-        <button class="btn copy" type="button" onclick="copyFile('${escapeHtml(theme.cssFile)}')">复制全部代码</button>
+        <button class="btn copy" type="button" onclick="copyFile('${escapeHtml(theme.cssFile)}','wrap-${escapeHtml(theme.slug)}')">复制全部代码</button>
         <button class="btn open" type="button" onclick="previewFile('${escapeHtml(theme.cssFile)}','wrap-${escapeHtml(theme.slug)}','area-${escapeHtml(theme.slug)}')">展开代码</button>
+        ${wallpaperBtn}
       </div>
       <div class="code-wrap" id="wrap-${escapeHtml(theme.slug)}">
         <div class="code-head">external css / ${escapeHtml(theme.cssFile)}</div>
         <textarea id="area-${escapeHtml(theme.slug)}" readonly></textarea>
       </div>
-    `;
+    </section>`;
+}
+function renderThemes(list, query=''){
+  themeList.innerHTML = '';
+  const groups = buildGroups(list);
+  const q = query.trim().toLowerCase();
+  let visibleGroups = 0;
+  groups.forEach(group => {
+    let visibleItems = group.items;
+    if(q){
+      const itemMatches = group.items.filter(item => item.searchText.toLowerCase().includes(q));
+      if(itemMatches.length){
+        visibleItems = itemMatches;
+      }else if(!group.searchText.toLowerCase().includes(q)){
+        return;
+      }
+    }
+    visibleGroups++;
+    const article = document.createElement('article');
+    article.className = 'card series-card';
+    const commonTags = group.isSeries
+      ? group.items[0].tags.filter(tag => group.items.every(item => item.tags.includes(tag)))
+      : group.items[0].tags;
+    const tagsHtml = commonTags.map(t => `<span class="keyword">${highlightText(t, query)}</span>`).join('');
+    const newBadge = isNew(group.updatedAt) ? '<span class="new-badge">NEW</span>' : '';
+    article.innerHTML = `
+      <div class="theme-top">
+        <div>
+          <h3 class="theme-name">${highlightText(group.title, query)}${newBadge}</h3>
+          <p class="theme-alt">@${highlightText(group.author, query)}</p>
+        </div>
+        <div class="theme-no">${String(visibleGroups).padStart(2, '0')}</div>
+      </div>
+      ${tagsHtml ? `<div class="keywords">${tagsHtml}</div>` : ''}
+      <div class="series-list">${visibleItems.map(item => renderVariant(item, query)).join('')}</div>`;
     themeList.appendChild(article);
   });
-  count.textContent = list.length + ' result' + (list.length === 1 ? '' : 's');
+  count.textContent = visibleGroups + ' result' + (visibleGroups === 1 ? '' : 's');
 }
 function updateThemeSearch(){
-  const q = search.value.trim().toLowerCase();
-  const list = !q ? themes : themes.filter(t => t.searchText.toLowerCase().includes(q));
-  renderThemes(list);
+  renderThemes(themes, search.value.trim());
 }
 function clearThemeSearch(){
   search.value = '';
@@ -432,10 +530,12 @@ function clearThemeSearch(){
 }
 search.addEventListener('input', updateThemeSearch);
 
-async function copyFile(fileName){
+async function copyFile(fileName, wrapId){
   try{
     const text = await fetchTextFile(fileName);
     await navigator.clipboard.writeText(text);
+    const wrap = document.getElementById(wrapId);
+    if(wrap) wrap.classList.remove('open');
     showToast('已复制全部代码');
   }catch(err){
     showToast('复制失败，请检查 CSS 文件名');
@@ -445,9 +545,16 @@ async function copyFile(fileName){
 async function previewFile(fileName, wrapId, areaId){
   const wrap = document.getElementById(wrapId);
   const area = document.getElementById(areaId);
+  if(wrap.classList.contains('open') && area.dataset.currentFile === fileName){
+    wrap.classList.remove('open');
+    return;
+  }
   try{
-    if(!area.value) area.value = await fetchTextFile(fileName);
-    wrap.classList.toggle('open');
+    if(area.dataset.currentFile !== fileName){
+      area.value = await fetchTextFile(fileName);
+      area.dataset.currentFile = fileName;
+    }
+    wrap.classList.add('open');
   }catch(err){
     showToast('展开失败，请检查 CSS 文件名');
     console.error(err);
@@ -471,27 +578,28 @@ async function loadThemes(){
     if(!res.ok) throw new Error('repo contents failed');
     const files = await res.json();
     const names = files.map(f => f.name);
-    const cssNames = names.filter(n => /^css-community-.+\.txt$/i.test(n) && !/^css-community-sample\.txt$/i.test(n)).sort();
+    const cssRegex = new RegExp('^css-' + typePrefix + '-.+\\.txt$', 'i');
+    const cssNames = names.filter(n => cssRegex.test(n));
 
-    const loaded = [];
-    for(const cssFile of cssNames){
-      const slug = cssFile.replace(/^css-community-/i, '').replace(/\.txt$/i, '');
-      const previewFile = names.find(n => new RegExp('^preview-community-' + slug.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\.(jpg|jpeg|png|webp)$', 'i').test(n)) || '';
-      const infoFile = names.find(n => new RegExp('^info-community-' + slug.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\.txt$', 'i').test(n)) || '';
-      let meta = fallbackInfo[slug] || {title: slugToTitle(slug), author: '小兔', tags: [], note: ''};
+    const loaded = await Promise.all(cssNames.map(async cssFile => {
+      const slug = cssFile.replace(new RegExp('^css-' + typePrefix + '-', 'i'), '').replace(/\.txt$/i, '');
+      const safeSlug = escapeRegExp(slug);
+      const previewFile = names.find(n => new RegExp('^preview-' + typePrefix + '-' + safeSlug + '\\.(jpg|jpeg|png|webp)$', 'i').test(n)) || '';
+      const infoFile = names.find(n => new RegExp('^info-' + typePrefix + '-' + safeSlug + '\\.txt$', 'i').test(n)) || '';
+      let meta = {title: slugToTitle(slug), author: defaultAuthor, tags: [], note: '', wallpaper: ''};
       if(infoFile){
-        try{
-          meta = parseInfo(await fetchTextFile(infoFile), slug);
-        }catch(e){}
+        try{ meta = parseInfo(await fetchTextFile(infoFile), slug); }catch(e){}
       }
-      loaded.push({
-        slug, cssFile, previewFile,
-        title: meta.title, author: meta.author, tags: meta.tags, note: meta.note,
+      const updatedAt = await fetchLastUpdated(cssFile);
+      return {
+        slug, cssFile, previewFile, updatedAt,
+        title: meta.title, author: meta.author, tags: meta.tags, note: meta.note, wallpaper: meta.wallpaper,
         searchText: [meta.title, meta.author, meta.tags.join(' '), meta.note, slug].join(' ')
-      });
-    }
-    themes = loaded;
-    renderThemes(themes);
+      };
+    }));
+
+    themes = loaded.sort((a,b) => (b.updatedAt || 0) - (a.updatedAt || 0) || a.title.localeCompare(b.title, 'zh-CN'));
+    renderThemes(themes, search.value);
   }catch(err){
     count.textContent = 'refreshing needed';
     themeList.innerHTML = '<section class="card theme-card"><div class="micro">GitHub 还没刷新出来。等半分钟后重新打开页面，或者在网址后面换一个 ?v=数字。</div></section>';
