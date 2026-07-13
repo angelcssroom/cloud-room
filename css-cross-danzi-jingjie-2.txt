@@ -1,0 +1,367 @@
+/* ====== 主题：淡紫静界❷ by자훤 ====== */
+源代码：ee 整理：喵个弥 菜单：愫
+只有聊天页面，转账其余的配套美化没有做。备注位置需修改已标注🪽，除修改所有移位操作，bug禁止二改。
+禁二传，借鉴，商用。
+
+❕已知bug：菜单卡bug不能左右滑动，只能改背景纯色不能自定义上传图片。点击不了长期记忆。
+
+/* ====== 淡紫静界 by자훤 ====== */
+:root {
+  --bg-color: #EEF0F4;（🪽改背景颜色）
+  --panel-bg: #EEF0F3;
+  --bubble-bg: #EEF0F3;
+  --text-main: #55555d;
+  --name-color: #5b5b62;
+  --input-bg: #F7F7F7;
+  --input-border: #E5E5E5;
+  --shadow-light: rgba(255, 255, 255, 0.95);
+  --shadow-dark: rgba(207, 207, 216, 0.95);
+  --avatar-size: 34px;
+  --avatar-radius: 12px;
+  --bubble-radius: 12px;
+  --icon-url: url("https://i.postimg.cc/DwDTFbv4/8C296A21-16F4-430C-AD57-6BB669875419.png");
+}
+
+/* 1. 基础布局 */
+html, body, #chat-interface-screen, #chat-messages, #chat-interface-screen .header, #chat-input-area {
+  background: var(--bg-color) !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+🪽/* 2. 顶栏（修复上移消失） */
+#chat-interface-screen .header {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  min-height: 56px !important;
+  height: 56px !important;
+  transform: none !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: auto !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  z-index: 50 !important;
+  overflow: visible !important;
+}
+
+#chat-header-title {
+  color: var(--text-main) !important;
+  font-weight: 600 !important;
+}
+
+#chat-header-status {
+  display: none !important;
+}
+
+/* 3. 头像与昵称 */
+.message-bubble .sender-name {
+  color: var(--name-color) !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  margin-bottom: 5px !important;
+  display: block !important;
+  padding-left: calc(var(--avatar-size) + 10px) !important;
+}
+
+.message-bubble .avatar,
+.message-bubble .avatar img {
+  width: var(--avatar-size) !important;
+  height: var(--avatar-size) !important;
+  border-radius: var(--avatar-radius) !important;
+  background: #f7f7f8 !important;
+  border: 1px solid #dddddf !important;
+}
+
+/* ====== 气泡替换：纯色圆角 · #CBCBDD ====== */
+
+/* 4. 气泡（纯色版） */
+.message-bubble .content {
+  /* 核心样式：纯色背景 */
+  background: #CBCBDD !important;
+  color: var(--text-main) !important;
+
+  /* 移除原有的浮雕阴影 */
+  box-shadow: none !important;
+  border: none !important;
+
+  /* 保持原有的形状、字体和位置设定 */
+  border-radius: var(--bubble-radius) !important;
+  padding: 5px 10px !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  transform: translateY(3px) !important; /* 保留下调3px的效果 */
+}
+
+.message-bubble.right .content {
+  margin-left: auto !important;
+}
+
+.message-bubble .content p {
+  margin: 0 !important;
+}
+
+/* 隐藏原生气泡尖角 */
+.message-bubble .content::before,
+.message-bubble .content::after {
+  display: none !important;
+}
+
+/* 5. 系统信息 */
+.timestamp {
+  display: none !important;
+}
+
+.time-divider,
+.system-message {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: #c0c0c4 !important;
+  font-size: 11px !important;
+  padding: 2px 0 !important;
+  margin: 8px auto !important;
+}
+
+/* 6. 图标替换 */
+/* 6.1 顶栏：隐藏所有原图标，使用新图标，修复顶栏图标消失 */
+.header .back-btn,
+.header .action-btn {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  font-size: 0 !important;
+  color: transparent !important;
+  text-indent: -9999px !important;
+  position: relative !important;
+  width: 44px !important;
+  height: 44px !important;
+  min-width: 44px !important;
+  overflow: hidden !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.header .back-btn > *,
+.header .action-btn > *,
+.header .back-btn svg,
+.header .action-btn svg,
+.header .back-btn img,
+.header .action-btn img,
+.header .back-btn i,
+.header .action-btn i,
+.header .back-btn::before,
+.header .action-btn::before {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  content: '' !important;
+}
+
+.header .back-btn::after,
+.header .action-btn::after {
+  content: '' !important;
+  display: block !important;
+  position: absolute !important;
+  inset: 0 !important;
+  background-image: var(--icon-url) !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: 30px !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: none !important;
+}
+
+/* 长期记忆图标隐藏但保留点击 */
+#open-memory-screen-btn,
+#open-memory-screen-btn > *,
+#open-memory-screen-btn svg,
+#open-memory-screen-btn img,
+#open-memory-screen-btn i,
+#open-memory-screen-btn::before,
+#open-memory-screen-btn::after {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+#open-memory-screen-btn {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  position: absolute !important;
+  width: 44px !important;
+  height: 44px !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* 6.2 底栏：隐藏原图标，保留替换图标正常显示 */
+#chat-expand-btn,
+#send-btn {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  font-size: 0 !important;
+  color: transparent !important;
+  text-indent: -9999px !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+#chat-expand-btn > *,
+#send-btn > *,
+#chat-expand-btn svg,
+#send-btn svg,
+#chat-expand-btn img,
+#send-btn img,
+#chat-expand-btn i,
+#send-btn i,
+#chat-expand-btn::before,
+#send-btn::before {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  content: '' !important;
+}
+
+#chat-expand-btn::after,
+#send-btn::after {
+  content: '' !important;
+  display: block !important;
+  position: absolute !important;
+  inset: 0 !important;
+  background-image: var(--icon-url) !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: 30px !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: none !important;
+}
+
+/* 回复键维持底栏正常 */
+#wait-reply-btn {
+  all: unset !important;
+  display: block !important;
+  position: absolute !important;
+  right: 52px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: 30px !important;
+  height: 30px !important;
+  z-index: 99 !important;
+  cursor: pointer !important;
+  pointer-events: auto !important;
+}
+
+#wait-reply-btn > *,
+#wait-reply-btn svg,
+#wait-reply-btn img,
+#wait-reply-btn i,
+#wait-reply-btn::before {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  content: '' !important;
+}
+
+#wait-reply-btn::after {
+  content: '' !important;
+  display: block !important;
+  position: absolute !important;
+  inset: 0 !important;
+  background-image: var(--icon-url) !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: 24px !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: none !important;
+}
+
+/* 7. 底栏布局 */
+#chat-input-main-row {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  position: relative !important;
+}
+
+#chat-expand-btn {
+  display: block !important;
+  order: -1 !important;
+  width: 40px !important;
+  height: 40px !important;
+}
+
+#send-btn {
+  width: 40px !important;
+  height: 40px !important;
+  flex-shrink: 0 !important;
+}
+
+#chat-input {
+  background: var(--input-bg) !important;
+  color: var(--text-main) !important;
+  border: 1px solid var(--input-border) !important;
+  border-radius: 20px !important;
+  padding: 0 45px 0 16px !important;
+  min-height: 40px !important;
+  height: 40px !important;
+  flex-grow: 1 !important;
+}
+
+#chat-input::placeholder {
+  color: transparent !important;
+}
+
+/* 8. 悬浮菜单 */
+#chat-input-actions-top {
+  position: absolute !important;
+  bottom: calc(100% + 10px) !important;
+  left: 0 !important;
+  width: max-content !important;
+  padding: 10px !important;
+  background-color: rgba(247, 247, 247, 0.97) !important;
+  backdrop-filter: blur(18px) !important;
+  border-radius: 16px !important;
+  border: 1px solid var(--input-border) !important;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08) !important;
+  z-index: 300 !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+  transform: translateY(6px) scale(0.98) !important;
+  transition: all 0.22s ease !important;
+}
+
+#chat-input-area:has(#chat-expand-btn:hover) #chat-input-actions-top,
+#chat-input-actions-top:hover {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  visibility: visible !important;
+  transform: translateY(0) scale(1) !important;
+}
+
+#chat-input-actions-top .chat-action-icon-btn {
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 12px !important;
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  border: 1px solid rgba(0, 0, 0, 0.06) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+* {
+  caret-color: var(--text-main) !important;
+  outline: none !important;
+}
+  
