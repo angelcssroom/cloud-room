@@ -166,69 +166,28 @@ body{
   font-weight:430;
 }
 .preview-image-wrap{
-  position:relative;
-  isolation:isolate;
   margin-top:14px;
   width:100%;
+  height:min(560px,64vh);
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:#fff;
   overflow:hidden;
   display:flex;
   align-items:center;
   justify-content:center;
-  padding:12px;
-  border:1px solid var(--line);
-  border-radius:14px;
-  background:#f7f7f7;
   cursor:zoom-in;
 }
-.preview-image-wrap::before{
-  content:"";
-  position:absolute;
-  inset:-28px;
-  z-index:0;
-  background-image:var(--preview-bg,none);
-  background-size:cover;
-  background-position:center;
-  background-repeat:no-repeat;
-  filter:blur(30px) saturate(.72) brightness(1.02);
-  opacity:.26;
-  transform:scale(1.12);
-  pointer-events:none;
-}
-.preview-image-wrap::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  z-index:0;
-  background:rgba(255,255,255,.34);
-  pointer-events:none;
-}
 .preview-image-wrap img{
-  position:relative;
-  z-index:1;
   display:block;
   width:100%;
   height:100%;
   object-fit:contain;
   object-position:center;
-  border-radius:10px;
-  background:transparent;
-  filter:saturate(.97) brightness(1.01);
+  background:#fff;
 }
-.preview-image-wrap.ratio-tall{height:min(560px,64vh);}
-.preview-image-wrap.ratio-tall img{width:min(78%,340px);}
-.preview-image-wrap.ratio-square{height:min(430px,52vh);}
-.preview-image-wrap.ratio-square img{width:min(92%,430px);}
-.preview-image-wrap.ratio-wide{height:min(320px,40vh);}
-.preview-image-wrap.ratio-banner{height:min(250px,31vh);}
-.preview-image-wrap.ratio-regular{height:min(430px,52vh);}
 @media (max-width:480px){
-  .preview-image-wrap{padding:10px;}
-  .preview-image-wrap.ratio-tall{height:min(530px,60vh);}
-  .preview-image-wrap.ratio-tall img{width:min(82%,330px);}
-  .preview-image-wrap.ratio-square{height:min(390px,47vh);}
-  .preview-image-wrap.ratio-wide{height:min(285px,35vh);}
-  .preview-image-wrap.ratio-banner{height:min(225px,28vh);}
-  .preview-image-wrap.ratio-regular{height:min(390px,47vh);}
+  .preview-image-wrap{height:min(530px,60vh);}
 }
 .preview-missing{
   margin-top:14px;
@@ -324,13 +283,7 @@ textarea{
 .variant-slug{margin:5px 0 0;color:var(--muted);font-size:9.5px;line-height:1.4;}
 .variant-tag{flex:0 0 auto;padding:4px 8px;border-radius:999px;border:1px solid var(--line);background:#fbfbfb;color:#858a91;font-size:9.5px;font-weight:560;}
 .variant-card .preview-image-wrap,.variant-card .preview-missing{margin-top:11px;}
-.variant-card .preview-image-wrap{padding:9px;}
-.variant-card .preview-image-wrap.ratio-tall{height:min(500px,57vh);}
-.variant-card .preview-image-wrap.ratio-tall img{width:min(80%,300px);}
-.variant-card .preview-image-wrap.ratio-square{height:min(350px,42vh);}
-.variant-card .preview-image-wrap.ratio-wide{height:min(260px,31vh);}
-.variant-card .preview-image-wrap.ratio-banner{height:min(210px,25vh);}
-.variant-card .preview-image-wrap.ratio-regular{height:min(340px,40vh);}
+.variant-card .preview-image-wrap{height:min(500px,57vh);}
 .variant-card .action-row{margin-top:10px;}
 .variant-card .btn{min-height:34px;font-size:10.5px;}
 
@@ -566,20 +519,6 @@ function closeImageLightbox(event, force){
   document.body.style.overflow = '';
 }
 
-function fitPreviewFrame(img){
-  const wrap = img.closest('.preview-image-wrap');
-  if(!wrap || !img.naturalWidth || !img.naturalHeight) return;
-  wrap.classList.remove('ratio-tall','ratio-square','ratio-wide','ratio-banner','ratio-regular');
-  const ratio = img.naturalWidth / img.naturalHeight;
-  let cls = 'ratio-regular';
-  if(ratio <= 0.72) cls = 'ratio-tall';
-  else if(ratio <= 1.08) cls = 'ratio-square';
-  else if(ratio >= 1.9) cls = 'ratio-banner';
-  else if(ratio >= 1.35) cls = 'ratio-wide';
-  wrap.classList.add(cls);
-  wrap.style.setProperty('--preview-bg', `url("${img.src.replace(/"/g,'\"')}")`);
-}
-
 function previewFallback(img){
   const wrap = img.closest('.preview-image-wrap');
   if(!wrap) return;
@@ -599,7 +538,7 @@ function renderVariant(theme, query=''){
         ${colorTag ? `<span class="variant-tag">${highlightText(colorTag, query)}</span>` : ''}
       </div>
       ${theme.note ? `<div class="micro">${highlightText(theme.note, query)}</div>` : ''}
-      ${theme.previewFile ? `<div class="preview-image-wrap"><img src="${escapeHtml(theme.previewFile)}" alt="${escapeHtml(theme.title)} preview" loading="lazy" decoding="async" onload="fitPreviewFrame(this)" onerror="previewFallback(this)" onclick="openImageLightbox(this.src,this.alt)" /></div>` : `<div class="preview-missing">暂无预览</div>`}
+      ${theme.previewFile ? `<div class="preview-image-wrap"><img src="${escapeHtml(theme.previewFile)}" alt="${escapeHtml(theme.title)} preview" loading="lazy" decoding="async" onerror="previewFallback(this)" onclick="openImageLightbox(this.src,this.alt)" /></div>` : `<div class="preview-missing">暂无预览</div>`}
       <div class="action-row">
         <button class="btn copy" type="button" onclick="copyFile('${escapeHtml(theme.cssFile)}','wrap-${escapeHtml(theme.slug)}')">复制</button>
         <button class="btn open" type="button" onclick="previewFile('${escapeHtml(theme.cssFile)}','wrap-${escapeHtml(theme.slug)}','area-${escapeHtml(theme.slug)}')">代码</button>
@@ -625,7 +564,7 @@ function renderSingleTheme(theme, query, number){
       </div>
       ${tagsHtml ? `<div class="keywords">${tagsHtml}</div>` : ''}
       ${theme.note ? `<div class="micro">${highlightText(theme.note, query)}</div>` : ''}
-      ${theme.previewFile ? `<div class="preview-image-wrap"><img src="${escapeHtml(theme.previewFile)}" alt="${escapeHtml(theme.title)} preview" loading="lazy" decoding="async" onload="fitPreviewFrame(this)" onerror="previewFallback(this)" onclick="openImageLightbox(this.src,this.alt)" /></div>` : `<div class="preview-missing">暂无预览</div>`}
+      ${theme.previewFile ? `<div class="preview-image-wrap"><img src="${escapeHtml(theme.previewFile)}" alt="${escapeHtml(theme.title)} preview" loading="lazy" decoding="async" onerror="previewFallback(this)" onclick="openImageLightbox(this.src,this.alt)" /></div>` : `<div class="preview-missing">暂无预览</div>`}
       <div class="action-row">
         <button class="btn copy" type="button" onclick="copyFile('${escapeHtml(theme.cssFile)}','wrap-${escapeHtml(theme.slug)}')">复制</button>
         <button class="btn open" type="button" onclick="previewFile('${escapeHtml(theme.cssFile)}','wrap-${escapeHtml(theme.slug)}','area-${escapeHtml(theme.slug)}')">代码</button>
