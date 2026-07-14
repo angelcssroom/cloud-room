@@ -503,6 +503,28 @@ const newDays = 7;
 const FAVORITES_KEY = 'cloudRoomFavoritesV1';
 const roomLabel = 'Bunny Room';
 
+/*
+  系列规则：
+  1. info 文件写了 series: 才按 series 合并。
+  2. 旧主题只允许进入下面这个“精确白名单”。
+  3. 禁止再根据共同前缀自动判断，避免两个不同主题被误套成同一系列。
+*/
+const LEGACY_SERIES_BY_SLUG = typePrefix === 'cross'
+  ? {
+      'mamegoma-yellow': 'mamegoma',
+      'mamegoma-blue': 'mamegoma',
+      'mamegoma-purple': 'mamegoma',
+      'mamegoma-pink': 'mamegoma',
+      'mamegoma-black': 'mamegoma'
+    }
+  : {};
+
+function resolvedSeriesName(theme){
+  const explicit = String(theme.series || '').trim();
+  if(explicit) return explicit;
+  return LEGACY_SERIES_BY_SLUG[String(theme.slug || '').toLowerCase()] || '';
+}
+
 const themeList = document.getElementById('themeList');
 const search = document.getElementById('themeSearch');
 const count = document.getElementById('resultCount');
@@ -581,6 +603,7 @@ function toggleFavorite(slug){
     cssFile: theme.cssFile,
     previewFile: theme.previewFile || '',
     wallpaper: theme.wallpaper || '',
+    series: resolvedSeriesName(theme),
     savedAt: Date.now()
   });
 
@@ -647,25 +670,46 @@ function parseInfo(text, slug){
 }
 function buildGroups(allThemes){
   const map = new Map();
+
   allThemes.forEach(theme => {
-    const series = String(theme.series || '').trim();
-    const key = series ? 'series:' + series : 'theme:' + theme.slug;
-    if(!map.has(key)) map.set(key, []);
-    map.get(key).push(theme);
+    const seriesName = resolvedSeriesName(theme);
+    const key = seriesName
+      ? 'series:' + seriesName
+      : 'theme:' + theme.slug;
+
+    if(!map.has(key)){
+      map.set(key, {
+        seriesName,
+        items:[]
+      });
+    }
+
+    map.get(key).items.push(theme);
   });
-  return [...map.entries()].map(([key, items]) => {
-    items.sort((a,b) => (b.updatedAt || 0) - (a.updatedAt || 0) || a.title.localeCompare(b.title, 'zh-CN'));
-    const seriesName = String(items[0].series || '').trim();
+
+  return [...map.entries()].map(([key, group]) => {
+    const items = group.items;
+
+    items.sort((a,b) =>
+      (b.updatedAt || 0) - (a.updatedAt || 0) ||
+      a.title.localeCompare(b.title, 'zh-CN')
+    );
+
+    const isSeries = Boolean(group.seriesName) && items.length > 1;
+
     return {
       base:key,
       items,
-      isSeries: !!seriesName && items.length > 1,
-      title: seriesName && items.length > 1 ? seriesName : items[0].title,
+      isSeries,
+      title:isSeries ? group.seriesName : items[0].title,
       author:items[0].author,
-      updatedAt:Math.max(...items.map(x => x.updatedAt || 0)),
-      searchText:items.map(x => x.searchText).join(' ')
+      updatedAt:Math.max(...items.map(item => item.updatedAt || 0)),
+      searchText:items.map(item => item.searchText).join(' ')
     };
-  }).sort((a,b) => (b.updatedAt || 0) - (a.updatedAt || 0) || a.title.localeCompare(b.title, 'zh-CN'));
+  }).sort((a,b) =>
+    (b.updatedAt || 0) - (a.updatedAt || 0) ||
+    a.title.localeCompare(b.title, 'zh-CN')
+  );
 }
 function isNew(ts){
   return !!ts && (Date.now() - ts) <= newDays * 86400000;
