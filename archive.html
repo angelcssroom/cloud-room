@@ -437,25 +437,27 @@ textarea{
 
 
 .btn.favorite-toggle{
-  flex:0 0 36px;
-  width:36px;
-  min-width:36px;
+  flex:0 0 30px;
+  width:30px;
+  min-width:30px;
+  min-height:36px;
   padding:0;
   border:1px solid var(--line);
   background:#ffffff;
-  color:#9a9a9e;
-  font-size:16px;
-  font-weight:430;
+  color:#aaaeb4;
+  font-family:"Times New Roman","Noto Serif Symbols",serif;
+  font-size:14px;
+  font-weight:400;
   line-height:1;
   transition:color .16s ease,border-color .16s ease,transform .16s ease,background .16s ease;
 }
 .btn.favorite-toggle.is-saved{
   color:#202022;
-  border-color:#d1d1d4;
-  background:#ffffff;
+  border-color:#cfcfd2;
+  background:#fafafa;
 }
 .btn.favorite-toggle:active{
-  transform:scale(.92);
+  transform:scale(.9);
 }
 
 </style>
@@ -537,7 +539,7 @@ function favoriteButton(theme){
     data-slug="${escapeHtml(theme.slug)}"
     aria-label="${saved ? '取消收藏' : '收藏主题'}"
     aria-pressed="${saved ? 'true' : 'false'}"
-    onclick="toggleFavorite(this.dataset.slug)">${saved ? '♥' : '♡'}</button>`;
+    onclick="toggleFavorite(this.dataset.slug)">✝︎</button>`;
 }
 
 function syncFavoriteButtons(){
@@ -545,7 +547,7 @@ function syncFavoriteButtons(){
   document.querySelectorAll('.favorite-toggle[data-favorite-key]').forEach(button => {
     const saved = savedKeys.has(button.dataset.favoriteKey);
     button.classList.toggle('is-saved', saved);
-    button.textContent = saved ? '♥' : '♡';
+    button.textContent = '✝︎';
     button.setAttribute('aria-label', saved ? '取消收藏' : '收藏主题');
     button.setAttribute('aria-pressed', saved ? 'true' : 'false');
   });
@@ -709,9 +711,9 @@ function renderVariant(theme, query=''){
       ${theme.note ? `<div class="micro">${highlightText(theme.note, query)}</div>` : ''}
       ${theme.previewFile ? `<div class="preview-image-wrap"><img src="${escapeHtml(theme.previewFile)}" alt="${escapeHtml(theme.title)} preview" loading="lazy" decoding="async" onerror="previewFallback(this)" onclick="openImageLightbox(this.src,this.alt)" /></div>` : `<div class="preview-missing">暂无预览</div>`}
       <div class="action-row">
-        ${favoriteButton(theme)}
         <button class="btn copy" type="button" data-css-file="${escapeHtml(theme.cssFile)}" ${cssTextCache.has(theme.cssFile) ? '' : 'disabled'} onclick="copyFile('${escapeHtml(theme.cssFile)}','wrap-${escapeHtml(theme.slug)}')">${cssTextCache.has(theme.cssFile) ? '复制' : '载入中'}</button>
         <button class="btn open" type="button" onclick="previewFile('${escapeHtml(theme.cssFile)}','wrap-${escapeHtml(theme.slug)}','area-${escapeHtml(theme.slug)}')">代码</button>
+        ${favoriteButton(theme)}
         ${wallpaperBtn}
       </div>
       <div class="code-wrap" id="wrap-${escapeHtml(theme.slug)}">
@@ -736,9 +738,9 @@ function renderSingleTheme(theme, query, number){
       ${theme.note ? `<div class="micro">${highlightText(theme.note, query)}</div>` : ''}
       ${theme.previewFile ? `<div class="preview-image-wrap"><img src="${escapeHtml(theme.previewFile)}" alt="${escapeHtml(theme.title)} preview" loading="lazy" decoding="async" onerror="previewFallback(this)" onclick="openImageLightbox(this.src,this.alt)" /></div>` : `<div class="preview-missing">暂无预览</div>`}
       <div class="action-row">
-        ${favoriteButton(theme)}
         <button class="btn copy" type="button" data-css-file="${escapeHtml(theme.cssFile)}" ${cssTextCache.has(theme.cssFile) ? '' : 'disabled'} onclick="copyFile('${escapeHtml(theme.cssFile)}','wrap-${escapeHtml(theme.slug)}')">${cssTextCache.has(theme.cssFile) ? '复制' : '载入中'}</button>
         <button class="btn open" type="button" onclick="previewFile('${escapeHtml(theme.cssFile)}','wrap-${escapeHtml(theme.slug)}','area-${escapeHtml(theme.slug)}')">代码</button>
+        ${favoriteButton(theme)}
         ${wallpaperBtn}
       </div>
       <div class="code-wrap" id="wrap-${escapeHtml(theme.slug)}">
