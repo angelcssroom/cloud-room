@@ -1177,6 +1177,145 @@ button:focus-visible,
   .organizer-tools button{font-size:7px}
 }
 
+
+/* Bubble Studio：只新增一个独立入口，不改动原有区域。 */
+.bubble-studio-entry{
+  position:relative;
+  width:min(88%,500px);
+  margin:0 auto 72px;
+  padding:18px 19px 17px;
+  border:1px solid #e8e8ea;
+  border-radius:24px 9px 24px 9px;
+  background:#fff;
+  box-shadow:0 14px 38px rgba(0,0,0,.032);
+  overflow:hidden;
+}
+.bubble-studio-entry::before{
+  content:"";
+  position:absolute;
+  right:-34px;
+  top:-54px;
+  width:138px;
+  height:138px;
+  border:1px solid #eeeeef;
+  border-radius:50%;
+  pointer-events:none;
+}
+.bubble-studio-entry::after{
+  content:"";
+  position:absolute;
+  right:29px;
+  top:20px;
+  width:5px;
+  height:5px;
+  border:1px solid #d8d8db;
+  border-radius:50%;
+  background:#fff;
+  box-shadow:13px 8px 0 -1px #fff,13px 8px 0 0 #e4e4e6;
+  pointer-events:none;
+}
+.studio-entry-top{
+  position:relative;
+  z-index:1;
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:24px;
+}
+.studio-entry-copy{min-width:0}
+.studio-entry-kicker{
+  display:block;
+  margin-bottom:8px;
+  color:#a2a2a7;
+  font:6px/1 var(--mono);
+  letter-spacing:.22em;
+  text-transform:uppercase;
+}
+.bubble-studio-entry h2{
+  margin:0;
+  font-size:13px;
+  line-height:1.25;
+  font-weight:570;
+  letter-spacing:-.02em;
+}
+.studio-entry-description{
+  max-width:310px;
+  margin:8px 0 0;
+  color:#8d8d92;
+  font-size:8px;
+  line-height:1.75;
+}
+.studio-entry-theme{
+  position:relative;
+  z-index:1;
+  display:grid;
+  grid-template-columns:1fr auto;
+  align-items:center;
+  gap:16px;
+  margin-top:15px;
+  padding-top:13px;
+  border-top:1px solid #efeff0;
+}
+.studio-theme-name{
+  display:flex;
+  align-items:center;
+  min-width:0;
+  gap:10px;
+}
+.studio-theme-mark{
+  width:25px;
+  height:25px;
+  flex:none;
+  border:1px solid #dedee1;
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 36% 36%,#f7f7f8 0 15%,transparent 16%),
+    linear-gradient(135deg,#202126 0 48%,#173fd3 49% 100%);
+  box-shadow:inset 0 0 0 5px #fff;
+}
+.studio-theme-text{min-width:0}
+.studio-theme-text strong{
+  display:block;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  color:#3f3f44;
+  font-size:9px;
+  line-height:1.35;
+  font-weight:570;
+}
+.studio-theme-text span{
+  display:block;
+  margin-top:2px;
+  color:#aaaab0;
+  font:5.5px/1.4 var(--mono);
+  letter-spacing:.11em;
+  text-transform:uppercase;
+}
+.studio-open{
+  min-width:82px;
+  height:31px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:0 13px;
+  border:1px solid #dedee1;
+  border-radius:999px;
+  background:#fff;
+  color:#69696e;
+  text-decoration:none;
+  font-size:7.5px;
+  transition:transform .18s ease,background .18s ease,border-color .18s ease;
+}
+.studio-open:active{transform:scale(.97);background:#f7f7f8;border-color:#d4d4d7}
+@media(max-width:440px){
+  .bubble-studio-entry{width:86%;margin-bottom:64px;padding:16px 15px 15px}
+  .studio-entry-top{gap:15px}
+  .studio-entry-description{max-width:230px;font-size:7px}
+  .studio-entry-theme{gap:10px}
+  .studio-open{min-width:74px;padding:0 10px;font-size:7px}
+}
+
 </style>
 </head>
 <body>
@@ -1255,6 +1394,27 @@ button:focus-visible,
     </div>
   </section>
 
+
+
+  <section class="bubble-studio-entry reveal-zone" aria-label="Bubble Studio 调色入口">
+    <div class="studio-entry-top">
+      <div class="studio-entry-copy">
+        <span class="studio-entry-kicker">bubble studio / 01 available</span>
+        <h2>气泡调色室</h2>
+        <p class="studio-entry-description">为当前开放的主题调整双方气泡颜色与质感。编辑将在独立页面完成，不占用收藏页空间。</p>
+      </div>
+    </div>
+    <div class="studio-entry-theme">
+      <div class="studio-theme-name">
+        <span class="studio-theme-mark" aria-hidden="true"></span>
+        <span class="studio-theme-text">
+          <strong>夜间飞行</strong>
+          <span>open studio</span>
+        </span>
+      </div>
+      <a class="studio-open" href="bubble-studio.html">进入调色 →</a>
+    </div>
+  </section>
 
   <section class="archive-console tools reveal-zone" id="archiveConsole" aria-label="收藏控制区">
     <div class="console-count"><strong id="consoleCount">0</strong><span>COLLECTION</span></div>
