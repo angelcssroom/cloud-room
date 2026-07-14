@@ -1,0 +1,2832 @@
+/*
+Theme: 夜间飞行
+气泡尾巴: 秩
+Author: 天使
+Source: -ee
+整理: 喵个弥
+菜单: 愫
+*/
+
+/* 顶栏 */
+#chat-interface-screen > .header {
+    position: relative !important;
+    z-index: 50 !important;
+    width: 100% !important;
+    min-height: calc(38px + env(safe-area-inset-top)) !important;
+    height: calc(38px + env(safe-area-inset-top)) !important;
+    padding: env(safe-area-inset-top) 14px 0 !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    background: #FFFFFF !important;
+    background-color: #FFFFFF !important;
+    border: none !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    overflow: visible !important;}
+
+#chat-interface-screen:not(.selection-mode) > .header .default-controls {
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    height: 38px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+    transform: translateY(-5px) !important;
+    overflow: visible !important;}
+
+#chat-interface-screen:not(.selection-mode) > .header .header-left-actions {
+    position: relative !important;
+    z-index: 10 !important;
+    display: flex !important;
+    align-items: center !important;
+    min-width: 42px !important;
+    height: 38px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    flex-shrink: 0 !important;}
+
+#chat-interface-screen:not(.selection-mode) > .header .header-actions {
+    position: relative !important;
+    z-index: 20 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    min-width: 67px !important;
+    height: 38px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    gap: 11px !important;
+    flex-shrink: 0 !important;
+    overflow: visible !important;}
+
+#chat-header-title-wrapper {
+    position: absolute !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: auto !important;
+    max-width: 56% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    gap: 0 !important;
+    pointer-events: none !important;
+    z-index: 2 !important;}
+
+#chat-header-title,
+#chat-header-title * {
+    position: static !important;
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: none !important;
+    color: #111111 !important;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "PingFang SC", "Helvetica Neue", sans-serif !important;
+    font-size: 16px !important;
+    line-height: 1.15 !important;
+    font-weight: 500 !important;
+    letter-spacing: 0 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;}
+
+#chat-header-status,
+#chat-header-status *,
+#chat-header-title-wrapper #chat-header-status,
+#chat-header-title-wrapper .status-dot,
+#chat-header-title-wrapper .status-text {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    gap: 0 !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    overflow: hidden !important;
+    pointer-events: none !important;}
+
+#chat-interface-screen:not(.selection-mode) > .header .back-btn,
+#chat-interface-screen:not(.selection-mode) > .header .action-btn {
+    position: relative !important;
+    width: 28px !important;
+    min-width: 28px !important;
+    max-width: 28px !important;
+    height: 28px !important;
+    min-height: 28px !important;
+    max-height: 28px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    color: transparent !important;
+    font-size: 0 !important;
+    line-height: 0 !important;
+    overflow: visible !important;
+    cursor: pointer !important;
+    flex-shrink: 0 !important;
+    -webkit-tap-highlight-color: transparent !important;
+    touch-action: manipulation !important;}
+
+#chat-interface-screen:not(.selection-mode) > .header .back-btn {
+    margin-left: -6px !important;}
+
+#chat-interface-screen:not(.selection-mode) > .header .back-btn img,
+#chat-interface-screen:not(.selection-mode) > .header .back-btn svg,
+#chat-interface-screen:not(.selection-mode) > .header .back-btn span,
+#chat-interface-screen:not(.selection-mode) > .header .action-btn img,
+#chat-interface-screen:not(.selection-mode) > .header .action-btn svg,
+#chat-interface-screen:not(.selection-mode) > .header .action-btn span {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    font-size: 0 !important;
+    color: transparent !important;}
+
+#chat-interface-screen:not(.selection-mode) > .header .back-btn::before {
+    content: "" !important;
+    display: block !important;
+    width: 16px !important;
+    height: 16px !important;
+    background-image: url("https://i.postimg.cc/5twQk0Yw/IMG-3392.png") !important;
+    background-size: contain !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    pointer-events: none !important;}
+
+#chat-interface-screen:not(.selection-mode) > .header #listen-together-btn::before {
+    content: "" !important;
+    display: block !important;
+    width: 17px !important;
+    height: 17px !important;
+    background-image: url("https://i.postimg.cc/JnMHwLZN/IMG-3393.png") !important;
+    background-size: contain !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    pointer-events: none !important;}
+
+#chat-interface-screen:not(.selection-mode) > .header #chat-settings-btn::before {
+    content: "" !important;
+    display: block !important;
+    width: 18px !important;
+    height: 18px !important;
+    background-image: url("https://i.postimg.cc/vmR6z9BH/IMG-3394.png") !important;
+    background-size: contain !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    pointer-events: none !important;}
+
+#chat-interface-screen:not(.selection-mode) > .header #open-memory-screen-btn {
+    position: absolute !important;
+    right: 78px !important;
+    top: 5px !important;
+    z-index: 40 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 28px !important;
+    min-width: 28px !important;
+    max-width: 28px !important;
+    height: 28px !important;
+    min-height: 28px !important;
+    max-height: 28px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    opacity: 0 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    cursor: pointer !important;
+    overflow: hidden !important;
+    -webkit-tap-highlight-color: transparent !important;
+    touch-action: manipulation !important;}
+
+#chat-interface-screen:not(.selection-mode) > .header #open-memory-screen-btn::before,
+#chat-interface-screen:not(.selection-mode) > .header #open-memory-screen-btn::after,
+#chat-interface-screen:not(.selection-mode) > .header #open-memory-screen-btn img,
+#chat-interface-screen:not(.selection-mode) > .header #open-memory-screen-btn svg,
+#chat-interface-screen:not(.selection-mode) > .header #open-memory-screen-btn span {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;}
+
+#chat-interface-screen.selection-mode > .header .default-controls {
+    display: none !important;}
+
+#chat-interface-screen.selection-mode > .header .selection-controls {
+    display: flex !important;}
+
+#phone-screen.dark-mode #chat-interface-screen > .header {
+    background: #FFFFFF !important;
+    background-color: #FFFFFF !important;
+    border: none !important;
+    border-bottom: none !important;
+    box-shadow: none !important;}
+
+/* 底栏 */
+:root {
+    --bottom-bar-bg: #FFFFFF;
+    --bottom-input-bg: #FFFFFF;
+    --bottom-input-border: #ECECEC;
+    --bottom-input-text: #4A4A4A;
+    --bottom-plus-color: #000000;
+    --bottom-input-height: 36px;
+    --bottom-input-max-height: 76px;
+    --bottom-smile-size: 21px;
+    --bottom-send-button-size: 26px;
+    --bottom-send-icon-size: 12px;}
+
+#chat-input-area {
+    position: relative !important;
+    z-index: 100 !important;
+    width: 100% !important;
+    flex-shrink: 0 !important;
+    padding-top: 7px !important;
+    padding-right: 9px !important;
+    padding-bottom: calc(7px + env(safe-area-inset-bottom)) !important;
+    padding-left: 55px !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0 !important;
+    background: var(--bottom-bar-bg) !important;
+    background-color: var(--bottom-bar-bg) !important;
+    border: none !important;
+    border-top: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    overflow: visible !important;}
+
+#chat-input-actions-top {
+    position: absolute !important;
+    left: 10px !important;
+    bottom: 35px !important;
+    z-index: 1000 !important;
+    width: 35px !important;
+    height: 35px !important;
+    pointer-events: none !important;
+    transition: all 0.3s ease !important;}
+
+#chat-input-actions-top::before {
+    content: '+' !important;
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 35px !important;
+    height: 35px !important;
+    background-color: transparent !important;
+    border: none !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 30px !important;
+    line-height: 35px !important;
+    font-weight: 200 !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif !important;
+    color: var(--bottom-plus-color) !important;
+    cursor: pointer !important;
+    pointer-events: auto !important;
+    z-index: 1001 !important;
+    transition: all 0.3s ease !important;
+    box-shadow: none !important;
+    -webkit-tap-highlight-color: transparent !important;
+    touch-action: manipulation !important;}
+
+#chat-input-actions-top .chat-action-icon-btn {
+    display: none !important;
+    opacity: 0 !important;
+    transform: scale(0.8) !important;
+    transition: all 0.3s ease !important;
+    pointer-events: none !important;}
+
+#chat-input-actions-top.menu-open,
+#chat-input-actions-top:hover {
+    width: auto !important;
+    min-width: 280px !important;
+    max-width: 90vw !important;
+    height: auto !important;
+    background: #FFFFFF !important;
+    border-radius: 12px !important;
+    padding: 12px !important;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12) !important;
+    pointer-events: auto !important;
+    left: 10px !important;
+    bottom: 35px !important;
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 8px !important;
+    border: 1px solid #E0E0E0 !important;
+    align-items: start !important;}
+
+#chat-input-actions-top.menu-open::after,
+#chat-input-actions-top:hover::after {
+    content: '' !important;
+    grid-column: 1 !important;
+    width: 35px !important;
+    height: 35px !important;
+    background: transparent !important;
+    pointer-events: none !important;
+    visibility: hidden !important;}
+
+#chat-input-actions-top:hover::before {
+    opacity: 0 !important;
+    pointer-events: none !important;}
+
+#chat-input-actions-top.menu-open .chat-action-icon-btn,
+#chat-input-actions-top:hover .chat-action-icon-btn {
+    display: flex !important;
+    opacity: 1 !important;
+    transform: scale(1) !important;
+    pointer-events: auto !important;
+    width: 100% !important;
+    height: 32px !important;
+    min-width: auto !important;
+    padding: 0 10px 0 30px !important;
+    background: #F8F9FA !important;
+    border: 1px solid #E9ECEF !important;
+    border-radius: 6px !important;
+    font-size: 12px !important;
+    font-weight: 500 !important;
+    color: #495057 !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    cursor: pointer !important;
+    position: relative !important;
+    transition: all 0.2s ease !important;
+    margin: 0 !important;
+    z-index: 1002 !important;}
+
+#chat-input-actions-top .chat-action-icon-btn:hover {
+    background: #E9ECEF !important;
+    border-color: #DEE2E6 !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;}
+
+#chat-input-actions-top .chat-action-icon-btn [class*="icon"] {
+    position: absolute !important;
+    left: 8px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    width: 16px !important;
+    height: 16px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;}
+
+#reroll-btn {
+    display: none !important;
+    opacity: 0 !important;}
+
+#chat-input-actions-top.menu-open #reroll-btn,
+#chat-input-actions-top:hover #reroll-btn {
+    display: flex !important;
+    opacity: 1 !important;
+    position: relative !important;
+    width: 100% !important;
+    height: 32px !important;
+    min-width: auto !important;
+    padding: 0 10px 0 30px !important;
+    background: #F8F9FA !important;
+    border: 1px solid #E9ECEF !important;
+    border-radius: 6px !important;
+    font-size: 10px !important;
+    font-weight: 500 !important;
+    color: #171717 !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    margin: 0 !important;
+    z-index: 1002 !important;}
+
+#chat-input-actions-top.menu-open .chat-action-icon-btn [class*="icon"],
+#chat-input-actions-top:hover .chat-action-icon-btn [class*="icon"] {
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;}
+
+#chat-input-actions-top.menu-open .chat-action-icon-btn svg,
+#chat-input-actions-top:hover .chat-action-icon-btn svg {
+    display: block !important;
+    width: 16px !important;
+    height: 16px !important;}
+
+@media (max-width: 480px) {
+    #chat-input-actions-top.menu-open,
+    #chat-input-actions-top:hover {
+        grid-template-columns: repeat(2, 1fr) !important;
+        min-width: 200px !important;
+    }
+}
+
+@media (min-width: 768px) {
+    #chat-input-actions-top.menu-open,
+    #chat-input-actions-top:hover {
+        grid-template-columns: repeat(4, 1fr) !important;
+        min-width: 320px !important;
+    }
+}
+
+#chat-input-main-row {
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+    min-height: var(--bottom-input-height) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    gap: 0 !important;
+    box-sizing: border-box !important;
+    flex-shrink: 0 !important;}
+
+#chat-expand-btn {
+    display: none !important;}
+
+#chat-input {
+    position: relative !important;
+    flex: 1 1 auto !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: var(--bottom-input-height) !important;
+    min-height: var(--bottom-input-height) !important;
+    max-height: var(--bottom-input-max-height) !important;
+    margin: 0 !important;
+    padding-top: 7px !important;
+    padding-right: 68px !important;
+    padding-bottom: 7px !important;
+    padding-left: 14px !important;
+    box-sizing: border-box !important;
+    background: var(--bottom-input-bg) !important;
+    background-color: var(--bottom-input-bg) !important;
+    border: 1px solid var(--bottom-input-border) !important;
+    border-radius: 999px !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.96), 0 1px 3px rgba(0,0,0,0.03) !important;
+    outline: none !important;
+    color: var(--bottom-input-text) !important;
+    -webkit-text-fill-color: var(--bottom-input-text) !important;
+    caret-color: #929292 !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC", "Noto Sans CJK SC", Arial, sans-serif !important;
+    font-size: 16px !important;
+    line-height: 20px !important;
+    font-weight: 400 !important;
+    letter-spacing: 0 !important;
+    resize: none !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    white-space: pre-wrap !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+    scrollbar-width: none !important;
+    overscroll-behavior-y: contain !important;
+    -webkit-overflow-scrolling: touch !important;
+    -webkit-tap-highlight-color: transparent !important;
+    transform: none !important;
+    zoom: 1 !important;
+    text-size-adjust: 100% !important;
+    -webkit-text-size-adjust: 100% !important;}
+
+#chat-input::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;}
+
+#chat-input:focus {
+    background: #FFFFFF !important;
+    background-color: #FFFFFF !important;
+    border-color: #E8E8E8 !important;
+    outline: none !important;
+    color: var(--bottom-input-text) !important;
+    -webkit-text-fill-color: var(--bottom-input-text) !important;
+    transform: none !important;
+    zoom: 1 !important;}
+
+#chat-input::placeholder {
+    color: transparent !important;
+    -webkit-text-fill-color: transparent !important;
+    opacity: 0 !important;}
+
+#input-actions-wrapper {
+    position: absolute !important;
+    right: 5px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 7px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    flex-shrink: 0 !important;
+    z-index: 20 !important;
+    pointer-events: auto !important;}
+
+#wait-reply-btn,
+#send-btn {
+    position: relative !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    color: transparent !important;
+    font-size: 0 !important;
+    line-height: 0 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    overflow: visible !important;
+    pointer-events: auto !important;
+    cursor: pointer !important;
+    flex-shrink: 0 !important;
+    -webkit-tap-highlight-color: transparent !important;
+    touch-action: manipulation !important;}
+
+#wait-reply-btn {
+    width: 24px !important;
+    min-width: 24px !important;
+    max-width: 24px !important;
+    height: 24px !important;
+    min-height: 24px !important;
+    max-height: 24px !important;
+    border-radius: 0 !important;}
+
+#send-btn {
+    width: var(--bottom-send-button-size) !important;
+    min-width: var(--bottom-send-button-size) !important;
+    max-width: var(--bottom-send-button-size) !important;
+    height: var(--bottom-send-button-size) !important;
+    min-height: var(--bottom-send-button-size) !important;
+    max-height: var(--bottom-send-button-size) !important;
+    border-radius: 50% !important;
+    text-indent: -9999px !important;}
+
+#wait-reply-btn img,
+#wait-reply-btn svg,
+#wait-reply-btn span,
+#send-btn img,
+#send-btn svg,
+#send-btn span {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    font-size: 0 !important;
+    color: transparent !important;
+    pointer-events: none !important;}
+
+#wait-reply-btn::before {
+    content: "" !important;
+    display: block !important;
+    width: var(--bottom-smile-size) !important;
+    height: var(--bottom-smile-size) !important;
+    background-image: url("https://i.postimg.cc/R01gmv6b/IMG-3387.png") !important;
+    background-size: contain !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    opacity: 1 !important;
+    pointer-events: none !important;}
+
+#send-btn::before {
+    content: "" !important;
+    position: absolute !important;
+    inset: 0 !important;
+    display: block !important;
+    border-radius: 50% !important;
+    background: #D9D9D9 !important;
+    background-color: #D9D9D9 !important;
+    border: 1px solid #C7C7C7 !important;
+    box-shadow: none !important;
+    pointer-events: none !important;
+    text-indent: 0 !important;
+}
+
+#send-btn::after {
+    content: "" !important;
+    position: absolute !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    display: block !important;
+    width: var(--bottom-send-icon-size) !important;
+    height: var(--bottom-send-icon-size) !important;
+    background-image: url("https://i.postimg.cc/yNhLK7gQ/IMG-3388.png") !important;
+    background-size: contain !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    pointer-events: none !important;
+    text-indent: 0 !important;}
+
+#wait-reply-btn:active {
+    transform: scale(0.93) !important;}
+
+#send-btn:active {
+    transform: scale(0.94) !important;}
+
+#phone-screen.dark-mode #chat-input-area,
+#phone-screen.dark-mode #chat-input {
+    background: #FFFFFF !important;
+    background-color: #FFFFFF !important;}
+
+#phone-screen.dark-mode #chat-input-area {
+    border: none !important;
+    border-top: none !important;
+    box-shadow: none !important;}
+
+#phone-screen.dark-mode #chat-input {
+    border-color: var(--bottom-input-border) !important;
+    color: var(--bottom-input-text) !important;
+    -webkit-text-fill-color: var(--bottom-input-text) !important;}
+
+#phone-screen.dark-mode #chat-input::placeholder {
+    color: transparent !important;
+    -webkit-text-fill-color: transparent !important;
+    opacity: 0 !important;}
+
+#phone-screen.dark-mode #wait-reply-btn,
+#phone-screen.dark-mode #send-btn {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;}
+
+/* 头像与连续消息 */
+:root {
+    --user-chat-avatar: url("");
+    --user-avatar-size: 58px;
+    --user-avatar-space: 52px;
+    --continuous-message-gap: 8px;
+    --message-time-size: 9px;}
+
+#chat-messages .message-wrapper.user {
+    position: relative !important;
+    overflow: visible !important;
+    transform: translate(5px, 6px) !important;}
+
+#chat-messages .message-wrapper.user .message-bubble {
+    position: relative !important;
+    padding-right: var(--user-avatar-space) !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;}
+
+#chat-messages .message-wrapper.user .avatar-group,
+#chat-messages .message-wrapper.user .message-bubble > .avatar {
+    position: absolute !important;
+    right: -10px !important;
+    top: -40px !important;
+    bottom: auto !important;
+    z-index: 10 !important;
+    width: var(--user-avatar-size) !important;
+    min-width: var(--user-avatar-size) !important;
+    max-width: var(--user-avatar-size) !important;
+    height: var(--user-avatar-size) !important;
+    min-height: var(--user-avatar-size) !important;
+    max-height: var(--user-avatar-size) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    pointer-events: none !important;
+    transform: translate(-5px, -6px) !important;}
+
+#chat-messages .message-wrapper.user .avatar-group .avatar,
+#chat-messages .message-wrapper.user .avatar-group .avatar-img,
+#chat-messages .message-wrapper.user .avatar-group .avatar-frame,
+#chat-messages .message-wrapper.user .avatar-group .avatar-with-frame {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;}
+
+#chat-messages .message-wrapper.user .avatar-group::before {
+    content: "" !important;
+    position: absolute !important;
+    inset: 0 !important;
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    background-image: var(--user-chat-avatar) !important;
+    background-size: contain !important;
+    background-position: center bottom !important;
+    background-repeat: no-repeat !important;
+    border: none !important;
+    border-radius: 0 !important;
+    pointer-events: none !important;}
+
+#chat-messages .message-wrapper.user .message-bubble > .avatar {
+    background-color: transparent !important;
+    background-image: var(--user-chat-avatar) !important;
+    background-size: contain !important;
+    background-position: center bottom !important;
+    background-repeat: no-repeat !important;
+    border: none !important;
+    border-radius: 0 !important;
+    object-position: -9999px -9999px !important;
+    color: transparent !important;}
+
+#chat-messages .message-wrapper.user:first-child,
+#chat-messages .message-wrapper:not(.user) + .message-wrapper.user {
+    margin-top: 34px !important;}
+
+#chat-messages .message-wrapper.user + .message-wrapper.user,
+#chat-messages .message-wrapper.ai + .message-wrapper.ai {
+    margin-top: calc(var(--continuous-message-gap) - 20px) !important;}
+
+#chat-messages .message-wrapper.user + .message-wrapper.user .message-bubble {
+    padding-right: var(--user-avatar-space) !important;}
+
+#chat-messages .message-wrapper.user + .message-wrapper.user .avatar-group,
+#chat-messages .message-wrapper.user + .message-wrapper.user .message-bubble > .avatar {
+    display: none !important;}
+
+#chat-messages .message-wrapper.user + .message-wrapper.user .sender-name,
+#chat-messages .message-wrapper.ai + .message-wrapper.ai .sender-name {
+    display: none !important;}
+
+#chat-messages .message-wrapper.ai .avatar,
+#chat-messages .message-wrapper.ai .avatar-with-frame,
+#chat-messages .message-wrapper.ai .avatar-with-frame .avatar-img {
+    width: 34px !important;
+    height: 34px !important;
+    object-fit: cover !important;
+    border-radius: 42% 42% 38% 38% / 36% 36% 44% 44% !important;}
+
+#chat-messages .message-wrapper.ai .avatar,
+#chat-messages .message-wrapper.ai .avatar-with-frame {
+    border: 1px solid #D8D8D8 !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+    background: #FFFFFF !important;}
+
+#chat-messages .message-wrapper.ai .avatar-group {
+    width: 34px !important;
+    flex: 0 0 34px !important;}
+
+#chat-messages .message-wrapper.ai .avatar-frame {
+    display: none !important;}
+
+#chat-messages .message-wrapper.ai + .message-wrapper.ai .avatar-group .avatar,
+#chat-messages .message-wrapper.ai + .message-wrapper.ai .avatar-group .avatar-img,
+#chat-messages .message-wrapper.ai + .message-wrapper.ai .avatar-group .avatar-frame,
+#chat-messages .message-wrapper.ai + .message-wrapper.ai .avatar-group .avatar-with-frame,
+#chat-messages .message-wrapper.ai + .message-wrapper.ai .message-bubble > .avatar {
+    opacity: 0 !important;
+    visibility: hidden !important;}
+
+/* 时间 */
+#chat-messages .message-wrapper .timestamp {
+    font-size: var(--message-time-size) !important;
+    line-height: 1 !important;
+    margin-bottom: 4px !important;
+    white-space: nowrap !important;
+    opacity: 0.82 !important;
+    flex-shrink: 0 !important;}
+
+#chat-messages .message-wrapper.user:has(+ .message-wrapper.user) .timestamp,
+#chat-messages .message-wrapper.ai:has(+ .message-wrapper.ai) .timestamp {
+    display: none !important;}
+
+#chat-messages .message-wrapper.user:not(:has(+ .message-wrapper.user)) .timestamp,
+#chat-messages .message-wrapper.ai:not(:has(+ .message-wrapper.ai)) .timestamp {
+    display: block !important;}
+
+#chat-messages .message-wrapper.system-pat {
+    margin: 6px 0 !important;}
+
+#chat-messages .message-wrapper.system-pat .message-bubble.system-bubble {
+    padding: 2px 8px !important;
+    margin: 0 !important;
+    background: #FFFFFF !important;
+    border: 1px solid #E2E2E2 !important;
+    border-radius: 999px !important;
+    box-shadow: none !important;
+    color: #A6A6A6 !important;
+    font-size: 10px !important;
+    line-height: 1.2 !important;
+    font-weight: 400 !important;
+    min-width: 0 !important;
+    max-width: none !important;}
+
+#chat-messages .message-wrapper.system-pat .message-bubble.system-bubble::before,
+#chat-messages .message-wrapper.system-pat .message-bubble.system-bubble::after {
+    display: none !important;}
+
+#settings-preview-area .message-wrapper.user .avatar-group::before,
+#announcement-board-content .message-wrapper.user .avatar-group::before {
+    content: none !important;
+    display: none !important;}
+
+#settings-preview-area .message-wrapper .timestamp,
+#announcement-board-content .message-wrapper .timestamp {
+    display: none !important;}
+
+/* 普通气泡 */
+:root {
+    --bubble-background: #FFFFFF;
+    --bubble-border-color: #A79589;
+    --bubble-text-color: #585858;
+    --bubble-padding-y: 0.375em;
+    --bubble-padding-x: 0.75em;
+    --bubble-radius: 1.125em;
+    --bubble-continuous-gap: 0.4375em;
+    --bubble-decoration-url: url("https://i.postimg.cc/xCS95XCq/IMG-3435.png");
+    --bubble-decoration-size: 0.6875em;
+    --bubble-decoration-bottom: -0.25em;
+    --bubble-ai-decoration-right: 0.0625em;
+    --bubble-user-decoration-left: 0.0625em;}
+
+#chat-interface-screen #chat-messages .message-wrapper.ai + .message-wrapper.ai,
+#chat-interface-screen #chat-messages .message-wrapper.user + .message-wrapper.user {
+    margin-top: calc(var(--bubble-continuous-gap) - 20px) !important;}
+
+#chat-interface-screen #chat-messages .message-bubble.ai::after,
+#chat-interface-screen #chat-messages .message-bubble.user::after {
+    content: none !important;
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    background: none !important;
+    background-image: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;}
+
+#chat-interface-screen #chat-messages .message-bubble.ai .content::before,
+#chat-interface-screen #chat-messages .message-bubble.ai .content::after,
+#chat-interface-screen #chat-messages .message-bubble.user .content::before,
+#chat-interface-screen #chat-messages .message-bubble.user .content::after {
+    content: none !important;
+    display: none !important;}
+
+#chat-interface-screen #chat-messages .message-wrapper.ai + .message-wrapper.ai .message-bubble .content::after,
+#chat-interface-screen #chat-messages .message-wrapper.user + .message-wrapper.user .message-bubble .content::after {
+    content: none !important;
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    background-image: none !important;}
+
+#chat-interface-screen #chat-messages .message-bubble.has-image .content {
+    padding: 5px !important;}
+
+
+/* ========================================================= */
+/* 引用消息配套美化 */
+/* 必须放在全部CSS最末尾 */
+/* ========================================================= */
+
+:root {
+    --quote-bg: #F7F4F2;
+    --quote-line: #A79589;
+    --quote-name: #786B63;
+    --quote-text: #8E8580;}
+
+#chat-messages .quoted-message,
+#chat-interface-screen .quoted-message,
+.message-bubble .quoted-message {
+    display: block !important;
+    width: auto !important;
+    max-width: 100% !important;
+    margin: 0 0 7px 0 !important;
+    padding: 7px 9px !important;
+    box-sizing: border-box !important;
+    background: #F7F4F2 !important;
+    background-color: #F7F4F2 !important;
+    background-image: none !important;
+    border: none !important;
+    border-left: 2px solid #A79589 !important;
+    border-radius: 7px !important;
+    box-shadow: none !important;
+    color: #8E8580 !important;
+    -webkit-text-fill-color: #8E8580 !important;
+    font-size: 0.84em !important;
+    line-height: 1.35 !important;
+    font-weight: 400 !important;
+    opacity: 1 !important;
+    overflow: hidden !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;}
+
+#chat-messages .quoted-message *,
+#chat-interface-screen .quoted-message *,
+.message-bubble .quoted-message * {
+    background-color: transparent !important;
+    background-image: none !important;
+    border-color: #A79589 !important;
+    color: #8E8580 !important;
+    -webkit-text-fill-color: #8E8580 !important;
+    text-shadow: none !important;
+    opacity: 1 !important;}
+
+#chat-messages .quoted-message .quoted-sender,
+#chat-interface-screen .quoted-message .quoted-sender,
+.message-bubble .quoted-message .quoted-sender {
+    display: block !important;
+    margin: 0 0 3px 0 !important;
+    padding: 0 !important;
+    color: #786B63 !important;
+    -webkit-text-fill-color: #786B63 !important;
+    font-size: 1em !important;
+    line-height: 1.2 !important;
+    font-weight: 600 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    text-shadow: none !important;}
+
+#chat-messages .quoted-message .quoted-content,
+#chat-interface-screen .quoted-message .quoted-content,
+.message-bubble .quoted-message .quoted-content {
+    display: -webkit-box !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    color: #8E8580 !important;
+    -webkit-text-fill-color: #8E8580 !important;
+    font-size: 1em !important;
+    line-height: 1.35 !important;
+    font-weight: 400 !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-line-clamp: 3 !important;
+    overflow: hidden !important;
+    text-shadow: none !important;}
+
+#chat-messages .quoted-message a,
+#chat-messages .quoted-message span,
+#chat-messages .quoted-message div,
+#chat-messages .quoted-message p,
+#chat-interface-screen .quoted-message a,
+#chat-interface-screen .quoted-message span,
+#chat-interface-screen .quoted-message div,
+#chat-interface-screen .quoted-message p {
+    color: #8E8580 !important;
+    -webkit-text-fill-color: #8E8580 !important;
+    text-decoration: none !important;}
+
+#chat-messages .quoted-message .quoted-sender,
+#chat-messages .quoted-message .quoted-sender *,
+#chat-interface-screen .quoted-message .quoted-sender,
+#chat-interface-screen .quoted-message .quoted-sender * {
+    color: #786B63 !important;
+    -webkit-text-fill-color: #786B63 !important;}
+
+#phone-screen.dark-mode .quoted-message,
+#phone-screen.dark-mode #chat-messages .quoted-message {
+    background: #F7F4F2 !important;
+    background-color: #F7F4F2 !important;
+    border-left-color: #A79589 !important;
+    color: #8E8580 !important;
+    -webkit-text-fill-color: #8E8580 !important;}
+
+
+/* ========================================================= */
+/* 输入区回复预览 */
+/* ========================================================= */
+
+#reply-preview-bar {
+    position: relative !important;
+    width: auto !important;
+    min-height: 38px !important;
+    margin: 0 0 7px 0 !important;
+    padding: 7px 34px 7px 11px !important;
+    box-sizing: border-box !important;
+    background: #FFFFFF !important;
+    background-color: #FFFFFF !important;
+    background-image: none !important;
+    border: 1px solid #ECE7E3 !important;
+    border-left: 2px solid #A79589 !important;
+    border-radius: 9px !important;
+    box-shadow: 0 1px 3px rgba(77, 65, 58, 0.025) !important;
+    color: #8E8580 !important;
+    -webkit-text-fill-color: #8E8580 !important;
+    font-size: 12px !important;
+    line-height: 1.3 !important;
+    overflow: hidden !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;}
+
+#reply-preview-bar,
+#reply-preview-bar * {
+    text-shadow: none !important;}
+
+#reply-preview-bar .reply-preview-content .sender {
+    display: block !important;
+    margin: 0 0 2px 0 !important;
+    padding: 0 !important;
+    color: #625953 !important;
+    -webkit-text-fill-color: #625953 !important;
+    font-size: 11px !important;
+    line-height: 1.2 !important;
+    font-weight: 600 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;}
+
+#reply-preview-bar .reply-preview-content .text {
+    display: block !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    color: #8E8580 !important;
+    -webkit-text-fill-color: #8E8580 !important;
+    font-size: 11px !important;
+    line-height: 1.3 !important;
+    font-weight: 400 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;}
+
+#cancel-reply-btn {
+    position: absolute !important;
+    right: 8px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 20px !important;
+    min-width: 20px !important;
+    max-width: 20px !important;
+    height: 20px !important;
+    min-height: 20px !important;
+    max-height: 20px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #F7F4F2 !important;
+    background-color: #F7F4F2 !important;
+    border: 1px solid #E7DFDA !important;
+    border-radius: 50% !important;
+    box-shadow: none !important;
+    color: #8F7D71 !important;
+    -webkit-text-fill-color: #8F7D71 !important;
+    font-size: 13px !important;
+    line-height: 1 !important;
+    cursor: pointer !important;}
+
+
+/* ========================================================= */
+/* char连续消息紧凑对齐 */
+/* ========================================================= */
+
+:root {
+    --same-side-message-gap: 7px;}
+
+
+/* 两边连续消息统一间距 */
+#chat-interface-screen
+#chat-messages
+.message-wrapper.user
++
+.message-wrapper.user,
+
+#chat-interface-screen
+#chat-messages
+.message-wrapper.ai
++
+.message-wrapper.ai {
+    margin-top:
+        calc(var(--same-side-message-gap) - 20px) !important;}
+
+
+/* char连续消息隐藏重复头像 */
+#chat-interface-screen
+#chat-messages
+.message-wrapper.ai
++
+.message-wrapper.ai
+.avatar-group,
+
+#chat-interface-screen
+#chat-messages
+.message-wrapper.ai
++
+.message-wrapper.ai
+.message-bubble > .avatar {
+    display: none !important;
+
+    width: 0 !important;
+    min-width: 0 !important;
+    max-width: 0 !important;
+
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    flex: 0 0 0 !important;
+
+    overflow: hidden !important;}
+
+
+/* char连续消息隐藏名称 */
+#chat-interface-screen
+#chat-messages
+.message-wrapper.ai
++
+.message-wrapper.ai
+.sender-name {
+    display: none !important;}
+
+
+/*
+ * char头像宽34px，源结构内部间距12px
+ * 连续气泡保留同样的46px左侧位置
+ */
+#chat-interface-screen
+#chat-messages
+.message-wrapper.ai
++
+.message-wrapper.ai
+.message-bubble {
+    margin-left: 46px !important;}
+
+
+/* 防止旧头像透明规则继续占位 */
+#chat-interface-screen
+#chat-messages
+.message-wrapper.ai
++
+.message-wrapper.ai
+.avatar-group .avatar,
+
+#chat-interface-screen
+#chat-messages
+.message-wrapper.ai
++
+.message-wrapper.ai
+.avatar-group .avatar-img,
+
+#chat-interface-screen
+#chat-messages
+.message-wrapper.ai
++
+.message-wrapper.ai
+.avatar-group .avatar-frame,
+
+#chat-interface-screen
+#chat-messages
+.message-wrapper.ai
++
+.message-wrapper.ai
+.avatar-group .avatar-with-frame {
+    display: none !important;
+
+    width: 0 !important;
+    height: 0 !important;
+
+    margin: 0 !important;
+    padding: 0 !important;}
+
+/* ========================================================= */
+/* 修复char首条与第二条间距不一致 */
+/* ========================================================= */
+
+/* char整组作为头像定位参照 */
+#chat-interface-screen
+#chat-messages
+.message-wrapper.ai {
+    position: relative !important;}
+
+
+/* char所有气泡统一保留头像横向位置 */
+#chat-interface-screen
+#chat-messages
+.message-wrapper.ai
+.message-bubble {
+    margin-left: 46px !important;}
+
+
+/* 首条char头像改为绝对定位，不再撑高消息 */
+#chat-interface-screen
+#chat-messages
+.message-wrapper.ai
+.avatar-group {
+    position: absolute !important;
+
+    left: 0 !important;
+    bottom: 0 !important;
+    top: auto !important;
+
+    width: 34px !important;
+    min-width: 34px !important;
+    max-width: 34px !important;
+
+    height: 34px !important;
+    min-height: 34px !important;
+    max-height: 34px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    z-index: 10 !important;
+
+    flex: none !important;
+
+    overflow: visible !important;}
+
+
+/* 连续char隐藏重复头像 */
+#chat-interface-screen
+#chat-messages
+.message-wrapper.ai
++
+.message-wrapper.ai
+.avatar-group,
+
+#chat-interface-screen
+#chat-messages
+.message-wrapper.ai
++
+.message-wrapper.ai
+.message-bubble > .avatar {
+    display: none !important;}
+
+
+/* 连续char统一实际间距 */
+#chat-interface-screen
+#chat-messages
+.message-wrapper.ai
++
+.message-wrapper.ai {
+    margin-top:
+        calc(var(--same-side-message-gap, 7px) - 20px) !important;}
+
+
+/* 连续char名称隐藏 */
+#chat-interface-screen
+#chat-messages
+.message-wrapper.ai
++
+.message-wrapper.ai
+.sender-name {
+    display: none !important;}
+
+/* ========================================================= */
+/* 新配色与装饰覆盖 */
+/* ========================================================= */
+
+:root {
+    --user-chat-avatar: url("");
+
+    --bubble-user-text: #231F20;
+    --bubble-char-text: #7F8184;
+    --bubble-border-color: #C7C6CA;
+    --bubble-border-width: 1.5px;
+
+    --bubble-decoration-url: url("https://i.postimg.cc/j5RWb4xZ/IMG-3703.png");
+    --bubble-decoration-main-size: 0.82em;
+    --bubble-decoration-small-size: 0.56em;
+
+    --theme-icon-color: #000000;}
+
+
+/* user头像 */
+#chat-messages .message-wrapper.user .avatar-group::before,
+#chat-messages .message-wrapper.user .message-bubble > .avatar {
+    background-image:
+        url("") !important;}
+
+
+/* 连续消息也显示新装饰 */
+#chat-interface-screen
+#chat-messages
+.message-wrapper.ai
++
+.message-wrapper.ai
+.message-bubble
+.content::after,
+
+#chat-interface-screen
+#chat-messages
+.message-wrapper.user
++
+.message-wrapper.user
+.message-bubble
+.content::after {
+    content: "" !important;
+    display: block !important;}
+
+
+/* ========================================================= */
+/* 顶栏图标统一为 #7F8184 */
+/* ========================================================= */
+
+#chat-interface-screen:not(.selection-mode)
+> .header
+.back-btn::before {
+    background-image: none !important;
+    background-color: var(--theme-icon-color) !important;
+
+    -webkit-mask-image:
+        url("https://i.postimg.cc/5twQk0Yw/IMG-3392.png") !important;
+    mask-image:
+        url("https://i.postimg.cc/5twQk0Yw/IMG-3392.png") !important;
+
+    -webkit-mask-size: contain !important;
+    mask-size: contain !important;
+    -webkit-mask-position: center !important;
+    mask-position: center !important;
+    -webkit-mask-repeat: no-repeat !important;
+    mask-repeat: no-repeat !important;}
+
+#chat-interface-screen:not(.selection-mode)
+> .header
+#listen-together-btn::before {
+    background-image: none !important;
+    background-color: var(--theme-icon-color) !important;
+
+    -webkit-mask-image:
+        url("https://i.postimg.cc/JnMHwLZN/IMG-3393.png") !important;
+    mask-image:
+        url("https://i.postimg.cc/JnMHwLZN/IMG-3393.png") !important;
+
+    -webkit-mask-size: contain !important;
+    mask-size: contain !important;
+    -webkit-mask-position: center !important;
+    mask-position: center !important;
+    -webkit-mask-repeat: no-repeat !important;
+    mask-repeat: no-repeat !important;}
+
+#chat-interface-screen:not(.selection-mode)
+> .header
+#chat-settings-btn::before {
+    background-image: none !important;
+    background-color: var(--theme-icon-color) !important;
+
+    -webkit-mask-image:
+        url("https://i.postimg.cc/vmR6z9BH/IMG-3394.png") !important;
+    mask-image:
+        url("https://i.postimg.cc/vmR6z9BH/IMG-3394.png") !important;
+
+    -webkit-mask-size: contain !important;
+    mask-size: contain !important;
+    -webkit-mask-position: center !important;
+    mask-position: center !important;
+    -webkit-mask-repeat: no-repeat !important;
+    mask-repeat: no-repeat !important;}
+
+
+/* ========================================================= */
+/* 底栏图标统一为 #7F8184 */
+/* ========================================================= */
+
+#chat-input-actions-top::before {
+    color: var(--theme-icon-color) !important;
+    -webkit-text-fill-color: var(--theme-icon-color) !important;}
+
+#wait-reply-btn::before {
+    background-image: none !important;
+    background-color: var(--theme-icon-color) !important;
+
+    -webkit-mask-image:
+        url("https://i.postimg.cc/R01gmv6b/IMG-3387.png") !important;
+    mask-image:
+        url("https://i.postimg.cc/R01gmv6b/IMG-3387.png") !important;
+
+    -webkit-mask-size: contain !important;
+    mask-size: contain !important;
+    -webkit-mask-position: center !important;
+    mask-position: center !important;
+    -webkit-mask-repeat: no-repeat !important;
+    mask-repeat: no-repeat !important;}
+
+#send-btn::after {
+    background-image: none !important;
+    background-color: var(--theme-icon-color) !important;
+
+    -webkit-mask-image:
+        url("https://i.postimg.cc/yNhLK7gQ/IMG-3388.png") !important;
+    mask-image:
+        url("https://i.postimg.cc/yNhLK7gQ/IMG-3388.png") !important;
+
+    -webkit-mask-size: contain !important;
+    mask-size: contain !important;
+    -webkit-mask-position: center !important;
+    mask-position: center !important;
+    -webkit-mask-repeat: no-repeat !important;
+    mask-repeat: no-repeat !important;}
+
+#send-btn::before {
+    content: "" !important;
+    position: absolute !important;
+    inset: 0 !important;
+    display: block !important;
+    border-radius: 50% !important;
+    background: #D9D9D9 !important;
+    background-color: #D9D9D9 !important;
+    border: 1px solid #C7C7C7 !important;
+    box-shadow: none !important;
+    pointer-events: none !important;
+    text-indent: 0 !important;
+}
+
+
+/* ========================================================= */
+/* 引用配套同步新配色 */
+/* ========================================================= */
+
+#chat-messages .quoted-message,
+#chat-interface-screen .quoted-message,
+.message-bubble .quoted-message {
+    border-left-color: #C7C6CA !important;}
+
+#chat-messages .quoted-message .quoted-sender,
+#chat-interface-screen .quoted-message .quoted-sender {
+    color: #7F8184 !important;
+    -webkit-text-fill-color: #7F8184 !important;}
+
+#reply-preview-bar {
+    border-color: #C7C6CA !important;
+    border-left-color: #7F8184 !important;}
+
+#reply-preview-bar .reply-preview-content .sender,
+#cancel-reply-btn {
+    color: #7F8184 !important;
+    -webkit-text-fill-color: #7F8184 !important;}
+
+/* ========================================================= */
+/* kkt最终配色覆盖 */
+/* 黑灰绿主题 */
+/* ========================================================= */
+
+:root {
+    --kkt-user-bg: #231F20;
+    --kkt-char-bg: #7F8184;
+
+    --kkt-user-text: #FFFFFF;
+    --kkt-char-text: #FFFFFF;
+
+    --kkt-border: #C7C6CA;
+    --kkt-green: #A8D56F;
+    --kkt-green-soft: #DDEDBD;
+
+    --theme-icon-color: #000000;}
+
+
+/* ========================================================= */
+/* 图标与引用同步 */
+/* ========================================================= */
+
+#chat-input-actions-top::before {
+    color: var(--theme-icon-color) !important;
+    -webkit-text-fill-color: var(--theme-icon-color) !important;}
+
+
+#send-btn::before {
+    content: "" !important;
+    position: absolute !important;
+    inset: 0 !important;
+    display: block !important;
+    border-radius: 50% !important;
+    background: #D9D9D9 !important;
+    background-color: #D9D9D9 !important;
+    border: 1px solid #C7C7C7 !important;
+    box-shadow: none !important;
+    pointer-events: none !important;
+    text-indent: 0 !important;
+}
+
+
+#reply-preview-bar {
+    border-color: var(--kkt-border) !important;
+    border-left-color: var(--kkt-green) !important;}
+
+
+#chat-messages
+.quoted-message,
+
+#chat-interface-screen
+.quoted-message,
+
+.message-bubble
+.quoted-message {
+    border-left-color: var(--kkt-green) !important;}
+
+
+#chat-messages
+.quoted-message
+.quoted-sender,
+
+#chat-interface-screen
+.quoted-message
+.quoted-sender,
+
+#reply-preview-bar
+.reply-preview-content
+.sender,
+
+#cancel-reply-btn {
+    color: var(--theme-icon-color) !important;
+    -webkit-text-fill-color: var(--theme-icon-color) !important;}
+
+/* ========================================================= */
+/* kkt古早萌感最终覆盖 */
+/* ========================================================= */
+
+:root {
+    --kkt-user-bg: #2E3130;
+    --kkt-user-text: #F7F8F6;
+
+    --kkt-char-bg: #F1F4F2;
+    --kkt-char-text: #6F7472;
+
+    --kkt-border: #BFC8C3;
+    --kkt-green: #CDE6D9;
+    --kkt-green-dark: #9FB8AC;
+    --kkt-shadow: rgba(92, 107, 100, 0.13);
+
+    --kkt-radius: 15px;
+    --kkt-border-width: 1.5px;}
+
+
+/* 连续消息继续保留装饰 */
+#chat-interface-screen
+#chat-messages
+.message-wrapper.ai
++
+.message-wrapper.ai
+.message-bubble
+.content::after,
+
+#chat-interface-screen
+#chat-messages
+.message-wrapper.user
++
+.message-wrapper.user
+.message-bubble
+.content::after {
+    content: "" !important;
+    display: block !important;}
+
+
+/* ========================================================= */
+/* 引用 */
+/* ========================================================= */
+
+#chat-messages
+.quoted-message,
+
+#chat-interface-screen
+.quoted-message,
+
+.message-bubble
+.quoted-message {
+    background: rgba(205,230,217,0.45) !important;
+    background-color: rgba(205,230,217,0.45) !important;
+
+    border-left-color: var(--kkt-green-dark) !important;
+    border-radius: 7px !important;}
+
+
+#chat-messages
+.quoted-message
+.quoted-sender,
+
+#chat-interface-screen
+.quoted-message
+.quoted-sender {
+    color: var(--theme-icon-color) !important;
+    -webkit-text-fill-color: var(--theme-icon-color) !important;}
+
+
+#reply-preview-bar {
+    background: #F7FAF8 !important;
+    background-color: #F7FAF8 !important;
+
+    border-color: var(--kkt-border) !important;
+    border-left-color: var(--kkt-green-dark) !important;
+
+    box-shadow:
+        2px 2px 0 rgba(205,230,217,0.72) !important;}
+
+
+/* ========================================================= */
+/* 图标 */
+/* ========================================================= */
+
+#chat-input-actions-top::before {
+    color: var(--theme-icon-color) !important;
+    -webkit-text-fill-color: var(--theme-icon-color) !important;}
+
+
+#send-btn::before {
+    content: "" !important;
+    position: absolute !important;
+    inset: 0 !important;
+    display: block !important;
+    border-radius: 50% !important;
+    background: #D9D9D9 !important;
+    background-color: #D9D9D9 !important;
+    border: 1px solid #C7C7C7 !important;
+    box-shadow: none !important;
+    pointer-events: none !important;
+    text-indent: 0 !important;
+}
+
+/* ========================================================= */
+/* KKT 夜间模式重写版 */
+/* 范围：只改聊天页，不改设置页、预览页、弹窗 */
+/* 逻辑：深灰夜间层级，不是全纯黑 */
+/* ========================================================= */
+
+:root {
+    --kkt-night-bg: #101113;
+    --kkt-night-top-bottom: #0B0C0E;
+    --kkt-night-input: #17181B;
+    --kkt-night-input-border: #32343A;
+
+    --kkt-night-panel: #18191C;
+    --kkt-night-panel-item: #222329;
+    --kkt-night-panel-border: #34363D;
+
+    --kkt-night-user-bubble: #202126;
+    --kkt-night-char-bubble: #181A1E;
+    --kkt-night-bubble-border: #3A3D45;
+
+    --kkt-night-text: #F1F2F4;
+    --kkt-night-soft-text: #C8CBD0;
+    --kkt-night-muted-text: #8D9199;
+
+    --kkt-night-send-bg: #E8E8EA;
+    --kkt-night-send-border: #BFC1C6;
+    --kkt-night-send-icon: #111214;
+
+    --theme-icon-color: #F1F2F4;
+    --bottom-plus-color: #F1F2F4;
+
+    --bottom-bar-bg: var(--kkt-night-top-bottom);
+    --bottom-input-bg: var(--kkt-night-input);
+    --bottom-input-border: var(--kkt-night-input-border);
+    --bottom-input-text: var(--kkt-night-text);
+
+    --kkt-user-bg: var(--kkt-night-user-bubble);
+    --kkt-user-text: var(--kkt-night-text);
+
+    --kkt-char-bg: var(--kkt-night-char-bubble);
+    --kkt-char-text: var(--kkt-night-soft-text);
+
+    --kkt-border: var(--kkt-night-bubble-border);
+    --kkt-green: #2C3037;
+    --kkt-green-dark: #4B505A;
+    --kkt-shadow: rgba(0, 0, 0, 0.32);
+}
+
+
+/* ========================================================= */
+/* 聊天页背景 */
+/* ========================================================= */
+
+#chat-interface-screen {
+    background: var(--kkt-night-bg) !important;
+    background-color: var(--kkt-night-bg) !important;
+}
+
+#chat-interface-screen #chat-messages,
+#chat-interface-screen #chat-messages-container {
+    background: var(--kkt-night-bg) !important;
+    background-color: var(--kkt-night-bg) !important;
+}
+
+
+/* ========================================================= */
+/* 顶栏夜间 */
+/* ========================================================= */
+
+#chat-interface-screen > .header,
+#phone-screen.dark-mode #chat-interface-screen > .header {
+    background: var(--kkt-night-top-bottom) !important;
+    background-color: var(--kkt-night-top-bottom) !important;
+    border: none !important;
+    border-bottom: 1px solid rgba(255,255,255,0.04) !important;
+    box-shadow: none !important;
+}
+
+#chat-interface-screen #chat-header-title,
+#chat-interface-screen #chat-header-title * {
+    color: var(--kkt-night-text) !important;
+    -webkit-text-fill-color: var(--kkt-night-text) !important;
+}
+
+#chat-interface-screen #chat-header-status,
+#chat-interface-screen #chat-header-status *,
+#chat-interface-screen .status-text,
+#chat-interface-screen .status-dot {
+    color: var(--kkt-night-muted-text) !important;
+    -webkit-text-fill-color: var(--kkt-night-muted-text) !important;
+}
+
+
+/* 顶栏图标：返回 / 听歌 / 设置 */
+#chat-interface-screen:not(.selection-mode) > .header .back-btn::before,
+#chat-interface-screen:not(.selection-mode) > .header #listen-together-btn::before,
+#chat-interface-screen:not(.selection-mode) > .header #chat-settings-btn::before {
+    background-image: none !important;
+    background-color: var(--theme-icon-color) !important;
+}
+
+
+/* 多选状态顶栏，不出现黑字黑底 */
+#chat-interface-screen.selection-mode > .header {
+    background: var(--kkt-night-top-bottom) !important;
+    background-color: var(--kkt-night-top-bottom) !important;
+    border-bottom: 1px solid rgba(255,255,255,0.06) !important;
+}
+
+#chat-interface-screen.selection-mode > .header .selection-controls,
+#chat-interface-screen.selection-mode > .header .selection-controls *,
+#chat-interface-screen.selection-mode > .header button,
+#chat-interface-screen.selection-mode > .header button *,
+#chat-interface-screen.selection-mode .selection-controls,
+#chat-interface-screen.selection-mode .selection-controls * {
+    color: var(--kkt-night-text) !important;
+    -webkit-text-fill-color: var(--kkt-night-text) !important;
+    background-color: transparent !important;
+    border-color: var(--kkt-night-panel-border) !important;
+}
+
+
+/* ========================================================= */
+/* 中间聊天区文字 */
+/* ========================================================= */
+
+#chat-interface-screen #chat-messages .message-wrapper .timestamp,
+#chat-interface-screen #chat-messages .sender-name {
+    color: var(--kkt-night-muted-text) !important;
+    -webkit-text-fill-color: var(--kkt-night-muted-text) !important;
+}
+
+#chat-interface-screen #chat-messages .message-wrapper.system-pat .message-bubble.system-bubble {
+    background: #18191C !important;
+    background-color: #18191C !important;
+    border: 1px solid #30323A !important;
+    color: var(--kkt-night-muted-text) !important;
+    -webkit-text-fill-color: var(--kkt-night-muted-text) !important;
+}
+
+
+
+/* ========================================================= */
+/* 引用 / 回复预览 夜间 */
+/* ========================================================= */
+
+#chat-interface-screen #chat-messages .quoted-message,
+#chat-interface-screen .message-bubble .quoted-message {
+    background: #191A1E !important;
+    background-color: #191A1E !important;
+    border-left-color: #5A5F69 !important;
+    color: var(--kkt-night-soft-text) !important;
+    -webkit-text-fill-color: var(--kkt-night-soft-text) !important;
+}
+
+#chat-interface-screen #chat-messages .quoted-message *,
+#chat-interface-screen .message-bubble .quoted-message * {
+    color: var(--kkt-night-soft-text) !important;
+    -webkit-text-fill-color: var(--kkt-night-soft-text) !important;
+}
+
+#chat-interface-screen #chat-messages .quoted-message .quoted-sender,
+#chat-interface-screen .message-bubble .quoted-message .quoted-sender {
+    color: var(--kkt-night-text) !important;
+    -webkit-text-fill-color: var(--kkt-night-text) !important;
+}
+
+#chat-interface-screen #reply-preview-bar {
+    background: #191A1E !important;
+    background-color: #191A1E !important;
+    border-color: #343740 !important;
+    border-left-color: #5A5F69 !important;
+    box-shadow: none !important;
+
+    color: var(--kkt-night-soft-text) !important;
+    -webkit-text-fill-color: var(--kkt-night-soft-text) !important;
+}
+
+#chat-interface-screen #reply-preview-bar .reply-preview-content .sender {
+    color: var(--kkt-night-text) !important;
+    -webkit-text-fill-color: var(--kkt-night-text) !important;
+}
+
+#chat-interface-screen #reply-preview-bar .reply-preview-content .text {
+    color: var(--kkt-night-soft-text) !important;
+    -webkit-text-fill-color: var(--kkt-night-soft-text) !important;
+}
+
+#chat-interface-screen #cancel-reply-btn {
+    background: #24262B !important;
+    background-color: #24262B !important;
+    border-color: #383B43 !important;
+    color: var(--kkt-night-text) !important;
+    -webkit-text-fill-color: var(--kkt-night-text) !important;
+}
+
+
+/* ========================================================= */
+/* 底栏夜间 */
+/* ========================================================= */
+
+#chat-interface-screen #chat-input-area,
+#phone-screen.dark-mode #chat-interface-screen #chat-input-area {
+    background: var(--kkt-night-top-bottom) !important;
+    background-color: var(--kkt-night-top-bottom) !important;
+    border: none !important;
+    border-top: 1px solid rgba(255,255,255,0.04) !important;
+    box-shadow: none !important;
+}
+
+#chat-interface-screen #chat-input,
+#phone-screen.dark-mode #chat-interface-screen #chat-input {
+    background: var(--kkt-night-input) !important;
+    background-color: var(--kkt-night-input) !important;
+    border: 1px solid var(--kkt-night-input-border) !important;
+    box-shadow: none !important;
+
+    color: var(--kkt-night-text) !important;
+    -webkit-text-fill-color: var(--kkt-night-text) !important;
+    caret-color: var(--kkt-night-text) !important;
+}
+
+#chat-interface-screen #chat-input:focus {
+    background: var(--kkt-night-input) !important;
+    background-color: var(--kkt-night-input) !important;
+    border-color: #4B4E58 !important;
+
+    color: var(--kkt-night-text) !important;
+    -webkit-text-fill-color: var(--kkt-night-text) !important;
+}
+
+
+/* 菜单键 */
+#chat-interface-screen #chat-input-actions-top::before {
+    color: var(--bottom-plus-color) !important;
+    -webkit-text-fill-color: var(--bottom-plus-color) !important;
+}
+
+
+/* 菜单展开面板 */
+#chat-interface-screen #chat-input-actions-top.menu-open,
+#chat-interface-screen #chat-input-actions-top:hover {
+    background: var(--kkt-night-panel) !important;
+    background-color: var(--kkt-night-panel) !important;
+    border: 1px solid var(--kkt-night-panel-border) !important;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.42) !important;
+}
+
+#chat-interface-screen #chat-input-actions-top.menu-open .chat-action-icon-btn,
+#chat-interface-screen #chat-input-actions-top:hover .chat-action-icon-btn,
+#chat-interface-screen #chat-input-actions-top.menu-open #reroll-btn,
+#chat-interface-screen #chat-input-actions-top:hover #reroll-btn {
+    background: var(--kkt-night-panel-item) !important;
+    background-color: var(--kkt-night-panel-item) !important;
+    border-color: var(--kkt-night-panel-border) !important;
+
+    color: var(--kkt-night-text) !important;
+    -webkit-text-fill-color: var(--kkt-night-text) !important;
+}
+
+#chat-interface-screen #chat-input-actions-top .chat-action-icon-btn:hover {
+    background: #2A2C33 !important;
+    background-color: #2A2C33 !important;
+    border-color: #484C56 !important;
+}
+
+
+/* 表情键：夜间白色 */
+#chat-interface-screen #wait-reply-btn::before {
+    background-image: none !important;
+    background-color: var(--theme-icon-color) !important;
+
+    -webkit-mask-image:
+        url("https://i.postimg.cc/R01gmv6b/IMG-3387.png") !important;
+    mask-image:
+        url("https://i.postimg.cc/R01gmv6b/IMG-3387.png") !important;
+
+    -webkit-mask-size: contain !important;
+    mask-size: contain !important;
+    -webkit-mask-position: center !important;
+    mask-position: center !important;
+    -webkit-mask-repeat: no-repeat !important;
+    mask-repeat: no-repeat !important;
+}
+
+
+/* 发送键：浅灰圆底 + 深色箭头，避免黑底黑键 */
+#chat-interface-screen #send-btn::before {
+    content: "" !important;
+    position: absolute !important;
+    inset: 0 !important;
+    display: block !important;
+    border-radius: 50% !important;
+
+    background: var(--kkt-night-send-bg) !important;
+    background-color: var(--kkt-night-send-bg) !important;
+    border: 1px solid var(--kkt-night-send-border) !important;
+    box-shadow: none !important;
+
+    pointer-events: none !important;
+    text-indent: 0 !important;
+}
+
+#chat-interface-screen #send-btn::after {
+    background-image: none !important;
+    background-color: var(--kkt-night-send-icon) !important;
+
+    -webkit-mask-image:
+        url("https://i.postimg.cc/yNhLK7gQ/IMG-3388.png") !important;
+    mask-image:
+        url("https://i.postimg.cc/yNhLK7gQ/IMG-3388.png") !important;
+
+    -webkit-mask-size: contain !important;
+    mask-size: contain !important;
+    -webkit-mask-position: center !important;
+    mask-position: center !important;
+    -webkit-mask-repeat: no-repeat !important;
+    mask-repeat: no-repeat !important;
+
+    box-shadow: none !important;
+    filter: none !important;
+}
+
+/* ========================================================= */
+/* 夜间飞行｜按 style 源文件重写的唯一气泡区 */
+/* 只替换普通文字气泡视觉；不破坏 avatar-group 点击层 */
+/* ========================================================= */
+
+:root {
+    --night-flight-user-bubble-bg: #173FD3;
+    --night-flight-char-bubble-bg: #2E2F33;
+
+    --night-flight-user-bubble-text: #FFFFFF;
+    --night-flight-char-bubble-text: #FFFFFF;
+
+    --night-flight-bubble-radius: 22px;
+    --night-flight-bubble-padding-y: 7px;
+    --night-flight-bubble-padding-x: 13px;
+
+    --night-flight-same-side-gap: 7px;
+
+    --night-flight-tail-width: 18px;
+    --night-flight-tail-height: 18px;
+
+    --night-flight-tail-svg: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20200%20200'%3E%3Cpath%20fill='%238fb2c8'%20d='M34%209L33%2010L33%2088L32%2089L32%2099L33%20100L33%20107L32%20109L33%20110L34%20120L35%20121L35%20124L36%20125L38%20133L43%20143L45%20145L47%20150L50%20153L50%20154L61%20165L62%20165L66%20169L67%20169L72%20173L75%20174L77%20176L79%20176L93%20183L95%20183L99%20185L107%20186L108%20187L114%20187L115%20188L120%20188L121%20189L126%20189L127%20190L137%20190L138%20189L144%20189L145%20188L149%20188L151%20186L151%20185L148%20184L140%20177L139%20177L133%20171L133%20170L130%20167L130%20166L126%20161L120%20149L120%20147L119%20146L119%20144L118%20143L118%20141L116%20137L116%20134L115%20133L114%20123L113%20122L113%20113L112%20112L112%2098L111%2097L112%2096L112%2085L111%2084L111%2078L112%2077L112%2061L111%2060L112%2059L112%2014L113%2013L113%2010L109%2010L108%209Z'/%3E%3C/svg%3E");
+}
+
+
+/* 聊天背景纯黑 */
+#chat-interface-screen,
+#chat-interface-screen #chat-messages,
+#chat-interface-screen #chat-messages-container {
+    background: #000000 !important;
+    background-color: #000000 !important;
+}
+
+
+/* 顶底栏黑色通屏，无分割线 */
+#chat-interface-screen > .header,
+#phone-screen.dark-mode #chat-interface-screen > .header {
+    background: #0B0C0E !important;
+    background-color: #0B0C0E !important;
+    border: none !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+}
+
+#chat-interface-screen #chat-input-area,
+#phone-screen.dark-mode #chat-interface-screen #chat-input-area {
+    background: #0B0C0E !important;
+    background-color: #0B0C0E !important;
+    border: none !important;
+    border-top: none !important;
+    box-shadow: none !important;
+}
+
+
+/* 按源文件保留消息基础布局，不用 translateX，不乱改 avatar-group 宽度 */
+#chat-interface-screen
+#chat-messages
+.message-wrapper.user,
+
+#chat-interface-screen
+#chat-messages
+.message-wrapper.ai {
+    transform: none !important;
+    max-width: 92% !important;
+}
+
+
+/* 头像容器按源文件保留：34px、flex内占位、relative。
+   这样头像区域点击逻辑不丢。 */
+#chat-interface-screen
+#chat-messages
+.message-wrapper.user
+.avatar-group,
+
+#chat-interface-screen
+#chat-messages
+.message-wrapper.ai
+.avatar-group {
+    width: 34px !important;
+    min-width: 34px !important;
+    max-width: 34px !important;
+
+    flex: 0 0 34px !important;
+    flex-shrink: 0 !important;
+
+    position: relative !important;
+
+    opacity: 1 !important;
+    visibility: visible !important;
+    overflow: visible !important;
+    pointer-events: auto !important;
+
+    background: transparent !important;
+    border: none !important;
+    z-index: 30 !important;
+}
+
+
+/* 只隐藏头像视觉层，不隐藏头像容器本身。
+   不使用 display:none，避免心声点击区域消失。 */
+#chat-interface-screen
+#chat-messages
+.avatar-group
+.avatar,
+
+#chat-interface-screen
+#chat-messages
+.avatar-group
+.avatar-img,
+
+#chat-interface-screen
+#chat-messages
+.avatar-group
+.avatar-frame,
+
+#chat-interface-screen
+#chat-messages
+.avatar-group
+.avatar-with-frame,
+
+#chat-interface-screen
+#chat-messages
+.message-bubble > .avatar {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: auto !important;
+}
+
+
+/* 心声/内心类点击层保留 */
+#chat-interface-screen
+#chat-messages
+.avatar-group
+[class*="heart"],
+
+#chat-interface-screen
+#chat-messages
+.avatar-group
+[class*="mind"],
+
+#chat-interface-screen
+#chat-messages
+.avatar-group
+[class*="thought"],
+
+#chat-interface-screen
+#chat-messages
+.avatar-group
+[class*="inner"],
+
+#chat-interface-screen
+#chat-messages
+.avatar-group
+[aria-label*="心声"],
+
+#chat-interface-screen
+#chat-messages
+.avatar-group
+[title*="心声"],
+
+#chat-interface-screen
+#chat-messages
+.avatar-group
+[data-title*="心声"],
+
+#chat-interface-screen
+#chat-messages
+.avatar-group
+[data-name*="心声"] {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    z-index: 50 !important;
+}
+
+
+/* 隐藏名字，不影响头像点击区 */
+#chat-interface-screen
+#chat-messages
+.sender-name {
+    display: none !important;
+}
+
+
+/* 时间戳隐藏。系统提示如果源码单独显示，不套气泡尾巴。 */
+#chat-interface-screen
+#chat-messages
+.timestamp,
+
+#chat-interface-screen
+#chat-messages
+.message-wrapper
+.timestamp,
+
+#chat-messages
+.timestamp {
+    display: none !important;
+
+    width: 0 !important;
+    min-width: 0 !important;
+    max-width: 0 !important;
+
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    opacity: 0 !important;
+    visibility: hidden !important;
+    overflow: hidden !important;
+    pointer-events: none !important;
+}
+
+
+/* 清理原主题对 message-bubble 的旧头像占位，但不改变 wrapper 主布局 */
+#chat-interface-screen
+#chat-messages
+.message-wrapper.user
+.message-bubble,
+
+#chat-interface-screen
+#chat-messages
+.message-wrapper.ai
+.message-bubble,
+
+#chat-interface-screen
+#chat-messages
+.message-wrapper.user
++
+.message-wrapper.user
+.message-bubble,
+
+#chat-interface-screen
+#chat-messages
+.message-wrapper.ai
++
+.message-wrapper.ai
+.message-bubble {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+
+    gap: 0 !important;
+    overflow: visible !important;
+}
+
+
+/* 普通文字气泡通用样式 */
+#chat-interface-screen
+#chat-messages
+.message-bubble.user:not(.has-image):not(.is-realimag):not(.is-sticker):not(.is-ai-image):not(.is-waimai-request):not(.is-red-packet):not(.is-poll):not(.is-link-share):not(.is-location-share)
+.content,
+
+#chat-interface-screen
+#chat-messages
+.message-bubble.ai:not(.has-image):not(.is-realimag):not(.is-sticker):not(.is-ai-image):not(.is-waimai-request):not(.is-red-packet):not(.is-poll):not(.is-link-share):not(.is-location-share)
+.content {
+    position: relative !important;
+    overflow: visible !important;
+
+    padding:
+        var(--night-flight-bubble-padding-y)
+        var(--night-flight-bubble-padding-x) !important;
+
+    border: none !important;
+    border-radius: var(--night-flight-bubble-radius) !important;
+    box-shadow: none !important;
+
+    background-image: none !important;
+
+    font-size: var(--chat-font-size, 16px) !important;
+    line-height: 1.28 !important;
+
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+}
+
+
+/* user 蓝色气泡 */
+#chat-interface-screen
+#chat-messages
+.message-bubble.user:not(.has-image):not(.is-realimag):not(.is-sticker):not(.is-ai-image):not(.is-waimai-request):not(.is-red-packet):not(.is-poll):not(.is-link-share):not(.is-location-share)
+.content {
+    background: var(--night-flight-user-bubble-bg) !important;
+    background-color: var(--night-flight-user-bubble-bg) !important;
+
+    color: var(--night-flight-user-bubble-text) !important;
+    -webkit-text-fill-color: var(--night-flight-user-bubble-text) !important;
+}
+
+
+/* char 深灰气泡 */
+#chat-interface-screen
+#chat-messages
+.message-bubble.ai:not(.has-image):not(.is-realimag):not(.is-sticker):not(.is-ai-image):not(.is-waimai-request):not(.is-red-packet):not(.is-poll):not(.is-link-share):not(.is-location-share)
+.content {
+    background: var(--night-flight-char-bubble-bg) !important;
+    background-color: var(--night-flight-char-bubble-bg) !important;
+
+    color: var(--night-flight-char-bubble-text) !important;
+    -webkit-text-fill-color: var(--night-flight-char-bubble-text) !important;
+}
+
+
+/* 气泡内部文字继承 */
+#chat-interface-screen
+#chat-messages
+.message-bubble.user:not(.has-image):not(.is-realimag):not(.is-sticker):not(.is-ai-image):not(.is-waimai-request):not(.is-red-packet):not(.is-poll):not(.is-link-share):not(.is-location-share)
+.content *,
+
+#chat-interface-screen
+#chat-messages
+.message-bubble.ai:not(.has-image):not(.is-realimag):not(.is-sticker):not(.is-ai-image):not(.is-waimai-request):not(.is-red-packet):not(.is-poll):not(.is-link-share):not(.is-location-share)
+.content * {
+    color: inherit !important;
+    -webkit-text-fill-color: inherit !important;
+}
+
+
+/* 关闭旧气泡装饰：只关闭 bubble 本体和 content::before。
+   不关闭 content::after，因为气泡尾巴使用 content::after。 */
+#chat-interface-screen
+#chat-messages
+.message-bubble.user::before,
+
+#chat-interface-screen
+#chat-messages
+.message-bubble.user::after,
+
+#chat-interface-screen
+#chat-messages
+.message-bubble.ai::before,
+
+#chat-interface-screen
+#chat-messages
+.message-bubble.ai::after,
+
+#chat-interface-screen
+#chat-messages
+.message-bubble.user
+.content::before,
+
+#chat-interface-screen
+#chat-messages
+.message-bubble.ai
+.content::before {
+    content: none !important;
+    display: none !important;
+}
+
+
+/* 默认：char 左侧气泡尾巴 */
+#chat-interface-screen
+#chat-messages
+.message-bubble.ai:not(.has-image):not(.is-realimag):not(.is-sticker):not(.is-ai-image):not(.is-waimai-request):not(.is-red-packet):not(.is-poll):not(.is-link-share):not(.is-location-share)
+.content::after {
+    content: "" !important;
+    position: absolute !important;
+
+    left: -7px !important;
+    right: auto !important;
+    bottom: -1px !important;
+    top: auto !important;
+
+    display: block !important;
+
+    width: var(--night-flight-tail-width) !important;
+    height: var(--night-flight-tail-height) !important;
+
+    background: var(--night-flight-char-bubble-bg) !important;
+    background-color: var(--night-flight-char-bubble-bg) !important;
+    background-image: none !important;
+
+    -webkit-mask-image: var(--night-flight-tail-svg) !important;
+    mask-image: var(--night-flight-tail-svg) !important;
+
+    -webkit-mask-size: contain !important;
+    mask-size: contain !important;
+
+    -webkit-mask-position: center !important;
+    mask-position: center !important;
+
+    -webkit-mask-repeat: no-repeat !important;
+    mask-repeat: no-repeat !important;
+
+    transform: scaleX(-1) !important;
+
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: none !important;
+    z-index: 9 !important;
+}
+
+
+/* 默认：user 右侧气泡尾巴，颜色同步 #173FD3 */
+#chat-interface-screen
+#chat-messages
+.message-bubble.user:not(.has-image):not(.is-realimag):not(.is-sticker):not(.is-ai-image):not(.is-waimai-request):not(.is-red-packet):not(.is-poll):not(.is-link-share):not(.is-location-share)
+.content::after {
+    content: "" !important;
+    position: absolute !important;
+
+    right: -7px !important;
+    left: auto !important;
+    bottom: -1px !important;
+    top: auto !important;
+
+    display: block !important;
+
+    width: var(--night-flight-tail-width) !important;
+    height: var(--night-flight-tail-height) !important;
+
+    background: var(--night-flight-user-bubble-bg) !important;
+    background-color: var(--night-flight-user-bubble-bg) !important;
+    background-image: none !important;
+
+    -webkit-mask-image: var(--night-flight-tail-svg) !important;
+    mask-image: var(--night-flight-tail-svg) !important;
+
+    -webkit-mask-size: contain !important;
+    mask-size: contain !important;
+
+    -webkit-mask-position: center !important;
+    mask-position: center !important;
+
+    -webkit-mask-repeat: no-repeat !important;
+    mask-repeat: no-repeat !important;
+
+    transform: scaleX(1) !important;
+
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: none !important;
+    z-index: 9 !important;
+}
+
+
+/* 连续同侧消息：缩小间距 */
+#chat-interface-screen
+#chat-messages
+.message-wrapper.user
++
+.message-wrapper.user,
+
+#chat-interface-screen
+#chat-messages
+.message-wrapper.ai
++
+.message-wrapper.ai {
+    margin-top:
+        calc(var(--night-flight-same-side-gap) - 20px) !important;
+}
+
+
+/* 连续同侧第二条开始：完全圆角 */
+#chat-interface-screen
+#chat-messages
+.message-wrapper.user
++
+.message-wrapper.user
+.message-bubble.user:not(.has-image):not(.is-realimag):not(.is-sticker):not(.is-ai-image):not(.is-waimai-request):not(.is-red-packet):not(.is-poll):not(.is-link-share):not(.is-location-share)
+.content,
+
+#chat-interface-screen
+#chat-messages
+.message-wrapper.ai
++
+.message-wrapper.ai
+.message-bubble.ai:not(.has-image):not(.is-realimag):not(.is-sticker):not(.is-ai-image):not(.is-waimai-request):not(.is-red-packet):not(.is-poll):not(.is-link-share):not(.is-location-share)
+.content {
+    border-radius: var(--night-flight-bubble-radius) !important;
+}
+
+
+/* 连续同侧第二条开始：隐藏尾巴 */
+#chat-interface-screen
+#chat-messages
+.message-wrapper.user
++
+.message-wrapper.user
+.message-bubble.user:not(.has-image):not(.is-realimag):not(.is-sticker):not(.is-ai-image):not(.is-waimai-request):not(.is-red-packet):not(.is-poll):not(.is-link-share):not(.is-location-share)
+.content::after,
+
+#chat-interface-screen
+#chat-messages
+.message-wrapper.ai
++
+.message-wrapper.ai
+.message-bubble.ai:not(.has-image):not(.is-realimag):not(.is-sticker):not(.is-ai-image):not(.is-waimai-request):not(.is-red-packet):not(.is-poll):not(.is-link-share):not(.is-location-share)
+.content::after {
+    content: none !important;
+    display: none !important;
+
+    width: 0 !important;
+    height: 0 !important;
+
+    background: none !important;
+    background-image: none !important;
+
+    -webkit-mask-image: none !important;
+    mask-image: none !important;
+
+    opacity: 0 !important;
+    visibility: hidden !important;
+}
+
+
+/* 系统提示不套普通气泡尾巴 */
+#chat-interface-screen
+#chat-messages
+.message-wrapper.system,
+
+#chat-interface-screen
+#chat-messages
+.message-wrapper.system-pat {
+    transform: none !important;
+}
+
+/* ========================================================= */
+/* 夜间飞行｜最终排版修正 */
+/* 头像容器退出排版，但保留心声点击层 */
+/* ========================================================= */
+
+/*
+ * 关键逻辑：
+ * 1. avatar-group 不能 display:none，否则心声点击区会没。
+ * 2. avatar-group 也不能留在 flex 文档流里，否则 char 左侧会空 34px。
+ * 3. 所以它必须 absolute：视觉不占位，点击层还在。
+ */
+#chat-interface-screen
+#chat-messages
+.message-wrapper.user,
+
+#chat-interface-screen
+#chat-messages
+.message-wrapper.ai {
+    position: relative !important;
+    transform: none !important;
+    max-width: 92% !important;
+}
+
+
+/* 头像容器退出排版，但继续存在 */
+#chat-interface-screen
+#chat-messages
+.message-wrapper.user
+.avatar-group,
+
+#chat-interface-screen
+#chat-messages
+.message-wrapper.ai
+.avatar-group {
+    position: absolute !important;
+
+    width: 34px !important;
+    min-width: 34px !important;
+    max-width: 34px !important;
+
+    height: 34px !important;
+    min-height: 34px !important;
+    max-height: 34px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    flex: none !important;
+
+    opacity: 1 !important;
+    visibility: visible !important;
+    overflow: visible !important;
+    pointer-events: auto !important;
+
+    background: transparent !important;
+    border: none !important;
+    z-index: 40 !important;
+}
+
+
+/* char 心声点击区留在左侧原区域，但不占气泡位置 */
+#chat-interface-screen
+#chat-messages
+.message-wrapper.ai
+.avatar-group {
+    left: 0 !important;
+    right: auto !important;
+    bottom: 0 !important;
+    top: auto !important;
+}
+
+
+/* user 心声点击区留在右侧原区域，但不占气泡位置 */
+#chat-interface-screen
+#chat-messages
+.message-wrapper.user
+.avatar-group {
+    right: 0 !important;
+    left: auto !important;
+    bottom: 0 !important;
+    top: auto !important;
+}
+
+
+/* 隐藏头像视觉层，不隐藏容器 */
+#chat-interface-screen
+#chat-messages
+.avatar-group
+.avatar,
+
+#chat-interface-screen
+#chat-messages
+.avatar-group
+.avatar-img,
+
+#chat-interface-screen
+#chat-messages
+.avatar-group
+.avatar-frame,
+
+#chat-interface-screen
+#chat-messages
+.avatar-group
+.avatar-with-frame {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+
+/* 气泡本体去掉头像占位 */
+#chat-interface-screen
+#chat-messages
+.message-wrapper.user
+.message-bubble,
+
+#chat-interface-screen
+#chat-messages
+.message-wrapper.ai
+.message-bubble,
+
+#chat-interface-screen
+#chat-messages
+.message-wrapper.user
++
+.message-wrapper.user
+.message-bubble,
+
+#chat-interface-screen
+#chat-messages
+.message-wrapper.ai
++
+.message-wrapper.ai
+.message-bubble {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+
+    gap: 0 !important;
+    overflow: visible !important;
+}
+
+
+/* 独立头像节点不参与排版 */
+#chat-interface-screen
+#chat-messages
+.message-wrapper.user
+.message-bubble > .avatar,
+
+#chat-interface-screen
+#chat-messages
+.message-wrapper.ai
+.message-bubble > .avatar {
+    display: none !important;
+
+    width: 0 !important;
+    min-width: 0 !important;
+    max-width: 0 !important;
+
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+
+/* 心声类按钮保持可点 */
+#chat-interface-screen
+#chat-messages
+.avatar-group
+[class*="heart"],
+
+#chat-interface-screen
+#chat-messages
+.avatar-group
+[class*="mind"],
+
+#chat-interface-screen
+#chat-messages
+.avatar-group
+[class*="thought"],
+
+#chat-interface-screen
+#chat-messages
+.avatar-group
+[class*="inner"],
+
+#chat-interface-screen
+#chat-messages
+.avatar-group
+[aria-label*="心声"],
+
+#chat-interface-screen
+#chat-messages
+.avatar-group
+[title*="心声"],
+
+#chat-interface-screen
+#chat-messages
+.avatar-group
+[data-title*="心声"],
+
+#chat-interface-screen
+#chat-messages
+.avatar-group
+[data-name*="心声"] {
+    display: flex !important;
+
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+
+    overflow: visible !important;
+    z-index: 50 !important;
+}
+
+
+/* 双方离屏幕近一点但不贴边，不用 translateX */
+#chat-interface-screen
+#chat-messages
+.message-wrapper.ai {
+    padding-left: 14px !important;
+    padding-right: 0 !important;
+}
+
+
+#chat-interface-screen
+#chat-messages
+.message-wrapper.user {
+    padding-right: 14px !important;
+    padding-left: 0 !important;
+}
+
+
+/* 系统提示不吃这个边距规则 */
+#chat-interface-screen
+#chat-messages
+.message-wrapper.system,
+
+#chat-interface-screen
+#chat-messages
+.message-wrapper.system-pat {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+
+/* 气泡尾巴不拦截点击 */
+#chat-interface-screen
+#chat-messages
+.message-bubble.user
+.content::after,
+
+#chat-interface-screen
+#chat-messages
+.message-bubble.ai
+.content::after {
+    pointer-events: none !important;
+}
+
+
+/* ========================================================= */
+/* 夜间飞行｜贴边微调 */
+/* 双方更贴屏幕一点，但不贴边；不影响心声点击 */
+/* ========================================================= */
+
+#chat-interface-screen
+#chat-messages
+.message-wrapper.user,
+
+#chat-interface-screen
+#chat-messages
+.message-wrapper.ai {
+    max-width: 96.5% !important;
+}
+
+#chat-interface-screen
+#chat-messages
+.message-wrapper.ai
+.avatar-group {
+    margin-left: -8px !important;
+    margin-right: 2px !important;
+}
+
+#chat-interface-screen
+#chat-messages
+.message-wrapper.user
+.avatar-group {
+    margin-left: 2px !important;
+    margin-right: -8px !important;
+}
+
+/* ========================================================= */
+/* 夜间飞行｜双方换边间距微调 */
+/* user 和 char 互相切换时更近一点；同侧连续消息不动 */
+/* ========================================================= */
+
+#chat-interface-screen
+#chat-messages
+.message-wrapper.user
++
+.message-wrapper.ai,
+
+#chat-interface-screen
+#chat-messages
+.message-wrapper.ai
++
+.message-wrapper.user {
+    margin-top: -8px !important;
+}
+
