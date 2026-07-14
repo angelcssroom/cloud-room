@@ -806,45 +806,47 @@ button:focus-visible,
 
 .resident-wrap{margin:0 0 74px;display:flex;justify-content:center}
 .resident-card{
-  --card:#e9eaec;
+  --card:#f0f1f3;
+  --card-ink:#24262b;
+  --card-line:rgba(24,25,28,.16);
   position:relative;
   width:min(64%,286px);
   aspect-ratio:1.86/1;
   padding:18px 20px 15px;
-  border:1px solid rgba(24,25,28,.14);
+  border:1px solid var(--card-line);
   border-radius:13px;
   background:var(--card);
   box-shadow:0 10px 28px rgba(0,0,0,.035);
   overflow:hidden;
   transition:background .32s ease,transform .32s ease,box-shadow .32s ease;
 }
-.resident-card::before{content:"";position:absolute;inset:7px;border:1px dashed rgba(24,25,28,.18);border-radius:9px;pointer-events:none}
-.star-row,.star-col{position:absolute;z-index:2;color:rgba(24,25,28,.74);font-size:6px;line-height:1;pointer-events:none;display:flex}
+.resident-card::before{content:"";position:absolute;inset:7px;border:1px dashed var(--card-line);border-radius:9px;pointer-events:none}
+.star-row,.star-col{position:absolute;z-index:2;color:var(--card-ink);opacity:.72;font-size:6px;line-height:1;pointer-events:none;display:flex}
 .star-row{left:18px;right:18px;justify-content:space-between}.star-row.top{top:6px}.star-row.bottom{bottom:6px}
 .star-col{top:19px;bottom:19px;flex-direction:column;justify-content:space-between}.star-col.left{left:6px}.star-col.right{right:6px}
 /* top stars split into two groups, leaving a true title gap */
 .star-row.top span:nth-child(3),.star-row.top span:nth-child(4),.star-row.top span:nth-child(5),.star-row.top span:nth-child(6){visibility:hidden}
-.resident-grid{position:relative;z-index:3;display:grid;grid-template-columns:34% minmax(0,1fr);gap:10px;height:100%;align-items:stretch}
-.resident-avatar{position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid rgba(24,25,28,.16);border-radius:8px;background:rgba(255,255,255,.44);cursor:pointer}
-.resident-avatar img{width:100%;height:100%;object-fit:contain;display:none}.resident-avatar.has-image img{display:block}.resident-avatar.has-image span{display:none}
-.resident-avatar span{padding:7px;text-align:center;color:#777980;font:5.5px/1.55 var(--mono);letter-spacing:.12em}
+.resident-grid{position:relative;z-index:3;display:grid;grid-template-columns:34% minmax(0,1fr);gap:10px;height:100%;align-items:center}
+.resident-avatar{position:relative;width:100%;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;align-self:center;overflow:hidden;border:1px solid var(--card-line);border-radius:8px;background:rgba(255,255,255,.46);cursor:pointer}
+.resident-avatar img{width:100%;height:100%;object-fit:cover;object-position:center;display:none}.resident-avatar.has-image img{display:block}.resident-avatar.has-image span{display:none}
+.resident-avatar span{padding:7px;text-align:center;color:var(--card-ink);opacity:.62;font:5.5px/1.55 var(--mono);letter-spacing:.12em}
 .resident-info{min-width:0;display:flex;flex-direction:column;justify-content:center;gap:4px;padding:2px 0;overflow:hidden}
-.resident-title{position:relative;z-index:4;width:max-content;max-width:100%;margin:0 auto 2px;padding:0 8px;background:var(--card);font:600 6.4px/1.05 Georgia,"Times New Roman",serif;letter-spacing:.028em;text-align:center;white-space:nowrap}
+.resident-title{position:relative;z-index:4;width:max-content;max-width:100%;margin:0 auto 2px;padding:0 8px;background:var(--card);color:var(--card-ink);font:600 6.4px/1.05 Georgia,"Times New Roman",serif;letter-spacing:.028em;text-align:center;white-space:nowrap}
 .resident-field{display:grid;grid-template-columns:23px minmax(0,1fr);align-items:center;gap:4px;min-height:17px;overflow:hidden}
-.resident-field>label{color:#73757a;font:5px/1 var(--mono);letter-spacing:.1em}
-.resident-edit{position:relative;min-width:0;height:17px;border-bottom:1px dotted rgba(24,25,28,.30);overflow:hidden;display:flex;align-items:center}
-.resident-value{display:block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#232429;font:500 8.5px/1.1 -apple-system,BlinkMacSystemFont,"Helvetica Neue","PingFang SC",Arial,sans-serif;letter-spacing:-.012em;pointer-events:none}
-.resident-field.note .resident-value{font-size:7.6px;color:#45464b}
+.resident-field>label{color:var(--card-ink);opacity:.64;font:5px/1 var(--mono);letter-spacing:.1em}
+.resident-edit{position:relative;min-width:0;height:17px;border-bottom:1px dotted var(--card-line);overflow:hidden;display:flex;align-items:center}
+.resident-value{display:block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--card-ink);font:500 8.5px/1.1 -apple-system,BlinkMacSystemFont,"Helvetica Neue","PingFang SC",Arial,sans-serif;letter-spacing:-.012em;pointer-events:none}
+.resident-field.note .resident-value{font-size:7.6px;color:var(--card-ink);opacity:.78}
 /* input remains a real 16px control for iOS, while the visible mirror stays small. */
-.resident-edit input{position:absolute;inset:0;width:100%;height:100%;margin:0;padding:0;border:0;background:transparent;outline:0;font-size:16px;line-height:17px;color:transparent;caret-color:#222;opacity:.015;-webkit-text-fill-color:transparent}
+.resident-edit input{position:absolute;inset:0;width:100%;height:100%;margin:0;padding:0;border:0;background:transparent;outline:0;font-size:16px;line-height:17px;color:transparent;caret-color:var(--card-ink);opacity:.015;-webkit-text-fill-color:transparent}
 .resident-edit:focus-within{border-bottom-color:rgba(24,25,28,.58)}
 .resident-actions{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-top:1px}
-.resident-tones{display:flex;gap:4px}.resident-tone{width:7px;height:7px;padding:0;border:1px solid rgba(24,25,28,.11);border-radius:50%;background:var(--tone);box-shadow:inset 0 0 0 1px rgba(255,255,255,.64)}
+.resident-tones{display:flex;gap:4px}.resident-tone{width:7px;height:7px;padding:0;border:1px solid rgba(24,25,28,.13);border-radius:50%;background:var(--tone);box-shadow:inset 0 0 0 1px rgba(255,255,255,.64)}
 .resident-tone[aria-pressed="true"]{outline:1px solid rgba(24,25,28,.25);outline-offset:1px}
-.resident-save{padding:3px 7px;border:1px solid rgba(24,25,28,.18);border-radius:999px;background:rgba(255,255,255,.28);font:700 5px/1 var(--mono);letter-spacing:.07em;color:#313237}
+.resident-save{padding:3px 7px;border:1px solid var(--card-line);border-radius:999px;background:rgba(255,255,255,.30);font:700 5px/1 var(--mono);letter-spacing:.07em;color:var(--card-ink)}
 .resident-card.saved{animation:residentSaved .38s ease}
 @keyframes residentSaved{50%{transform:translateY(-1px);box-shadow:0 14px 32px rgba(0,0,0,.05)}}
-.resident-tone:nth-child(1){--tone:#e9eaec}.resident-tone:nth-child(2){--tone:#dce2e7}.resident-tone:nth-child(3){--tone:#e5dfe2}.resident-tone:nth-child(4){--tone:#dfe2de}
+.resident-tone:nth-child(1){--tone:#f0f1f3}.resident-tone:nth-child(2){--tone:#3e4148}.resident-tone:nth-child(3){--tone:#e2eff8}.resident-tone:nth-child(4){--tone:#f5e7ed}.resident-tone:nth-child(5){--tone:#e6f0e6}.resident-tone:nth-child(6){--tone:#eee8f7}
 
 /* magazine-like bridge between 01 and 02: aligned, small, and intentionally spacious. */
 .ascii-chamber{padding-bottom:62px!important;margin-bottom:0!important}
@@ -969,6 +971,212 @@ button:focus-visible,
   .archive-whisper{width:82%;margin-bottom:30px}
 }
 
+
+/* collection organizer: useful controls stay in one quiet region */
+.organizer{
+  margin:0 0 48px;
+  padding:18px 17px 16px;
+  border:1px solid #e8e8ea;
+  border-radius:22px 8px 22px 8px;
+  background:#fff;
+  box-shadow:0 14px 38px rgba(0,0,0,.035);
+}
+.organizer-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:18px;
+}
+.organizer-kicker{
+  display:block;
+  margin-bottom:7px;
+  color:#a0a0a5;
+  font:6px/1 var(--mono);
+  letter-spacing:.22em;
+  text-transform:uppercase;
+}
+.organizer h2{
+  margin:0;
+  font-size:13px;
+  line-height:1.25;
+  font-weight:570;
+  letter-spacing:-.02em;
+}
+.organizer-copy{
+  max-width:330px;
+  margin:9px 0 0;
+  color:#8b8b90;
+  font-size:8px;
+  line-height:1.8;
+}
+.organizer-switch{
+  flex:0 0 auto;
+  min-width:72px;
+  height:29px;
+  padding:0 12px;
+  border:1px solid #dfdfe2;
+  border-radius:999px;
+  background:#fafafa;
+  color:#737378;
+  font-size:8px;
+}
+.organizer-switch[aria-pressed="true"]{
+  background:#202024;
+  border-color:#202024;
+  color:#fff;
+}
+.organizer-tools{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:7px;
+  margin-top:15px;
+  padding-top:13px;
+  border-top:1px solid #efeff0;
+}
+.organizer-tools button{
+  min-width:0;
+  height:30px;
+  padding:0 7px;
+  border:1px solid #e5e5e7;
+  border-radius:10px;
+  background:#fff;
+  color:#79797e;
+  font-size:7.5px;
+}
+.organizer-tools button:disabled{opacity:.35}
+.organizer-status{
+  display:flex;
+  justify-content:space-between;
+  gap:14px;
+  margin-top:11px;
+  color:#aaaab0;
+  font:6px/1.5 var(--mono);
+  letter-spacing:.11em;
+  text-transform:uppercase;
+}
+.collection-shelf.manage-mode .favorite-item{
+  position:relative;
+  padding:5px;
+  border:1px dashed #dbdbde;
+  border-radius:17px;
+  background:#fff;
+}
+.collection-shelf.manage-mode .favorite-item.is-hidden{
+  opacity:.48;
+  filter:grayscale(1);
+}
+.favorite-item.is-pinned .preview::before{
+  content:"PIN";
+  position:absolute;
+  left:7px;
+  top:7px;
+  z-index:2;
+  padding:4px 6px;
+  border:1px solid rgba(225,225,228,.96);
+  border-radius:999px;
+  background:rgba(255,255,255,.94);
+  color:#747479;
+  font:6px/1 var(--mono);
+  letter-spacing:.12em;
+}
+.personal-note{
+  margin-top:5px;
+  padding-left:1px;
+  color:#99999e;
+  font-size:7px;
+  line-height:1.5;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.manage-controls{
+  display:none;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:4px;
+  margin-top:7px;
+}
+.collection-shelf.manage-mode .manage-controls{display:grid}
+.manage-controls button{
+  min-width:0;
+  height:25px;
+  padding:0 2px;
+  border:1px solid #e6e6e8;
+  border-radius:8px;
+  background:#fafafa;
+  color:#7d7d82;
+  font-size:6.5px;
+}
+.collection-shelf.manage-mode .favorite-item[draggable="true"]{cursor:grab}
+.collection-shelf.manage-mode .favorite-item.is-dragging{opacity:.35}
+.note-editor{
+  position:fixed;
+  inset:0;
+  z-index:10020;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:22px;
+  background:rgba(255,255,255,.86);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+}
+.note-editor.show{display:flex}
+.note-card{
+  width:min(100%,360px);
+  padding:17px;
+  border:1px solid #e4e4e6;
+  border-radius:20px;
+  background:#fff;
+  box-shadow:0 18px 50px rgba(0,0,0,.08);
+}
+.note-card span{
+  display:block;
+  color:#aaaab0;
+  font:6px/1 var(--mono);
+  letter-spacing:.18em;
+  text-transform:uppercase;
+}
+.note-card h3{
+  margin:8px 0 12px;
+  font-size:12px;
+  font-weight:570;
+}
+.note-card textarea{
+  width:100%;
+  min-height:92px;
+  resize:none;
+  border:1px solid #e7e7e9;
+  border-radius:12px;
+  padding:11px;
+  outline:none;
+  background:#fbfbfb;
+  color:#38383d;
+  font-size:16px;
+  line-height:1.55;
+}
+.note-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:7px;
+  margin-top:9px;
+}
+.note-actions button{
+  height:32px;
+  border:1px solid #e4e4e6;
+  border-radius:999px;
+  background:#fff;
+  color:#77777c;
+  font-size:8px;
+}
+.note-actions .save{background:#202024;border-color:#202024;color:#fff}
+@media(max-width:440px){
+  .organizer{margin-bottom:42px;padding:16px 14px 14px}
+  .organizer-copy{max-width:220px;font-size:7px}
+  .organizer-switch{min-width:66px;padding:0 9px}
+  .organizer-tools{gap:5px}
+  .organizer-tools button{font-size:7px}
+}
+
 </style>
 </head>
 <body>
@@ -1016,10 +1224,12 @@ button:focus-visible,
           <div class="resident-field note"><label for="residentNote">NOTE</label><div class="resident-edit"><span class="resident-value" id="residentNoteDisplay">leave a quiet trace</span><input id="residentNote" maxlength="42" value="leave a quiet trace" aria-label="修改个签"></div></div>
           <div class="resident-actions">
             <div class="resident-tones" aria-label="名片颜色">
-              <button class="resident-tone" type="button" data-tone="#ececef" style="--tone:#ececef" aria-pressed="true" aria-label="灰白"></button>
-              <button class="resident-tone" type="button" data-tone="#dfe5eb" style="--tone:#dfe5eb" aria-pressed="false" aria-label="浅蓝"></button>
-              <button class="resident-tone" type="button" data-tone="#e8e0e3" style="--tone:#e8e0e3" aria-pressed="false" aria-label="浅粉灰"></button>
-              <button class="resident-tone" type="button" data-tone="#e1e2df" style="--tone:#e1e2df" aria-pressed="false" aria-label="浅灰绿"></button>
+              <button class="resident-tone" type="button" data-tone="#f0f1f3" data-ink="#24262b" data-line="rgba(24,25,28,.16)" style="--tone:#f0f1f3" aria-pressed="true" aria-label="浅灰"></button>
+              <button class="resident-tone" type="button" data-tone="#3e4148" data-ink="#f7f7f8" data-line="rgba(255,255,255,.24)" style="--tone:#3e4148" aria-pressed="false" aria-label="雾黑"></button>
+              <button class="resident-tone" type="button" data-tone="#e2eff8" data-ink="#27323b" data-line="rgba(39,50,59,.15)" style="--tone:#e2eff8" aria-pressed="false" aria-label="嫩蓝"></button>
+              <button class="resident-tone" type="button" data-tone="#f5e7ed" data-ink="#3b2f35" data-line="rgba(59,47,53,.14)" style="--tone:#f5e7ed" aria-pressed="false" aria-label="雾粉"></button>
+              <button class="resident-tone" type="button" data-tone="#e6f0e6" data-ink="#2f3a31" data-line="rgba(47,58,49,.14)" style="--tone:#e6f0e6" aria-pressed="false" aria-label="嫩绿"></button>
+              <button class="resident-tone" type="button" data-tone="#eee8f7" data-ink="#352f40" data-line="rgba(53,47,64,.14)" style="--tone:#eee8f7" aria-pressed="false" aria-label="浅紫"></button>
             </div>
             <button class="resident-save" id="residentSave" type="button">SAVE</button>
           </div>
@@ -1102,6 +1312,28 @@ button:focus-visible,
     <span>saved fragments remain here</span>
   </div>
 
+
+  <section class="organizer reveal-zone" id="organizer" aria-label="收藏整理">
+    <div class="organizer-head">
+      <div>
+        <span class="organizer-kicker">private organizer</span>
+        <h2>整理收藏</h2>
+        <p class="organizer-copy">置顶常用主题、调整顺序、留下私人备注，或暂时收起不想看见的收藏。所有改动只保存在当前设备，并会随收藏数据一起导出。</p>
+      </div>
+      <button class="organizer-switch" id="manageToggle" type="button" aria-pressed="false">开始整理</button>
+    </div>
+    <div class="organizer-tools">
+      <button id="showHiddenToggle" type="button" aria-pressed="false">查看已隐藏</button>
+      <button id="restoreHidden" type="button">全部恢复</button>
+      <button id="resetOrder" type="button">恢复时间排序</button>
+    </div>
+    <div class="organizer-status">
+      <span id="organizerStatus">0 visible / 0 hidden</span>
+      <span>drag or use arrows</span>
+    </div>
+  </section>
+
+
 <section class="collection-shelf reveal-zone" id="collectionShelf" aria-label="收藏列表">
     <div class="shelf-head">
       <span>ARCHIVE</span>
@@ -1139,6 +1371,19 @@ button:focus-visible,
     <button type="button" id="removeButton">取消收藏</button>
   </div>
 </aside>
+
+<div class="note-editor" id="noteEditor" aria-hidden="true">
+  <div class="note-card" role="dialog" aria-modal="true" aria-labelledby="noteEditorTitle">
+    <span>private note</span>
+    <h3 id="noteEditorTitle">收藏备注</h3>
+    <textarea id="noteEditorInput" maxlength="120" placeholder="只在自己的收藏页里可见"></textarea>
+    <div class="note-actions">
+      <button type="button" id="noteEditorCancel">取消</button>
+      <button class="save" type="button" id="noteEditorSave">保存备注</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast">
   <span id="toastText"></span>
   <button id="toastAction" type="button" hidden>撤销</button>
@@ -1186,6 +1431,7 @@ const demoFavorites=[
 
 
 const grid=document.getElementById('favoriteGrid');
+const collectionShelf=document.getElementById('collectionShelf');
 const searchInput=document.getElementById('searchInput');
 const tabs=[...document.querySelectorAll('.tab')];
 let favorites=readFavorites();
@@ -1193,6 +1439,10 @@ let previewMode=favorites.length===0&&(new URLSearchParams(location.search).has(
 let activeFilter='all';
 let currentItem=null;
 let removedSnapshot=null;
+let manageMode=false;
+let showHidden=false;
+let noteEditingKey='';
+let draggedKey='';
 
 
 function readFavorites(){
@@ -1316,15 +1566,35 @@ document.querySelectorAll('.reveal-zone').forEach(zone=>revealObserver.observe(z
 function getVisibleItems(){
   const q=searchInput.value.trim().toLowerCase();
   const result=sourceItems().filter(item=>{
+    if(!showHidden&&item.hidden)return false;
     if(activeFilter!=='all'&&item.room!==activeFilter)return false;
     if(!q)return true;
     return [
-      item.title,item.author,item.roomLabel,item.slug,item.note,
+      item.title,item.author,item.roomLabel,item.slug,item.note,item.personalNote,
       ...(Array.isArray(item.tags)?item.tags:[])
     ].join(' ').toLowerCase().includes(q);
   });
-  result.sort((a,b)=>(b.savedAt||0)-(a.savedAt||0));
+  result.sort((a,b)=>{
+    if(Boolean(a.pinned)!==Boolean(b.pinned))return a.pinned?-1:1;
+    const ao=Number.isFinite(a.manualOrder)?a.manualOrder:Number.MAX_SAFE_INTEGER;
+    const bo=Number.isFinite(b.manualOrder)?b.manualOrder:Number.MAX_SAFE_INTEGER;
+    if(ao!==bo)return ao-bo;
+    return (b.savedAt||0)-(a.savedAt||0);
+  });
   return result;
+}
+function updateOrganizerStatus(){
+  const items=sourceItems();
+  const hidden=items.filter(item=>item.hidden).length;
+  const status=document.getElementById('organizerStatus');
+  if(status)status.textContent=`${items.length-hidden} visible / ${hidden} hidden`;
+  const restore=document.getElementById('restoreHidden');
+  if(restore)restore.disabled=hidden===0;
+  const hiddenToggle=document.getElementById('showHiddenToggle');
+  if(hiddenToggle){
+    hiddenToggle.setAttribute('aria-pressed',String(showHidden));
+    hiddenToggle.textContent=showHidden?'只看未隐藏':'查看已隐藏';
+  }
 }
 function render(){
   const all=sourceItems();
@@ -1364,7 +1634,7 @@ function render(){
       : `<div class="preview-fallback">暂无预览</div>`;
 
     return `
-      <article class="favorite-item" data-key="${escapeHtml(item.key)}">
+      <article class="favorite-item${item.pinned?' is-pinned':''}${item.hidden?' is-hidden':''}" data-key="${escapeHtml(item.key)}" draggable="${manageMode?'true':'false'}">
         <div class="preview" role="button" tabindex="0" aria-label="打开 ${escapeHtml(item.title)}">
           ${preview}
           <button class="heart" type="button" aria-label="取消收藏">✝︎</button>
@@ -1373,6 +1643,14 @@ function render(){
           <div class="item-line">
             <h3 class="item-title">${escapeHtml(item.title)}</h3>
             <span class="item-room">${escapeHtml(item.room==='community'?'BUNNY':'CROSS')}</span>
+          </div>
+          ${item.personalNote?`<div class="personal-note">${escapeHtml(item.personalNote)}</div>`:''}
+          <div class="manage-controls" aria-label="收藏整理操作">
+            <button type="button" data-manage-action="pin">${item.pinned?'取消置顶':'置顶'}</button>
+            <button type="button" data-manage-action="up">上移</button>
+            <button type="button" data-manage-action="down">下移</button>
+            <button type="button" data-manage-action="note">备注</button>
+            <button type="button" data-manage-action="hide">${item.hidden?'恢复':'隐藏'}</button>
           </div>
         </div>
       </article>`;
@@ -1399,9 +1677,123 @@ function render(){
       event.stopPropagation();
       removeFavorite(item.key);
     });
+    node.querySelectorAll('[data-manage-action]').forEach(button=>{
+      button.addEventListener('click',event=>{
+        event.stopPropagation();
+        handleManageAction(item.key,button.dataset.manageAction);
+      });
+    });
+    node.addEventListener('dragstart',event=>{
+      if(!manageMode){event.preventDefault();return;}
+      draggedKey=item.key;
+      node.classList.add('is-dragging');
+      if(event.dataTransfer)event.dataTransfer.effectAllowed='move';
+    });
+    node.addEventListener('dragend',()=>{
+      draggedKey='';
+      node.classList.remove('is-dragging');
+    });
+    node.addEventListener('dragover',event=>{
+      if(!manageMode||!draggedKey||draggedKey===item.key)return;
+      event.preventDefault();
+    });
+    node.addEventListener('drop',event=>{
+      if(!manageMode||!draggedKey||draggedKey===item.key)return;
+      event.preventDefault();
+      moveFavoriteBefore(draggedKey,item.key);
+      draggedKey='';
+    });
   });
+  updateOrganizerStatus();
 }
 
+
+
+function writableItems(){
+  return previewMode?demoFavorites:favorites;
+}
+function persistManagedItems(items){
+  if(previewMode){
+    demoFavorites=items;
+    render();
+    return;
+  }
+  saveFavorites(items);
+}
+function normalizeManualOrder(items){
+  items.forEach((item,index)=>{item.manualOrder=index});
+  return items;
+}
+function handleManageAction(key,action){
+  const items=writableItems().map(item=>({...item}));
+  const index=items.findIndex(item=>item.key===key);
+  if(index<0)return;
+  if(action==='pin'){
+    items[index].pinned=!items[index].pinned;
+    normalizeManualOrder(items);
+    persistManagedItems(items);
+    showToast(items[index].pinned?'已置顶':'已取消置顶');
+    return;
+  }
+  if(action==='up'||action==='down'){
+    const direction=action==='up'?-1:1;
+    const target=index+direction;
+    if(target<0||target>=items.length)return;
+    [items[index],items[target]]=[items[target],items[index]];
+    normalizeManualOrder(items);
+    persistManagedItems(items);
+    showToast(action==='up'?'已向前移动':'已向后移动');
+    return;
+  }
+  if(action==='hide'){
+    items[index].hidden=!items[index].hidden;
+    persistManagedItems(items);
+    showToast(items[index].hidden?'已暂时隐藏':'已恢复显示');
+    return;
+  }
+  if(action==='note'){
+    openNoteEditor(items[index]);
+  }
+}
+function moveFavoriteBefore(sourceKey,targetKey){
+  const items=writableItems().map(item=>({...item}));
+  const from=items.findIndex(item=>item.key===sourceKey);
+  let to=items.findIndex(item=>item.key===targetKey);
+  if(from<0||to<0||from===to)return;
+  const [moved]=items.splice(from,1);
+  if(from<to)to--;
+  items.splice(to,0,moved);
+  normalizeManualOrder(items);
+  persistManagedItems(items);
+  showToast('收藏顺序已更新');
+}
+function openNoteEditor(item){
+  noteEditingKey=item.key;
+  document.getElementById('noteEditorTitle').textContent=item.title||'收藏备注';
+  document.getElementById('noteEditorInput').value=item.personalNote||'';
+  const editor=document.getElementById('noteEditor');
+  editor.classList.add('show');
+  editor.setAttribute('aria-hidden','false');
+  document.body.style.overflow='hidden';
+  requestAnimationFrame(()=>document.getElementById('noteEditorInput').focus({preventScroll:true}));
+}
+function closeNoteEditor(){
+  noteEditingKey='';
+  const editor=document.getElementById('noteEditor');
+  editor.classList.remove('show');
+  editor.setAttribute('aria-hidden','true');
+  document.body.style.overflow='';
+  document.getElementById('noteEditorInput').blur();
+}
+function saveNoteEditor(){
+  if(!noteEditingKey)return closeNoteEditor();
+  const items=writableItems().map(item=>({...item}));
+  const item=items.find(entry=>entry.key===noteEditingKey);
+  if(item)item.personalNote=document.getElementById('noteEditorInput').value.trim();
+  persistManagedItems(items);
+  closeNoteEditor();
+  showToast('私人备注已保存');
+}
 
 function renderWithTransition(){
   render();
@@ -1690,12 +2082,16 @@ function applyResidentCard(data={}){
   const avatar=document.getElementById('residentAvatar');
   const image=document.getElementById('residentAvatarImage');
   name.value=data.name||'resident';id.value=data.id||'@cloud-room';note.value=data.note||'leave a quiet trace';syncResidentDisplay();
-  const tone=data.tone||'#eceef2';card.style.setProperty('--card',tone);
+  const tone=data.tone||'#f0f1f3';
+  const toneButton=[...document.querySelectorAll('.resident-tone')].find(button=>button.dataset.tone===tone);
+  const ink=data.ink||(toneButton&&toneButton.dataset.ink)||'#24262b';
+  const line=data.line||(toneButton&&toneButton.dataset.line)||'rgba(24,25,28,.16)';
+  card.style.setProperty('--card',tone);card.style.setProperty('--card-ink',ink);card.style.setProperty('--card-line',line);
   document.querySelectorAll('.resident-tone').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.tone===tone)));
   if(data.avatar){image.src=data.avatar;avatar.classList.add('has-image')}else{image.removeAttribute('src');avatar.classList.remove('has-image')}
 }
 function saveResidentCard(){
-  const data={name:document.getElementById('residentName').value.trim(),id:document.getElementById('residentId').value.trim(),note:document.getElementById('residentNote').value.trim(),tone:getComputedStyle(document.getElementById('residentCard')).getPropertyValue('--card').trim(),avatar:document.getElementById('residentAvatarImage').getAttribute('src')||''};
+  const data={name:document.getElementById('residentName').value.trim(),id:document.getElementById('residentId').value.trim(),note:document.getElementById('residentNote').value.trim(),tone:getComputedStyle(document.getElementById('residentCard')).getPropertyValue('--card').trim(),ink:getComputedStyle(document.getElementById('residentCard')).getPropertyValue('--card-ink').trim(),line:getComputedStyle(document.getElementById('residentCard')).getPropertyValue('--card-line').trim(),avatar:document.getElementById('residentAvatarImage').getAttribute('src')||''};
   localStorage.setItem(RESIDENT_KEY,JSON.stringify(data));
   const card=document.getElementById('residentCard');card.classList.remove('saved');void card.offsetWidth;card.classList.add('saved');showToast('身份卡已保存');
 }
@@ -1705,12 +2101,47 @@ document.getElementById('residentSave').addEventListener('click',saveResidentCar
   input.addEventListener('input',syncResidentDisplay);
   input.addEventListener('change',saveResidentCard);
 });
-document.querySelectorAll('.resident-tone').forEach(button=>button.addEventListener('click',()=>{document.getElementById('residentCard').style.setProperty('--card',button.dataset.tone);document.querySelectorAll('.resident-tone').forEach(item=>item.setAttribute('aria-pressed',String(item===button)));saveResidentCard()}));
+document.querySelectorAll('.resident-tone').forEach(button=>button.addEventListener('click',()=>{const card=document.getElementById('residentCard');card.style.setProperty('--card',button.dataset.tone);card.style.setProperty('--card-ink',button.dataset.ink);card.style.setProperty('--card-line',button.dataset.line);document.querySelectorAll('.resident-tone').forEach(item=>item.setAttribute('aria-pressed',String(item===button)));saveResidentCard()}));
 document.getElementById('residentAvatarInput').addEventListener('change',event=>{
   const file=event.target.files&&event.target.files[0];if(!file)return;
   const reader=new FileReader();reader.onload=()=>{const image=document.getElementById('residentAvatarImage');image.src=reader.result;document.getElementById('residentAvatar').classList.add('has-image');saveResidentCard()};reader.readAsDataURL(file);event.target.value='';
 });
 applyResidentCard(readResidentCard());
+
+
+
+/* 收藏整理区 */
+const organizer=document.getElementById('organizer');
+const manageToggle=document.getElementById('manageToggle');
+manageToggle.addEventListener('click',()=>{
+  manageMode=!manageMode;
+  collectionShelf.classList.toggle('manage-mode',manageMode);
+  manageToggle.setAttribute('aria-pressed',String(manageMode));
+  manageToggle.textContent=manageMode?'完成整理':'开始整理';
+  render();
+  if(manageMode)collectionShelf.scrollIntoView({behavior:'smooth',block:'start'});
+});
+document.getElementById('showHiddenToggle').addEventListener('click',()=>{
+  showHidden=!showHidden;
+  render();
+});
+document.getElementById('restoreHidden').addEventListener('click',()=>{
+  const items=writableItems().map(item=>({...item,hidden:false}));
+  persistManagedItems(items);
+  showToast('已恢复全部隐藏收藏');
+});
+document.getElementById('resetOrder').addEventListener('click',()=>{
+  const items=writableItems().map(item=>({...item}));
+  items.sort((a,b)=>(b.savedAt||0)-(a.savedAt||0));
+  items.forEach((item,index)=>{item.manualOrder=index;item.pinned=false});
+  persistManagedItems(items);
+  showToast('已恢复时间排序');
+});
+document.getElementById('noteEditorCancel').addEventListener('click',closeNoteEditor);
+document.getElementById('noteEditorSave').addEventListener('click',saveNoteEditor);
+document.getElementById('noteEditor').addEventListener('click',event=>{
+  if(event.target===event.currentTarget)closeNoteEditor();
+});
 
 
 /* 收藏数据：导出 / 导入 / 清空。 */
@@ -1768,7 +2199,6 @@ window.addEventListener('storage',event=>{
 });
 
 
-const collectionShelf=document.getElementById('collectionShelf');
 const viewToggle=document.getElementById('viewToggle');
 function scrollToCollection(){collectionShelf.scrollIntoView({behavior:'smooth',block:'start'});}
 document.getElementById('jumpCollection').addEventListener('click',scrollToCollection);
