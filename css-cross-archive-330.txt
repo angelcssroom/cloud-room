@@ -1,0 +1,2095 @@
+/* ========================================================= */
+
+/*Archive（330） */
+by天使 源代码:ee整理:喵个弥 菜单:愫
+禁二改二传，适配处随便改，自定义处标注🪽
+只复制以下代码不然不显示主题:
+
+/* ========================================================= */
+
+#chat-interface-screen {
+
+    /* 顶栏头像 */
+
+    --top-avatar-1: url("https://i.postimg.cc/yd2NgHfV/IMG-0811.jpg");
+
+    --top-avatar-2: url("https://i.postimg.cc/nzXzhz1b/IMG-0812.jpg");
+
+    --top-avatar-3: url("https://i.postimg.cc/d1h1V19Q/IMG-0813.jpg");
+
+    /* 🪽 char 头像位置：只改这一行 url */
+
+    --top-char-avatar: url("https://i.postimg.cc/2ycPGP9Q/IMG-0843.jpg");
+
+    --top-avatar-5: url("https://i.postimg.cc/0QzQyQCk/IMG-0814.jpg");
+
+    --top-avatar-6: url("https://i.postimg.cc/Y9v9C9x7/IMG-0815.jpg");
+
+    --top-avatar-7: url("https://i.postimg.cc/tTsT4TNm/IMG-0816.jpg");
+
+    --top-header-height: calc(112px + env(safe-area-inset-top));
+
+    --top-avatar-size: clamp(32px, 8.7vw, 39px);
+
+    --top-avatar-gap: clamp(17px, 5.4vw, 30px);
+
+    --top-dot-size: 5px;
+
+    /* 气泡 */
+
+    /* 🪽 char 气泡间隔线上的自定义文字：只改这里 */
+
+    --char-bubble-name: "굿";
+
+    --bubble-ai-bg: #ECEFF3;
+
+    --bubble-ai-text: #5F6570;
+
+    --bubble-user-bg: #6F707A;
+
+    --bubble-user-text: #FFFFFF;
+
+    --bubble-name-text: #9AA0AA;
+
+    --bubble-line: rgba(178, 184, 194, 0.38);
+
+    /* 底栏 */
+
+    --bottom-bar-bg: #F8F8FA;
+
+    --bottom-border: #DADDE3;
+
+    --bottom-input-bg: #FFFFFF;
+
+    --bottom-input-border: #D7DAE0;
+
+    --bottom-text: #6F707A;
+
+    --bottom-icon: #6F707A;
+
+    --bottom-menu-bg: #FFFFFF;
+
+    --bottom-menu-border: #DADDE3;
+
+    --menu-plus-size: 27px;
+
+    --menu-plus-line: 20px;
+
+    --menu-plus-stroke: 2.2px;
+
+    --menu-plus-left: 10px;
+
+    --menu-plus-top: 13px;
+
+    /* 转账 */
+
+    --transfer-card-border: #DADDE3;
+
+    --transfer-card-text: #6F707A;
+
+    --transfer-card-subtext: #9AA0AA;
+
+    --transfer-card-line: rgba(111, 112, 122, 0.16);
+
+}
+
+/* ========================================================= */
+
+/* 01 顶栏：正常聊天状态 */
+
+/* ========================================================= */
+
+#chat-interface-screen:not(.selection-mode) > .header {
+
+    height: var(--top-header-height) !important;
+
+    min-height: var(--top-header-height) !important;
+
+    padding: calc(12px + env(safe-area-inset-top)) 20px 0 20px !important;
+
+    box-sizing: border-box !important;
+
+    background: rgba(255, 255, 255, 0.98) !important;
+
+    border-bottom: 1px solid rgba(218, 222, 230, 0.72) !important;
+
+    box-shadow: none !important;
+
+    backdrop-filter: blur(14px) !important;
+
+    -webkit-backdrop-filter: blur(14px) !important;
+
+    display: flex !important;
+
+    align-items: flex-start !important;
+
+    justify-content: space-between !important;
+
+    position: absolute !important;
+
+    top: 0 !important;
+
+    left: 0 !important;
+
+    right: 0 !important;
+
+    width: auto !important;
+
+    z-index: 100 !important;
+
+    overflow: hidden !important;
+
+}
+
+#chat-interface-screen:not(.selection-mode) #chat-header-title-wrapper {
+
+    position: absolute !important;
+
+    left: 50% !important;
+
+    top: calc(12px + env(safe-area-inset-top)) !important;
+
+    transform: translateX(-50%) !important;
+
+    max-width: 54% !important;
+
+    height: 23px !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    justify-content: center !important;
+
+    pointer-events: none !important;
+
+    z-index: 6 !important;
+
+}
+
+#chat-interface-screen:not(.selection-mode) #chat-header-title {
+
+    font-size: clamp(16px, 4.35vw, 20px) !important;
+
+    line-height: 23px !important;
+
+    font-weight: 500 !important;
+
+    letter-spacing: -0.25px !important;
+
+    color: #111827 !important;
+
+    text-align: center !important;
+
+    max-width: 100% !important;
+
+    white-space: nowrap !important;
+
+    overflow: hidden !important;
+
+    text-overflow: ellipsis !important;
+
+}
+
+#chat-interface-screen #chat-header-status,
+
+#chat-interface-screen .status-dot,
+
+#chat-interface-screen .status-text {
+
+    display: none !important;
+
+    opacity: 0 !important;
+
+    visibility: hidden !important;
+
+}
+
+#chat-interface-screen:not(.selection-mode) > .header .back-btn {
+
+    width: 26px !important;
+
+    height: 25px !important;
+
+    margin: 0 !important;
+
+    padding: 0 !important;
+
+    color: transparent !important;
+
+    font-size: 0 !important;
+
+    line-height: 0 !important;
+
+    position: relative !important;
+
+    z-index: 8 !important;
+
+    flex-shrink: 0 !important;
+
+    background-color: transparent !important;
+
+    background-image: url("data:image/svg+xml,%3Csvg width='26' height='25' viewBox='0 0 26 25' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M16.8 5.4L8.9 12.5L16.8 19.6M9.4 12.5H22.2' stroke='%23747B86' stroke-width='1.55' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
+
+    background-repeat: no-repeat !important;
+
+    background-size: 26px 25px !important;
+
+    background-position: center !important;
+
+    border: none !important;
+
+}
+
+#chat-interface-screen:not(.selection-mode) > .header .back-btn::before,
+
+#chat-interface-screen:not(.selection-mode) > .header .back-btn::after {
+
+    content: none !important;
+
+    display: none !important;
+
+}
+
+#chat-interface-screen:not(.selection-mode) > .header .header-actions {
+
+    height: 25px !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    gap: 7px !important;
+
+    position: relative !important;
+
+    z-index: 8 !important;
+
+}
+
+#chat-interface-screen:not(.selection-mode) > .header .header-actions .action-btn:not(:last-child),
+
+#chat-interface-screen:not(.selection-mode) > .header .header-actions #listen-together-btn {
+
+    width: 24px !important;
+
+    height: 25px !important;
+
+    opacity: 0 !important;
+
+    color: transparent !important;
+
+    background: transparent !important;
+
+    border: none !important;
+
+    box-shadow: none !important;
+
+    pointer-events: auto !important;
+
+}
+
+#chat-interface-screen:not(.selection-mode) > .header .header-actions .action-btn:last-child {
+
+    width: 28px !important;
+
+    height: 25px !important;
+
+    padding: 0 !important;
+
+    margin: 0 !important;
+
+    color: transparent !important;
+
+    font-size: 0 !important;
+
+    line-height: 0 !important;
+
+    background: transparent !important;
+
+    border: none !important;
+
+    box-shadow: none !important;
+
+    position: relative !important;
+
+    opacity: 1 !important;
+
+    pointer-events: auto !important;
+
+}
+
+#chat-interface-screen:not(.selection-mode) > .header .header-actions .action-btn:last-child img,
+
+#chat-interface-screen:not(.selection-mode) > .header .header-actions .action-btn:last-child svg {
+
+    display: none !important;
+
+}
+
+#chat-interface-screen:not(.selection-mode) > .header .header-actions .action-btn:last-child::before {
+
+    content: "" !important;
+
+    position: absolute !important;
+
+    left: 50% !important;
+
+    top: 43% !important;
+
+    transform: translate(-50%, -50%) !important;
+
+    width: 4px !important;
+
+    height: 4px !important;
+
+    border-radius: 50% !important;
+
+    background: #565d68 !important;
+
+    box-shadow: -9px 0 0 #565d68, 9px 0 0 #565d68 !important;
+
+}
+
+/* 头像列 */
+
+#chat-interface-screen:not(.selection-mode) > .header::after {
+
+    content: "" !important;
+
+    position: absolute !important;
+
+    left: 50% !important;
+
+    top: calc(61px + env(safe-area-inset-top)) !important;
+
+    transform: translateX(-50%) !important;
+
+    width: calc(var(--top-avatar-size) * 7 + var(--top-avatar-gap) * 6) !important;
+
+    max-width: calc(100vw - 28px) !important;
+
+    height: calc(var(--top-avatar-size) + 10px) !important;
+
+    background-image:
+
+        var(--top-avatar-1),
+
+        var(--top-avatar-2),
+
+        var(--top-avatar-3),
+
+        var(--top-char-avatar),
+
+        var(--top-avatar-5),
+
+        var(--top-avatar-6),
+
+        var(--top-avatar-7),
+
+        radial-gradient(circle, #9ca3af 0 2.5px, transparent 2.8px);
+
+    background-size:
+
+        var(--top-avatar-size) var(--top-avatar-size),
+
+        var(--top-avatar-size) var(--top-avatar-size),
+
+        var(--top-avatar-size) var(--top-avatar-size),
+
+        var(--top-avatar-size) var(--top-avatar-size),
+
+        var(--top-avatar-size) var(--top-avatar-size),
+
+        var(--top-avatar-size) var(--top-avatar-size),
+
+        var(--top-avatar-size) var(--top-avatar-size),
+
+        var(--top-dot-size) var(--top-dot-size);
+
+    background-position:
+
+        0 0,
+
+        calc((var(--top-avatar-size) + var(--top-avatar-gap)) * 1) 0,
+
+        calc((var(--top-avatar-size) + var(--top-avatar-gap)) * 2) 0,
+
+        calc((var(--top-avatar-size) + var(--top-avatar-gap)) * 3) 0,
+
+        calc((var(--top-avatar-size) + var(--top-avatar-gap)) * 4) 0,
+
+        calc((var(--top-avatar-size) + var(--top-avatar-gap)) * 5) 0,
+
+        calc((var(--top-avatar-size) + var(--top-avatar-gap)) * 6) 0,
+
+        calc((var(--top-avatar-size) + var(--top-avatar-gap)) * 3 + var(--top-avatar-size) / 2 - var(--top-dot-size) / 2)
+
+        calc(var(--top-avatar-size) + 3.5px);
+
+    background-repeat: no-repeat !important;
+
+    -webkit-mask-image:
+
+        radial-gradient(circle calc(var(--top-avatar-size) / 2) at calc(var(--top-avatar-size) / 2) calc(var(--top-avatar-size) / 2), #000 98%, transparent 100%),
+
+        radial-gradient(circle calc(var(--top-avatar-size) / 2) at calc((var(--top-avatar-size) + var(--top-avatar-gap)) * 1 + var(--top-avatar-size) / 2) calc(var(--top-avatar-size) / 2), #000 98%, transparent 100%),
+
+        radial-gradient(circle calc(var(--top-avatar-size) / 2) at calc((var(--top-avatar-size) + var(--top-avatar-gap)) * 2 + var(--top-avatar-size) / 2) calc(var(--top-avatar-size) / 2), #000 98%, transparent 100%),
+
+        radial-gradient(circle calc(var(--top-avatar-size) / 2) at calc((var(--top-avatar-size) + var(--top-avatar-gap)) * 3 + var(--top-avatar-size) / 2) calc(var(--top-avatar-size) / 2), #000 98%, transparent 100%),
+
+        radial-gradient(circle calc(var(--top-avatar-size) / 2) at calc((var(--top-avatar-size) + var(--top-avatar-gap)) * 4 + var(--top-avatar-size) / 2) calc(var(--top-avatar-size) / 2), #000 98%, transparent 100%),
+
+        radial-gradient(circle calc(var(--top-avatar-size) / 2) at calc((var(--top-avatar-size) + var(--top-avatar-gap)) * 5 + var(--top-avatar-size) / 2) calc(var(--top-avatar-size) / 2), #000 98%, transparent 100%),
+
+        radial-gradient(circle calc(var(--top-avatar-size) / 2) at calc((var(--top-avatar-size) + var(--top-avatar-gap)) * 6 + var(--top-avatar-size) / 2) calc(var(--top-avatar-size) / 2), #000 98%, transparent 100%),
+
+        radial-gradient(circle calc(var(--top-dot-size) / 2) at calc((var(--top-avatar-size) + var(--top-avatar-gap)) * 3 + var(--top-avatar-size) / 2) calc(var(--top-avatar-size) + 6px), #000 98%, transparent 100%);
+
+    mask-image:
+
+        radial-gradient(circle calc(var(--top-avatar-size) / 2) at calc(var(--top-avatar-size) / 2) calc(var(--top-avatar-size) / 2), #000 98%, transparent 100%),
+
+        radial-gradient(circle calc(var(--top-avatar-size) / 2) at calc((var(--top-avatar-size) + var(--top-avatar-gap)) * 1 + var(--top-avatar-size) / 2) calc(var(--top-avatar-size) / 2), #000 98%, transparent 100%),
+
+        radial-gradient(circle calc(var(--top-avatar-size) / 2) at calc((var(--top-avatar-size) + var(--top-avatar-gap)) * 2 + var(--top-avatar-size) / 2) calc(var(--top-avatar-size) / 2), #000 98%, transparent 100%),
+
+        radial-gradient(circle calc(var(--top-avatar-size) / 2) at calc((var(--top-avatar-size) + var(--top-avatar-gap)) * 3 + var(--top-avatar-size) / 2) calc(var(--top-avatar-size) / 2), #000 98%, transparent 100%),
+
+        radial-gradient(circle calc(var(--top-avatar-size) / 2) at calc((var(--top-avatar-size) + var(--top-avatar-gap)) * 4 + var(--top-avatar-size) / 2) calc(var(--top-avatar-size) / 2), #000 98%, transparent 100%),
+
+        radial-gradient(circle calc(var(--top-avatar-size) / 2) at calc((var(--top-avatar-size) + var(--top-avatar-gap)) * 5 + var(--top-avatar-size) / 2) calc(var(--top-avatar-size) / 2), #000 98%, transparent 100%),
+
+        radial-gradient(circle calc(var(--top-avatar-size) / 2) at calc((var(--top-avatar-size) + var(--top-avatar-gap)) * 6 + var(--top-avatar-size) / 2) calc(var(--top-avatar-size) / 2), #000 98%, transparent 100%),
+
+        radial-gradient(circle calc(var(--top-dot-size) / 2) at calc((var(--top-avatar-size) + var(--top-avatar-gap)) * 3 + var(--top-avatar-size) / 2) calc(var(--top-avatar-size) + 6px), #000 98%, transparent 100%);
+
+    pointer-events: none !important;
+
+    z-index: 1 !important;
+
+}
+
+/* 头像淡化层，中间 char 不淡化 */
+
+#chat-interface-screen:not(.selection-mode) > .header::before {
+
+    content: "" !important;
+
+    position: absolute !important;
+
+    left: 50% !important;
+
+    top: calc(61px + env(safe-area-inset-top)) !important;
+
+    transform: translateX(-50%) !important;
+
+    width: calc(var(--top-avatar-size) * 7 + var(--top-avatar-gap) * 6) !important;
+
+    max-width: calc(100vw - 28px) !important;
+
+    height: var(--top-avatar-size) !important;
+
+    background:
+
+        linear-gradient(
+
+            90deg,
+
+            rgba(255,255,255,0.42) 0%,
+
+            rgba(255,255,255,0.42) 42.8%,
+
+            rgba(255,255,255,0) 42.8%,
+
+            rgba(255,255,255,0) 57.2%,
+
+            rgba(255,255,255,0.42) 57.2%,
+
+            rgba(255,255,255,0.42) 100%
+
+        ) !important;
+
+    pointer-events: none !important;
+
+    z-index: 2 !important;
+
+}
+
+/* 正常聊天让位 */
+
+#chat-interface-screen:not(.selection-mode) #chat-messages {
+
+    padding-top: calc(var(--top-header-height) + 8px) !important;
+
+    margin-top: 0 !important;
+
+}
+
+/* 多选模式保持原文件逻辑 */
+
+#chat-interface-screen.selection-mode .header .default-controls {
+
+    display: none !important;
+
+}
+
+#chat-interface-screen.selection-mode .header .selection-controls {
+
+    display: flex !important;
+
+    justify-content: space-between !important;
+
+    align-items: center !important;
+
+    width: 100% !important;
+
+}
+
+#selection-cancel-btn,
+
+#selection-delete-btn {
+
+    opacity: 1 !important;
+
+    visibility: visible !important;
+
+    pointer-events: auto !important;
+
+}
+
+/* ========================================================= */
+
+/* 02 普通聊天气泡：只作用于普通文本，不作用于转账/图片 */
+
+/* ========================================================= */
+
+#chat-interface-screen .timestamp,
+
+#chat-interface-screen .message-wrapper.system,
+
+#chat-interface-screen .message-wrapper.system-pat,
+
+#chat-interface-screen .message-bubble.system-bubble,
+
+#chat-interface-screen .system-message {
+
+    display: none !important;
+
+    opacity: 0 !important;
+
+    visibility: hidden !important;
+
+}
+
+#chat-interface-screen .message-wrapper.user .avatar,
+
+#chat-interface-screen .message-wrapper.user .avatar-group,
+
+#chat-interface-screen .message-wrapper.user .avatar-with-frame,
+
+#chat-interface-screen .message-wrapper.user .avatar-img,
+
+#chat-interface-screen .message-bubble.user .avatar,
+
+#chat-interface-screen .message-bubble.user .avatar-group,
+
+#chat-interface-screen .message-bubble.user .avatar-with-frame,
+
+#chat-interface-screen .message-bubble.user .avatar-img {
+
+    display: none !important;
+
+    opacity: 0 !important;
+
+    visibility: hidden !important;
+
+    width: 0 !important;
+
+    height: 0 !important;
+
+    margin: 0 !important;
+
+}
+
+#chat-interface-screen #chat-messages {
+
+    gap: 13px !important;
+
+}
+
+#chat-interface-screen .message-wrapper {
+
+    max-width: 86% !important;
+
+    gap: 7px !important;
+
+    align-items: flex-end !important;
+
+}
+
+#chat-interface-screen .message-wrapper.ai {
+
+    align-self: flex-start !important;
+
+    flex-direction: row !important;
+
+}
+
+#chat-interface-screen .message-wrapper.user {
+
+    align-self: flex-end !important;
+
+    flex-direction: row-reverse !important;
+
+}
+
+#chat-interface-screen .message-bubble {
+
+    position: relative !important;
+
+    display: flex !important;
+
+    align-items: flex-end !important;
+
+    gap: 7px !important;
+
+    max-width: 100% !important;
+
+    min-width: 0 !important;
+
+}
+
+#chat-interface-screen .message-bubble.user {
+
+    flex-direction: row-reverse !important;
+
+}
+
+/* 普通文本 content */
+
+#chat-interface-screen #chat-messages .message-bubble:not(.is-transfer):not(.is-ai-image) .content:not(:has(.transfer-card)):not(:has(.ai-generated-image)):not(:has(.realimag-image)),
+
+#chat-messages .message-bubble:not(.is-transfer):not(.is-ai-image) .content:not(:has(.transfer-card)):not(:has(.ai-generated-image)):not(:has(.realimag-image)) {
+
+    display: block !important;
+
+    visibility: visible !important;
+
+    opacity: 1 !important;
+
+    position: relative !important;
+
+    flex: 0 1 auto !important;
+
+    min-width: 0 !important;
+
+    max-width: min(250px, 68vw) !important;
+
+    font-size: var(--chat-font-size, 15px) !important;
+
+    line-height: 1.34 !important;
+
+    padding: 7px 11px !important;
+
+    box-sizing: border-box !important;
+
+    word-break: break-word !important;
+
+    overflow-wrap: break-word !important;
+
+    box-shadow: none !important;
+
+    border: none !important;
+
+    outline: none !important;
+
+    backdrop-filter: none !important;
+
+    -webkit-backdrop-filter: none !important;
+
+    overflow: visible !important;
+
+}
+
+/* char 普通气泡 */
+
+#chat-interface-screen #chat-messages .message-wrapper.ai .message-bubble:not(.is-transfer):not(.is-ai-image) .content:not(:has(.transfer-card)):not(:has(.ai-generated-image)):not(:has(.realimag-image)),
+
+#chat-messages .message-wrapper.ai .message-bubble:not(.is-transfer):not(.is-ai-image) .content:not(:has(.transfer-card)):not(:has(.ai-generated-image)):not(:has(.realimag-image)) {
+
+    background: var(--bubble-ai-bg) !important;
+
+    background-color: var(--bubble-ai-bg) !important;
+
+    color: var(--bubble-ai-text) !important;
+
+    border-radius: 9px !important;
+
+    padding: 21px 11px 7px 11px !important;
+
+}
+
+/* user 普通气泡 */
+
+#chat-interface-screen #chat-messages .message-wrapper.user .message-bubble:not(.is-transfer):not(.is-ai-image) .content:not(:has(.transfer-card)):not(:has(.ai-generated-image)):not(:has(.realimag-image)),
+
+#chat-messages .message-wrapper.user .message-bubble:not(.is-transfer):not(.is-ai-image) .content:not(:has(.transfer-card)):not(:has(.ai-generated-image)):not(:has(.realimag-image)) {
+
+    background: var(--bubble-user-bg) !important;
+
+    background-color: var(--bubble-user-bg) !important;
+
+    color: var(--bubble-user-text) !important;
+
+    border-radius: 9px !important;
+
+    padding: 7px 11px !important;
+
+}
+
+/* char 名字线 */
+
+#chat-interface-screen #chat-messages .message-wrapper.ai .message-bubble:not(.is-transfer):not(.is-ai-image) .content:not(:has(.transfer-card)):not(:has(.ai-generated-image)):not(:has(.realimag-image))::before,
+
+#chat-messages .message-wrapper.ai .message-bubble:not(.is-transfer):not(.is-ai-image) .content:not(:has(.transfer-card)):not(:has(.ai-generated-image)):not(:has(.realimag-image))::before {
+
+    content: var(--char-bubble-name) !important;
+
+    position: absolute !important;
+
+    left: 11px !important;
+
+    right: 11px !important;
+
+    top: 5px !important;
+
+    height: 12px !important;
+
+    line-height: 12px !important;
+
+    padding-bottom: 3px !important;
+
+    border-bottom: 1px solid var(--bubble-line) !important;
+
+    font-size: 10px !important;
+
+    font-weight: 500 !important;
+
+    color: var(--bubble-name-text) !important;
+
+    white-space: nowrap !important;
+
+    overflow: hidden !important;
+
+    text-overflow: ellipsis !important;
+
+    pointer-events: none !important;
+
+}
+
+/* char 尾巴 */
+
+#chat-interface-screen #chat-messages .message-wrapper.ai .message-bubble:not(.is-transfer):not(.is-ai-image) .content:not(:has(.transfer-card)):not(:has(.ai-generated-image)):not(:has(.realimag-image))::after,
+
+#chat-messages .message-wrapper.ai .message-bubble:not(.is-transfer):not(.is-ai-image) .content:not(:has(.transfer-card)):not(:has(.ai-generated-image)):not(:has(.realimag-image))::after {
+
+    content: "" !important;
+
+    position: absolute !important;
+
+    left: -4px !important;
+
+    bottom: 0 !important;
+
+    width: 13px !important;
+
+    height: 9px !important;
+
+    background: var(--bubble-ai-bg) !important;
+
+    clip-path: polygon(100% 0, 100% 100%, 0 100%) !important;
+
+    border-radius: 0 0 0 2px !important;
+
+    transform: skewX(-4deg) !important;
+
+    display: block !important;
+
+    pointer-events: none !important;
+
+    z-index: 1 !important;
+
+}
+
+/* user 尾巴 */
+
+#chat-interface-screen #chat-messages .message-wrapper.user .message-bubble:not(.is-transfer):not(.is-ai-image) .content:not(:has(.transfer-card)):not(:has(.ai-generated-image)):not(:has(.realimag-image))::before,
+
+#chat-messages .message-wrapper.user .message-bubble:not(.is-transfer):not(.is-ai-image) .content:not(:has(.transfer-card)):not(:has(.ai-generated-image)):not(:has(.realimag-image))::before {
+
+    content: "" !important;
+
+    position: absolute !important;
+
+    right: -4px !important;
+
+    bottom: 0 !important;
+
+    width: 13px !important;
+
+    height: 9px !important;
+
+    background: var(--bubble-user-bg) !important;
+
+    clip-path: polygon(0 0, 100% 100%, 0 100%) !important;
+
+    border-radius: 0 0 2px 0 !important;
+
+    transform: skewX(4deg) !important;
+
+    display: block !important;
+
+    pointer-events: none !important;
+
+    z-index: 1 !important;
+
+}
+
+#chat-interface-screen .message-wrapper.ai .avatar,
+
+#chat-interface-screen .message-wrapper.ai .avatar-img,
+
+#chat-interface-screen .message-wrapper.ai .avatar-with-frame,
+
+#chat-interface-screen .message-bubble.ai .avatar,
+
+#chat-interface-screen .message-bubble.ai .avatar-img,
+
+#chat-interface-screen .message-bubble.ai .avatar-with-frame {
+
+    width: 30px !important;
+
+    height: 30px !important;
+
+    border-radius: 50% !important;
+
+    object-fit: cover !important;
+
+    flex-shrink: 0 !important;
+
+}
+
+#chat-interface-screen .sender-name {
+
+    display: none !important;
+
+}
+
+/* ========================================================= */
+
+/* 03 特殊消息：转账 / 文字图片不套普通气泡 */
+
+/* ========================================================= */
+
+#chat-interface-screen #chat-messages .message-bubble.is-transfer,
+
+#chat-interface-screen #chat-messages .message-bubble.is-ai-image,
+
+#chat-messages .message-bubble.is-transfer,
+
+#chat-messages .message-bubble.is-ai-image {
+
+    flex: initial !important;
+
+    min-width: auto !important;
+
+    max-width: none !important;
+
+}
+
+#chat-interface-screen #chat-messages .message-bubble.is-transfer .content,
+
+#chat-interface-screen #chat-messages .message-bubble.is-ai-image .content,
+
+#chat-interface-screen #chat-messages .message-bubble .content:has(.transfer-card),
+
+#chat-interface-screen #chat-messages .message-bubble .content:has(.ai-generated-image),
+
+#chat-interface-screen #chat-messages .message-bubble .content:has(.realimag-image),
+
+#chat-messages .message-bubble.is-transfer .content,
+
+#chat-messages .message-bubble.is-ai-image .content,
+
+#chat-messages .message-bubble .content:has(.transfer-card),
+
+#chat-messages .message-bubble .content:has(.ai-generated-image),
+
+#chat-messages .message-bubble .content:has(.realimag-image) {
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    justify-content: center !important;
+
+    flex: initial !important;
+
+    min-width: auto !important;
+
+    max-width: none !important;
+
+    background: transparent !important;
+
+    background-color: transparent !important;
+
+    padding: 0 !important;
+
+    margin: 0 !important;
+
+    border: none !important;
+
+    border-radius: 0 !important;
+
+    box-shadow: none !important;
+
+    outline: none !important;
+
+    backdrop-filter: none !important;
+
+    -webkit-backdrop-filter: none !important;
+
+    overflow: visible !important;
+
+}
+
+#chat-interface-screen #chat-messages .message-bubble.is-transfer .content::before,
+
+#chat-interface-screen #chat-messages .message-bubble.is-transfer .content::after,
+
+#chat-interface-screen #chat-messages .message-bubble.is-ai-image .content::before,
+
+#chat-interface-screen #chat-messages .message-bubble.is-ai-image .content::after,
+
+#chat-interface-screen #chat-messages .message-bubble .content:has(.transfer-card)::before,
+
+#chat-interface-screen #chat-messages .message-bubble .content:has(.transfer-card)::after,
+
+#chat-interface-screen #chat-messages .message-bubble .content:has(.ai-generated-image)::before,
+
+#chat-interface-screen #chat-messages .message-bubble .content:has(.ai-generated-image)::after,
+
+#chat-interface-screen #chat-messages .message-bubble .content:has(.realimag-image)::before,
+
+#chat-interface-screen #chat-messages .message-bubble .content:has(.realimag-image)::after,
+
+#chat-messages .message-bubble.is-transfer .content::before,
+
+#chat-messages .message-bubble.is-transfer .content::after,
+
+#chat-messages .message-bubble.is-ai-image .content::before,
+
+#chat-messages .message-bubble.is-ai-image .content::after,
+
+#chat-messages .message-bubble .content:has(.transfer-card)::before,
+
+#chat-messages .message-bubble .content:has(.transfer-card)::after,
+
+#chat-messages .message-bubble .content:has(.ai-generated-image)::before,
+
+#chat-messages .message-bubble .content:has(.ai-generated-image)::after,
+
+#chat-messages .message-bubble .content:has(.realimag-image)::before,
+
+#chat-messages .message-bubble .content:has(.realimag-image)::after {
+
+    content: none !important;
+
+    display: none !important;
+
+}
+
+/* ========================================================= */
+
+/* 04 底栏 */
+
+/* ========================================================= */
+
+#chat-interface-screen #chat-input-area {
+
+    position: absolute !important;
+
+    left: 0 !important;
+
+    right: 0 !important;
+
+    bottom: 0 !important;
+
+    width: auto !important;
+
+    z-index: 100 !important;
+
+    height: calc(52px + env(safe-area-inset-bottom)) !important;
+
+    min-height: calc(52px + env(safe-area-inset-bottom)) !important;
+
+    padding: 6px 10px calc(6px + env(safe-area-inset-bottom)) 10px !important;
+
+    box-sizing: border-box !important;
+
+    background: var(--bottom-bar-bg) !important;
+
+    border-top: 1px solid var(--bottom-border) !important;
+
+    box-shadow: none !important;
+
+    backdrop-filter: none !important;
+
+    -webkit-backdrop-filter: none !important;
+
+    display: flex !important;
+
+    flex-direction: column !important;
+
+    justify-content: center !important;
+
+    gap: 0 !important;
+
+}
+
+#chat-interface-screen #chat-input-main-row {
+
+    position: relative !important;
+
+    width: 100% !important;
+
+    height: 34px !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    gap: 8px !important;
+
+    padding: 0 0 0 38px !important;
+
+    margin: 0 !important;
+
+    box-sizing: border-box !important;
+
+    flex-shrink: 0 !important;
+
+}
+
+#chat-interface-screen #chat-input {
+
+    flex: 1 1 auto !important;
+
+    width: auto !important;
+
+    height: 31px !important;
+
+    min-height: 31px !important;
+
+    max-height: 31px !important;
+
+    padding: 5px 10px !important;
+
+    margin: 0 !important;
+
+    border-radius: 5px !important;
+
+    border: 1px solid var(--bottom-input-border) !important;
+
+    background: var(--bottom-input-bg) !important;
+
+    color: var(--bottom-text) !important;
+
+    caret-color: var(--bottom-text) !important;
+
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif !important;
+
+    font-size: 15px !important;
+
+    line-height: 19px !important;
+
+    font-weight: 400 !important;
+
+    resize: none !important;
+
+    overflow-y: hidden !important;
+
+    box-sizing: border-box !important;
+
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.025) !important;
+
+    outline: none !important;
+
+}
+
+#chat-interface-screen #chat-input::placeholder {
+
+    color: transparent !important;
+
+    opacity: 0 !important;
+
+}
+
+#chat-interface-screen #send-btn {
+
+    display: none !important;
+
+    opacity: 0 !important;
+
+    visibility: hidden !important;
+
+    width: 0 !important;
+
+    min-width: 0 !important;
+
+    max-width: 0 !important;
+
+    height: 0 !important;
+
+    min-height: 0 !important;
+
+    max-height: 0 !important;
+
+    padding: 0 !important;
+
+    margin: 0 !important;
+
+    border: none !important;
+
+    pointer-events: none !important;
+
+}
+
+#chat-interface-screen #send-btn::before,
+
+#chat-interface-screen #send-btn::after,
+
+#chat-interface-screen #send-btn svg,
+
+#chat-interface-screen #send-btn img {
+
+    display: none !important;
+
+    content: none !important;
+
+}
+
+#chat-interface-screen #input-actions-wrapper {
+
+    position: static !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    justify-content: center !important;
+
+    gap: 0 !important;
+
+    flex-shrink: 0 !important;
+
+    height: 31px !important;
+
+    margin: 0 !important;
+
+    padding: 0 !important;
+
+}
+
+#chat-interface-screen #wait-reply-btn {
+
+    position: static !important;
+
+    bottom: auto !important;
+
+    right: auto !important;
+
+    width: auto !important;
+
+    min-width: 46px !important;
+
+    height: 31px !important;
+
+    min-height: 31px !important;
+
+    max-height: 31px !important;
+
+    padding: 0 0 0 2px !important;
+
+    margin: 0 !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    justify-content: center !important;
+
+    background: transparent !important;
+
+    border: none !important;
+
+    border-radius: 0 !important;
+
+    box-shadow: none !important;
+
+    backdrop-filter: none !important;
+
+    -webkit-backdrop-filter: none !important;
+
+    cursor: pointer !important;
+
+    opacity: 1 !important;
+
+    font-size: 0 !important;
+
+    line-height: 0 !important;
+
+    color: transparent !important;
+
+    transform: none !important;
+
+}
+
+#chat-interface-screen #wait-reply-btn img,
+
+#chat-interface-screen #wait-reply-btn svg {
+
+    display: none !important;
+
+}
+
+#chat-interface-screen #wait-reply-btn::before {
+
+    content: "Send" !important;
+
+    display: block !important;
+
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif !important;
+
+    font-size: 18px !important;
+
+    line-height: 31px !important;
+
+    font-weight: 400 !important;
+
+    letter-spacing: 0 !important;
+
+    color: var(--bottom-text) !important;
+
+}
+
+#chat-interface-screen #chat-input-actions-top {
+
+    position: absolute !important;
+
+    left: var(--menu-plus-left) !important;
+
+    top: var(--menu-plus-top) !important;
+
+    width: var(--menu-plus-size) !important;
+
+    height: var(--menu-plus-size) !important;
+
+    z-index: 1000 !important;
+
+    background: transparent !important;
+
+    border: none !important;
+
+    padding: 0 !important;
+
+    margin: 0 !important;
+
+    border-radius: 0 !important;
+
+    transition: all 0.2s ease !important;
+
+    pointer-events: none !important;
+
+    flex-shrink: 0 !important;
+
+    overflow: visible !important;
+
+}
+
+#chat-interface-screen #chat-input-actions-top > *,
+
+#chat-interface-screen #chat-input-actions-top img,
+
+#chat-interface-screen #chat-input-actions-top svg {
+
+    color: transparent !important;
+
+    opacity: 0 !important;
+
+}
+
+#chat-interface-screen #chat-input-actions-top::before {
+
+    content: "" !important;
+
+    position: absolute !important;
+
+    width: var(--menu-plus-size) !important;
+
+    height: var(--menu-plus-size) !important;
+
+    left: 0 !important;
+
+    top: 0 !important;
+
+    background:
+
+        linear-gradient(var(--bottom-icon), var(--bottom-icon)) center / var(--menu-plus-line) var(--menu-plus-stroke) no-repeat,
+
+        linear-gradient(var(--bottom-icon), var(--bottom-icon)) center / var(--menu-plus-stroke) var(--menu-plus-line) no-repeat !important;
+
+    border-radius: 0 !important;
+
+    cursor: pointer !important;
+
+    z-index: 1001 !important;
+
+    opacity: 0.9 !important;
+
+    transition: opacity 0.2s, visibility 0s 0.2s !important;
+
+    pointer-events: auto !important;
+
+}
+
+#chat-interface-screen #chat-input-actions-top:hover,
+
+#chat-interface-screen #chat-input-actions-top.menu-open {
+
+    width: auto !important;
+
+    min-width: 260px !important;
+
+    max-width: 92vw !important;
+
+    height: auto !important;
+
+    background: var(--bottom-menu-bg) !important;
+
+    box-shadow: 0 5px 18px rgba(80, 82, 92, 0.18) !important;
+
+    border: 1px solid var(--bottom-menu-border) !important;
+
+    padding: 8px !important;
+
+    left: 0px !important;
+
+    top: auto !important;
+
+    bottom: 39px !important;
+
+    display: grid !important;
+
+    grid-template-columns: repeat(4, 1fr) !important;
+
+    grid-auto-rows: auto !important;
+
+    column-gap: 6px !important;
+
+    row-gap: 6px !important;
+
+    pointer-events: auto !important;
+
+    border-radius: 12px !important;
+
+}
+
+#chat-interface-screen #chat-input-actions-top:hover::before,
+
+#chat-interface-screen #chat-input-actions-top.menu-open::before {
+
+    opacity: 0 !important;
+
+    visibility: hidden !important;
+
+    pointer-events: none !important;
+
+}
+
+#chat-interface-screen #chat-input-actions-top .chat-action-icon-btn,
+
+#chat-interface-screen #chat-input-actions-top #reroll-btn {
+
+    opacity: 0 !important;
+
+    visibility: hidden !important;
+
+    transform: translateY(10px) scale(0.95) !important;
+
+    pointer-events: none !important;
+
+    display: flex !important;
+
+    flex-direction: column !important;
+
+    align-items: center !important;
+
+    justify-content: center !important;
+
+    gap: 0 !important;
+
+    width: 100% !important;
+
+    height: 36px !important;
+
+    background: transparent !important;
+
+    border: 1px solid var(--bottom-menu-border) !important;
+
+    border-radius: 6px !important;
+
+    cursor: pointer !important;
+
+    position: relative !important;
+
+    margin: 0 !important;
+
+    padding: 0 !important;
+
+    box-sizing: border-box !important;
+
+    color: var(--bottom-icon) !important;
+
+    transition:
+
+        opacity 0.2s ease 0.05s,
+
+        transform 0.2s ease 0.05s,
+
+        visibility 0s 0.25s,
+
+        background-color 0.2s ease,
+
+        border-color 0.2s ease !important;
+
+}
+
+#chat-interface-screen #chat-input-actions-top:hover .chat-action-icon-btn,
+
+#chat-interface-screen #chat-input-actions-top:hover #reroll-btn,
+
+#chat-interface-screen #chat-input-actions-top.menu-open .chat-action-icon-btn,
+
+#chat-interface-screen #chat-input-actions-top.menu-open #reroll-btn {
+
+    opacity: 1 !important;
+
+    visibility: visible !important;
+
+    transform: translateY(0) scale(1) !important;
+
+    pointer-events: auto !important;
+
+}
+
+#chat-interface-screen #chat-input-actions-top .chat-action-icon-btn:hover,
+
+#chat-interface-screen #chat-input-actions-top #reroll-btn:hover {
+
+    background-color: #F8F8F9 !important;
+
+    border-color: #C7CAD2 !important;
+
+}
+
+#chat-interface-screen #chat-input-actions-top .chat-action-icon-btn svg,
+
+#chat-interface-screen #chat-input-actions-top #reroll-btn svg,
+
+#chat-interface-screen #chat-input-actions-top .chat-action-icon-btn img,
+
+#chat-interface-screen #chat-input-actions-top #reroll-btn img {
+
+    display: block !important;
+
+    width: 20px !important;
+
+    height: 20px !important;
+
+    flex-shrink: 0 !important;
+
+    margin-bottom: 0 !important;
+
+    opacity: 0.8 !important;
+
+    color: var(--bottom-icon) !important;
+
+    filter: grayscale(1) brightness(0.72) contrast(1) !important;
+
+}
+
+#chat-interface-screen #chat-input-actions-top .chat-action-icon-btn svg *,
+
+#chat-interface-screen #chat-input-actions-top #reroll-btn svg * {
+
+    stroke: var(--bottom-icon) !important;
+
+    fill: none !important;
+
+}
+
+#send-photo-btn::after,
+
+#upload-image-btn::after,
+
+#transfer-btn::after,
+
+#voice-message-btn::after,
+
+#pet-action-btn::after,
+
+#send-waimai-request-btn::after,
+
+#video-call-btn::after,
+
+#group-video-call-btn::after,
+
+#send-poll-btn::after,
+
+#share-link-btn::after,
+
+#send-location-btn::after,
+
+#open-tarot-btn::after,
+
+#reroll-btn::after,
+
+#retry-btn::after,
+
+#open-sticker-panel-btn::after,
+
+#propel-btn::after,
+
+#edit-last-response-btn::after,
+
+#show-announcement-board-btn::after,
+
+#werewolf-game-btn::after,
+
+.quick-reply-edit-btn::after,
+
+.quick-reply-delete-btn::after,
+
+#read-together-btn::after,
+
+#pat-btn::after,
+
+#open-shopping-btn::after,
+
+#gomoku-btn::after,
+
+#share-location-btn::after,
+
+#open-nai-gallery-btn::after {
+
+    display: none !important;
+
+}
+
+/* ========================================================= */
+
+/* 05 转账卡片 */
+
+/* ========================================================= */
+
+#chat-interface-screen #chat-messages .transfer-card,
+
+#chat-messages .transfer-card {
+
+    display: block !important;
+
+    width: 168px !important;
+
+    min-width: 168px !important;
+
+    max-width: 168px !important;
+
+    padding: 10px 11px 9px 11px !important;
+
+    margin: 0 !important;
+
+    box-sizing: border-box !important;
+
+    position: relative !important;
+
+    overflow: hidden !important;
+
+    border-radius: 9px !important;
+
+    border: 1px solid var(--transfer-card-border) !important;
+
+    background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(248,248,250,0.98)) !important;
+
+    color: var(--transfer-card-text) !important;
+
+    box-shadow:
+
+        0 1px 2px rgba(40, 42, 52, 0.05),
+
+        inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif !important;
+
+}
+
+#chat-interface-screen #chat-messages .transfer-card::before,
+
+#chat-messages .transfer-card::before {
+
+    content: "" !important;
+
+    position: absolute !important;
+
+    right: 9px !important;
+
+    top: 9px !important;
+
+    width: 7px !important;
+
+    height: 7px !important;
+
+    border-radius: 50% !important;
+
+    background: #C8CCD4 !important;
+
+    opacity: 1 !important;
+
+    transform: none !important;
+
+}
+
+#chat-interface-screen #chat-messages .transfer-card::after,
+
+#chat-messages .transfer-card::after {
+
+    content: "" !important;
+
+    position: absolute !important;
+
+    left: 0 !important;
+
+    top: 0 !important;
+
+    width: 100% !important;
+
+    height: 3px !important;
+
+    background: linear-gradient(90deg, #6F707A 0%, #B9BDC6 42%, transparent 100%) !important;
+
+    opacity: 0.38 !important;
+
+}
+
+#chat-interface-screen #chat-messages .transfer-card .transfer-title,
+
+#chat-messages .transfer-card .transfer-title {
+
+    margin: 0 16px 7px 0 !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    gap: 5px !important;
+
+    font-size: 11px !important;
+
+    line-height: 14px !important;
+
+    font-weight: 500 !important;
+
+    letter-spacing: 0.01em !important;
+
+    color: var(--transfer-card-subtext) !important;
+
+    text-shadow: none !important;
+
+}
+
+#chat-interface-screen #chat-messages .transfer-card .transfer-title img,
+
+#chat-interface-screen #chat-messages .transfer-card .transfer-title svg,
+
+#chat-messages .transfer-card .transfer-title img,
+
+#chat-messages .transfer-card .transfer-title svg {
+
+    width: 13px !important;
+
+    height: 13px !important;
+
+    opacity: 0.55 !important;
+
+    filter: grayscale(1) brightness(0.75) contrast(0.95) !important;
+
+}
+
+#chat-interface-screen #chat-messages .transfer-card .transfer-amount,
+
+#chat-messages .transfer-card .transfer-amount {
+
+    margin: 0 0 7px 0 !important;
+
+    font-size: 23px !important;
+
+    line-height: 27px !important;
+
+    font-weight: 500 !important;
+
+    letter-spacing: -0.03em !important;
+
+    color: var(--transfer-card-text) !important;
+
+    text-shadow: none !important;
+
+}
+
+#chat-interface-screen #chat-messages .transfer-card .transfer-note,
+
+#chat-messages .transfer-card .transfer-note {
+
+    margin: 7px 0 0 0 !important;
+
+    padding: 7px 0 0 0 !important;
+
+    border-top: 1px solid var(--transfer-card-line) !important;
+
+    font-size: 11px !important;
+
+    line-height: 15px !important;
+
+    font-weight: 400 !important;
+
+    color: var(--transfer-card-subtext) !important;
+
+    opacity: 1 !important;
+
+    text-shadow: none !important;
+
+    word-break: break-word !important;
+
+    overflow-wrap: break-word !important;
+
+}
+
+/* 转账弹窗 */
+
+#transfer-modal {
+
+    background-color: rgba(28, 29, 34, 0.26) !important;
+
+    backdrop-filter: blur(8px) !important;
+
+    -webkit-backdrop-filter: blur(8px) !important;
+
+}
+
+#transfer-modal.visible {
+
+    display: flex !important;
+
+}
+
+#transfer-modal .transfer-content,
+
+.transfer-content {
+
+    width: 274px !important;
+
+    padding: 18px 16px 16px 16px !important;
+
+    background: #FFFFFF !important;
+
+    background-image: none !important;
+
+    border-radius: 13px !important;
+
+    border: 1px solid #DADDE3 !important;
+
+    box-shadow:
+
+        0 12px 34px rgba(40, 42, 52, 0.16),
+
+        inset 0 1px 0 rgba(255,255,255,0.9) !important;
+
+    text-align: left !important;
+
+    box-sizing: border-box !important;
+
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif !important;
+
+}
+
+.transfer-header {
+
+    margin: 0 0 15px 0 !important;
+
+    font-size: 15px !important;
+
+    line-height: 19px !important;
+
+    font-weight: 500 !important;
+
+    letter-spacing: -0.01em !important;
+
+    color: #6F707A !important;
+
+    text-align: center !important;
+
+}
+
+.transfer-input-group {
+
+    margin-bottom: 11px !important;
+
+    text-align: left !important;
+
+}
+
+.transfer-input-group label {
+
+    display: block !important;
+
+    margin-bottom: 5px !important;
+
+    font-size: 11px !important;
+
+    line-height: 14px !important;
+
+    font-weight: 400 !important;
+
+    color: #9AA0AA !important;
+
+}
+
+.transfer-input-group input {
+
+    width: 100% !important;
+
+    height: 34px !important;
+
+    padding: 7px 9px !important;
+
+    box-sizing: border-box !important;
+
+    border-radius: 6px !important;
+
+    border: 1px solid #D7DAE0 !important;
+
+    background: #F8F8FA !important;
+
+    color: #6F707A !important;
+
+    font-size: 14px !important;
+
+    line-height: 18px !important;
+
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif !important;
+
+    outline: none !important;
+
+    box-shadow: none !important;
+
+}
+
+.transfer-input-group input:focus {
+
+    border-color: #B8BCC6 !important;
+
+    background: #FFFFFF !important;
+
+    outline: none !important;
+
+}
+
+.transfer-actions {
+
+    display: flex !important;
+
+    justify-content: space-between !important;
+
+    gap: 8px !important;
+
+    margin-top: 14px !important;
+
+}
+
+.transfer-actions button {
+
+    flex: 1 !important;
+
+    height: 34px !important;
+
+    padding: 0 !important;
+
+    border-radius: 7px !important;
+
+    border: 1px solid #DADDE3 !important;
+
+    font-size: 13px !important;
+
+    line-height: 34px !important;
+
+    font-weight: 400 !important;
+
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif !important;
+
+    cursor: pointer !important;
+
+    transition: opacity 0.16s ease, transform 0.12s ease !important;
+
+}
+
+.transfer-actions button:active {
+
+    transform: scale(0.98) !important;
+
+}
+
+#transfer-cancel-btn {
+
+    background: #F8F8FA !important;
+
+    color: #8C929D !important;
+
+}
+
+#transfer-confirm-btn {
+
+    background: #6F707A !important;
+
+    color: #FFFFFF !important;
+
+    border-color: #6F707A !important;
+
+}
+
+/* ========================================================= */
+
+/* 06 文字描述发送图片 */
+
+/* ========================================================= */
+
+#chat-interface-screen #chat-messages .ai-generated-image,
+
+#chat-interface-screen #chat-messages .realimag-image,
+
+#chat-messages .ai-generated-image,
+
+#chat-messages .realimag-image {
+
+    display: block !important;
+
+    width: auto !important;
+
+    height: auto !important;
+
+    max-width: 148px !important;
+
+    max-height: 190px !important;
+
+    object-fit: contain !important;
+
+    object-position: center !important;
+
+    border-radius: 9px !important;
+
+    border: 1px solid #DADDE3 !important;
+
+    box-sizing: border-box !important;
+
+    background-image: url("https://i.postimg.cc/52FMPRmM/IMG-0838.jpg") !important;
+
+    background-size: contain !important;
+
+    background-position: center !important;
+
+    background-repeat: no-repeat !important;
+
+    content: url("https://i.postimg.cc/52FMPRmM/IMG-0838.jpg") !important;
+
+    box-shadow:
+
+        0 1px 2px rgba(40, 42, 52, 0.05),
+
+        inset 0 1px 0 rgba(255, 255, 255, 0.72) !important;
+
+    cursor: pointer !important;
+
+    margin: 0 !important;
+
+}
+
+#chat-interface-screen #chat-messages .ai-generated-image:hover,
+
+#chat-interface-screen #chat-messages .realimag-image:hover,
+
+#chat-messages .ai-generated-image:hover,
+
+#chat-messages .realimag-image:hover {
+
+    transform: scale(1.015) !important;
+
+    box-shadow:
+
+        0 2px 6px rgba(40, 42, 52, 0.08),
+
+        inset 0 1px 0 rgba(255, 255, 255, 0.72) !important;
+
+}
+
+#chat-interface-screen #chat-messages .message-wrapper.user .ai-generated-image,
+
+#chat-interface-screen #chat-messages .message-wrapper.user .realimag-image,
+
+#chat-messages .message-wrapper.user .ai-generated-image,
+
+#chat-messages .message-wrapper.user .realimag-image {
+
+    margin-left: auto !important;
+
+    margin-right: 0 !important;
+
+}
+
+#chat-interface-screen #chat-messages .message-wrapper.ai .ai-generated-image,
+
+#chat-interface-screen #chat-messages .message-wrapper.ai .realimag-image,
+
+#chat-messages .message-wrapper.ai .ai-generated-image,
+
+#chat-messages .message-wrapper.ai .realimag-image {
+
+    margin-left: 0 !important;
+
+    margin-right: auto !important;
+
+}
+/* 修复 iOS 点击输入框自动放大页面 */
+#chat-interface-screen #chat-input,
+#chat-interface-screen #chat-input:focus,
+#chat-interface-screen #chat-input:active {
+    font-size: 16px !important;
+    transform: none !important;
+    -webkit-text-size-adjust: 100% !important;
+    text-size-adjust: 100% !important;
+}
+
+/* 修复顶栏最后一个头像显示不完整 */
+#chat-interface-screen {
+    --top-avatar-size: clamp(31px, 8.2vw, 37px) !important;
+    --top-avatar-gap: clamp(14px, 4.7vw, 24px) !important;
+}
