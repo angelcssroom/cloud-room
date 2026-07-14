@@ -762,6 +762,19 @@ button:focus-visible,
     </div>
   </section>
 
+  <section class="story-vault reveal-zone" aria-label="长动画与收藏入口">
+    <div class="story-number" aria-hidden="true">02</div>
+    <div class="story-frame" data-motion-block>
+      <video class="motion-video" data-motion-video muted loop playsinline webkit-playsinline preload="none"
+        poster="motion-story-poster.jpg" disablepictureinpicture controlslist="nodownload noplaybackrate noremoteplayback">
+        <source data-src="motion-story.mp4" type="video/mp4">
+      </video>
+      <div class="story-shutters" aria-hidden="true"><i></i><i></i></div>
+    </div>
+    <button class="story-enter" id="storyEnter" type="button">OPEN ARCHIVE <span>↘</span></button>
+  </section>
+
+
   <section class="archive-console tools reveal-zone" id="archiveConsole" aria-label="收藏控制区">
     <div class="console-count"><strong id="consoleCount">0</strong><span>COLLECTION</span></div>
     <div class="console-controls">
@@ -787,18 +800,6 @@ button:focus-visible,
         <button type="button" id="jumpCollection">查看全部 ↓</button>
       </div>
     </div>
-  </section>
-
-  <section class="story-vault reveal-zone" aria-label="长动画与收藏入口">
-    <div class="story-number" aria-hidden="true">02</div>
-    <div class="story-frame" data-motion-block>
-      <video class="motion-video" data-motion-video muted loop playsinline webkit-playsinline preload="none"
-        poster="motion-story-poster.jpg" disablepictureinpicture controlslist="nodownload noplaybackrate noremoteplayback">
-        <source data-src="motion-story.mp4" type="video/mp4">
-      </video>
-      <div class="story-shutters" aria-hidden="true"><i></i><i></i></div>
-    </div>
-    <button class="story-enter" id="storyEnter" type="button">OPEN ARCHIVE <span>↘</span></button>
   </section>
 
   <section class="collection-shelf reveal-zone" id="collectionShelf" aria-label="收藏列表">
