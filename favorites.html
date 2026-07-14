@@ -885,6 +885,78 @@ button:focus-visible,
 @media(max-width:720px){.resident-zone{grid-template-columns:1fr}.resident-palette{display:grid;grid-template-columns:1fr auto;align-items:center}.palette-dots{grid-template-columns:repeat(4,38px)}.palette-note{display:none}}
 @media(max-width:460px){.resident-card{border-radius:22px;min-height:0}.resident-body{grid-template-columns:39% 1fr;gap:11px;padding:14px 16px 31px}.avatar-panel{min-height:150px}.profile-row{grid-template-columns:48px;gap:5px;margin-bottom:8px}.profile-row label{font-size:8px}.profile-input{font-size:12px}.profile-signature{min-height:52px}.license-title{font-size:9px}.resident-palette{grid-template-columns:1fr}.palette-dots{grid-template-columns:repeat(4,1fr)}}
 
+
+/* v23 refinement: clearer zones, one-use imagery, stronger motion stages. */
+.resident-zone{display:block;margin:18px 0 54px}
+.resident-card{max-width:720px;margin:0 auto;min-height:0;border-radius:24px;overflow:hidden}
+.resident-card::before,.resident-card::after{display:none}
+.resident-head{padding:14px 34px 12px;border-bottom:1px solid color-mix(in srgb,var(--ink) 18%,transparent)}
+.resident-body{grid-template-columns:42% 1fr;gap:18px;padding:26px 34px 30px}
+.star-frame{position:absolute;inset:8px;pointer-events:none;z-index:4;color:var(--ink);opacity:.88;font:12px/1 var(--serif)}
+.star-edge{position:absolute;display:flex;justify-content:space-around;align-items:center}
+.star-edge.top,.star-edge.bottom{left:20px;right:20px}
+.star-edge.top{top:5px}.star-edge.bottom{bottom:5px}
+.star-edge.left,.star-edge.right{top:24px;bottom:24px;flex-direction:column}
+.star-edge.left{left:5px}.star-edge.right{right:5px}
+.avatar-panel{min-height:230px;border-radius:12px;background:rgba(255,255,255,.42)}
+.profile-row{margin-bottom:12px}
+.profile-input{font-size:16px;line-height:1.25;padding:4px 1px 5px}
+.profile-signature{min-height:58px}
+.resident-foot{margin-top:10px;align-items:center}
+.profile-save{height:34px;padding:0 14px;border-radius:999px;font-size:9px}
+.profile-status{font-size:8px}
+.card-tone-inline{display:flex;align-items:center;gap:7px;margin-top:12px}
+.card-tone-inline>span{margin-right:4px;font:8px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;opacity:.62}
+.card-tone-inline .palette-dot{width:18px;height:18px;aspect-ratio:1;border-radius:50%;padding:0;border:1px solid rgba(0,0,0,.17)}
+.card-tone-inline .palette-dot[aria-pressed="true"]::after{inset:3px;border-radius:50%}
+
+.cross-board{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(210px,.85fr);grid-template-areas:'banner banner' 'motion portrait';gap:12px;margin:0 0 58px}
+.cross-banner{grid-area:banner;min-height:132px}
+.cross-banner-body{height:132px}.cross-banner-copy{max-width:none}
+.cross-motion{grid-area:motion}.cross-motion-body{padding:12px}.cross-motion-view{aspect-ratio:16/10;clip-path:inset(49% 0 49% 0 round 24px)}
+.cross-portrait{grid-area:portrait}.cross-portrait .portrait-body{min-height:0;aspect-ratio:3/4}
+.cross-note,.cross-split{display:none}
+.cross-motion-foot{padding-top:8px}.cross-motion-foot span:last-child{display:none}
+
+.archive-console{display:block;margin:0 0 64px}
+.console-shell{display:grid;grid-template-columns:22% 1fr;min-height:280px;border-radius:24px}
+.console-count strong{font-size:88px}.console-controls{padding:24px}
+.console-stack{display:none}
+.archive-console .section-title{font-size:18px}
+.console-actions{max-width:330px}
+
+.story-grid{display:block;margin:0 0 64px}
+.story-shell{border-radius:26px}
+.story-stage{aspect-ratio:16/11;min-height:360px}
+.story-stage .motion-video{object-fit:cover}
+.story-gallery{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:12px}
+.story-tile{overflow:hidden;border:1px solid #e8e8ea;border-radius:18px;background:#fff;box-shadow:0 10px 28px rgba(0,0,0,.032)}
+.story-tile.square{aspect-ratio:1}.story-tile img{width:100%;height:100%;object-fit:cover;display:block}
+.story-side-a,.story-side-b,.story-enter{display:none}
+
+.collection-shelf{margin:0 0 72px;padding:20px 0 0;border-top:1px solid #e7e7e9;scroll-margin-top:20px}
+.shelf-layout{display:block}.shelf-side{display:none}.shelf-main{min-width:0}
+.shelf-head{position:relative;top:auto;margin-bottom:18px;background:#fff}
+.collection-shelf .favorite-grid{margin-top:0;gap:34px 11px}
+.collection-shelf .favorite-item:nth-child(4n+2){transform:translateY(30px)}
+.collection-shelf .favorite-item:nth-child(4n+3){transform:translateY(10px)}
+.collection-shelf.single-view .favorite-item{transform:none!important}
+.archive-exit .exit-image{display:none}
+.exit-copy{max-width:260px}
+
+@media(max-width:720px){
+ .resident-card{max-width:none}.resident-body{grid-template-columns:40% 1fr;padding:22px 24px 28px}.resident-head{padding-left:28px;padding-right:28px}
+ .cross-board{grid-template-columns:1fr;grid-template-areas:'banner' 'portrait' 'motion'}.cross-portrait .portrait-body{aspect-ratio:4/5}.cross-motion-view{aspect-ratio:4/3}
+ .console-shell{grid-template-columns:28% 1fr}.console-controls{padding:18px}
+ .story-stage{aspect-ratio:4/5;min-height:500px}.story-gallery{grid-template-columns:1fr 1fr}.story-tile:last-child{grid-column:1/-1;aspect-ratio:16/8}
+}
+@media(max-width:460px){
+ .resident-body{grid-template-columns:41% 1fr;gap:12px;padding:20px 20px 28px}.avatar-panel{min-height:190px}.license-title{font-size:9px}.profile-input{font-size:16px}.profile-row{grid-template-columns:42px}.card-tone-inline{gap:6px}.card-tone-inline .palette-dot{width:16px;height:16px}
+ .cross-banner-body{height:116px}.cross-banner{min-height:116px}.cross-portrait .portrait-body{aspect-ratio:3/4}.cross-motion-view{aspect-ratio:1/1}
+ .console-shell{grid-template-columns:1fr;min-height:0}.console-count{min-height:100px;border-right:0;border-bottom:1px solid #efeff1;flex-direction:row;align-items:end}.console-count strong{font-size:66px}.console-controls{padding:18px 16px 20px}
+ .story-stage{aspect-ratio:3/4;min-height:520px}.story-gallery{grid-template-columns:1fr 1fr}.story-tile:last-child{grid-column:1/-1}
+}
+
 </style>
 </head>
 <body>
@@ -915,6 +987,12 @@ button:focus-visible,
 
   <section class="resident-zone reveal-zone" aria-label="收藏者身份卡">
     <article class="resident-card" id="residentCard">
+      <div class="star-frame" aria-hidden="true">
+        <span class="star-edge top">★ ★ ★ ★ ★ ★ ★ ★ ★ ★</span>
+        <span class="star-edge bottom">★ ★ ★ ★ ★ ★ ★ ★ ★ ★</span>
+        <span class="star-edge left">★ ★ ★ ★ ★ ★ ★</span>
+        <span class="star-edge right">★ ★ ★ ★ ★ ★ ★</span>
+      </div>
       <div class="resident-head"><b>cloud-room resident license</b><span id="profileSerial">CR-0000</span></div>
       <div class="resident-body">
         <div class="avatar-panel" id="avatarPanel">
@@ -927,64 +1005,40 @@ button:focus-visible,
           <p class="license-title">PERMANENT LICENSE OF COLLECTION</p>
           <div class="profile-row"><label for="profileName">name</label><input class="profile-input" id="profileName" maxlength="28" value="resident"></div>
           <div class="profile-row"><label for="profileId">ID</label><input class="profile-input" id="profileId" maxlength="28" value="@cloud-room"></div>
-          <div class="profile-row"><label for="profileBio">note</label><textarea class="profile-input profile-signature" id="profileBio" maxlength="90">leave a quiet trace in this room.</textarea></div>
-          <div class="resident-foot"><span class="profile-status" id="profileStatus">saved on this device</span><button class="profile-save" id="profileSave" type="button">save card</button></div>
+          <div class="profile-row"><label for="profileBio">note</label><textarea class="profile-input profile-signature" id="profileBio" maxlength="90">leave a quiet trace.</textarea></div>
+          <div class="card-tone-inline" id="profilePalette"><span>tone</span>
+            <button class="palette-dot" type="button" data-tone="silver" style="--swatch:#e9e9eb" aria-label="银灰" aria-pressed="true"></button>
+            <button class="palette-dot" type="button" data-tone="blue" style="--swatch:#dce5ef" aria-label="雾蓝" aria-pressed="false"></button>
+            <button class="palette-dot" type="button" data-tone="rose" style="--swatch:#eadfe3" aria-label="灰粉" aria-pressed="false"></button>
+            <button class="palette-dot" type="button" data-tone="ink" style="--swatch:#292a2e" aria-label="深灰" aria-pressed="false"></button>
+          </div>
+          <div class="resident-foot"><span class="profile-status" id="profileStatus">saved on this device</span><button class="profile-save" id="profileSave" type="button">save</button></div>
         </div>
       </div>
     </article>
-    <aside class="resident-palette" aria-label="身份卡颜色">
-      <div class="palette-top"><span class="palette-kicker">card tone</span><span class="palette-title">choose a quiet color</span></div>
-      <div class="palette-dots" id="profilePalette">
-        <button class="palette-dot" type="button" data-tone="silver" style="--swatch:#e9e9eb" aria-label="银灰" aria-pressed="true"></button>
-        <button class="palette-dot" type="button" data-tone="blue" style="--swatch:#dce5ef" aria-label="雾蓝" aria-pressed="false"></button>
-        <button class="palette-dot" type="button" data-tone="rose" style="--swatch:#eadfe3" aria-label="灰粉" aria-pressed="false"></button>
-        <button class="palette-dot" type="button" data-tone="ink" style="--swatch:#292a2e" aria-label="深灰" aria-pressed="false"></button>
-      </div>
-      <p class="palette-note">头像、名字、ID、个签和卡片颜色只保存在当前浏览器。</p>
-    </aside>
   </section>
 
-  <section class="cross-board reveal-zone" aria-label="首层素材分区">
+  <section class="cross-board reveal-zone" aria-label="01 动画与图像">
     <div class="cross-banner module-soft">
-      <div class="module-head"><b>CLOUD ROOM</b><span>collected visuals</span></div>
+      <div class="module-head"><b>CLOUD ROOM</b><span>collected visual</span></div>
       <div class="cross-banner-body">
         <img class="ref-visual" src="img-lineart.jpg" alt="黑白线稿装饰图">
         <span class="cross-banner-copy">favorites / motion / still archive</span>
       </div>
     </div>
-
-    <div class="cross-note module">
-      <div>
-        <span class="kicker">section 01</span>
-        <h2>split<br>memory</h2>
-        <p>把收藏页改成真正的左右上下分区。素材、动画、功能不再横向重复，而是像旧网页一样慢慢往下展开。</p>
-      </div>
-      <div class="mini-links"><span>moving image</span><span>saved code</span><span>quiet archive</span></div>
-    </div>
-
     <div class="cross-portrait module-soft">
       <div class="module-head"><b>portrait</b><span>still image</span></div>
       <div class="portrait-body"><img class="ref-visual cool" src="img-anime-girl.jpg" alt="动漫人物装饰图"></div>
     </div>
-
     <div class="cross-motion module">
       <div class="module-head"><b>01 motion</b><span>ascii chamber</span></div>
       <div class="cross-motion-body">
         <div class="cross-motion-view" data-motion-block>
-          <video class="motion-video" data-motion-video muted loop playsinline webkit-playsinline preload="none"
-            poster="motion-ascii-poster.jpg" disablepictureinpicture controlslist="nodownload noplaybackrate noremoteplayback">
+          <video class="motion-video" data-motion-video muted loop playsinline webkit-playsinline preload="none" poster="motion-ascii-poster.jpg" disablepictureinpicture controlslist="nodownload noplaybackrate noremoteplayback">
             <source data-src="motion-ascii.mp4" type="video/mp4">
           </video>
         </div>
-        <div class="cross-motion-foot"><span>enter viewport to play</span><span>leave to pause</span></div>
-      </div>
-    </div>
-
-    <div class="cross-split module">
-      <div class="module-head"><b>half face</b><span>detail</span></div>
-      <div class="split-body">
-        <img class="ref-visual" src="img-split-face.jpg" alt="黑白拼接肖像装饰图">
-        <span class="split-mark">archived / split</span>
+        <div class="cross-motion-foot"><span>viewport playback</span><span></span></div>
       </div>
     </div>
   </section>
@@ -994,96 +1048,43 @@ button:focus-visible,
       <div class="console-count"><strong id="consoleCount">0</strong><span>COLLECTION</span></div>
       <div class="console-controls">
         <div class="folder-head">
-          <div class="section-title-line">
-            <h2 class="section-title">已收藏的主题</h2>
-            <span class="result" id="resultText">0 themes</span>
-          </div>
+          <div class="section-title-line"><h2 class="section-title">已收藏的主题</h2><span class="result" id="resultText">0 themes</span></div>
           <button class="search-toggle" id="searchToggle" type="button" aria-expanded="false">搜索</button>
         </div>
-        <div class="search-panel" id="searchPanel">
-          <div class="search-panel-inner">
-            <input class="search" id="searchInput" type="search" placeholder="主题 / 作者 / 标签" autocomplete="off">
-          </div>
-        </div>
+        <div class="search-panel" id="searchPanel"><div class="search-panel-inner"><input class="search" id="searchInput" type="search" placeholder="主题 / 作者 / 标签" autocomplete="off"></div></div>
         <div class="tabs">
           <button class="tab active" type="button" data-filter="all">全部</button>
           <button class="tab" type="button" data-filter="cross">Cross</button>
           <button class="tab" type="button" data-filter="community">Bunny</button>
         </div>
-        <div class="console-actions">
-          <button type="button" id="randomPick">随机打开一份</button>
-          <button type="button" id="jumpCollection">查看全部 ↓</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="console-stack">
-      <div class="console-mood">
-        <div class="module-head"><b>mood board</b><span>field note</span></div>
-        <img class="ref-visual" src="img-cemetery.jpg" alt="雪地墓园装饰图">
-        <div class="console-caption"><b>quiet weather</b><span>用更安静的黑白图像把功能区压住，不让它像单独漂着的一张白卡。</span></div>
-      </div>
-      <div class="console-ninja">
-        <div class="module-head"><b>small figure</b><span>icon room</span></div>
-        <img class="ref-visual" src="img-ninja.jpg" alt="黑色忍者形象装饰图">
-        <div class="console-caption"><b>soft mascot</b><span>作为分区里的小物件出现，不单独霸占整个页面。</span></div>
+        <div class="console-actions"><button type="button" id="randomPick">随机打开一份</button><button type="button" id="jumpCollection">查看全部 ↓</button></div>
       </div>
     </div>
   </section>
 
-  <section class="story-grid reveal-zone" aria-label="长动画与收藏入口">
+  <section class="story-grid reveal-zone" aria-label="02 长动画与图像">
     <div class="story-shell">
       <div class="module-head"><b>02 motion</b><span>story vault</span></div>
       <div class="story-stage" data-motion-block>
         <div class="story-number" aria-hidden="true">02</div>
-        <video class="motion-video" data-motion-video muted loop playsinline webkit-playsinline preload="none"
-          poster="motion-story-poster.jpg" disablepictureinpicture controlslist="nodownload noplaybackrate noremoteplayback">
+        <video class="motion-video" data-motion-video muted loop playsinline webkit-playsinline preload="none" poster="motion-story-poster.jpg" disablepictureinpicture controlslist="nodownload noplaybackrate noremoteplayback">
           <source data-src="motion-story.mp4" type="video/mp4">
         </video>
         <div class="story-shutters" aria-hidden="true"><i></i><i></i></div>
       </div>
     </div>
-
-    <div class="story-side-a">
-      <div class="module-head"><b>face study</b><span>still image</span></div>
-      <img class="ref-visual" src="img-split-face.jpg" alt="黑白拼接肖像装饰图">
+    <div class="story-gallery" aria-label="收藏图像">
+      <div class="story-tile square"><img src="img-split-face.jpg" alt="黑白拼接肖像"></div>
+      <div class="story-tile square"><img src="img-ninja.jpg" alt="黑色忍者形象"></div>
+      <div class="story-tile square"><img src="img-cemetery.jpg" alt="雪地墓园"></div>
     </div>
-
-    <div class="story-side-b">
-      <div class="quote-grid">
-        <span class="kicker">between 01 and archive</span>
-        <div class="big-index">02</div>
-        <p>长动画单独占一块大画面，旁边再挂小卡和入口，不再和上一个区域长得一模一样。</p>
-      </div>
-    </div>
-
-    <button class="story-enter" id="storyEnter" type="button">
-      <div class="story-enter-top"><span class="story-enter-label">open archive</span><span class="story-enter-arrow">↘</span></div>
-      <div><b>进入收藏列表</b><small>继续往下看完整收藏，不在这里就结束。</small></div>
-    </button>
   </section>
 
   <section class="collection-shelf reveal-zone" id="collectionShelf" aria-label="收藏列表">
-    <div class="shelf-layout">
-      <aside class="shelf-side" aria-label="列表侧栏">
-        <div class="shelf-card text-card module">
-          <div class="module-head"><b>archive note</b><span>browse</span></div>
-          <p>这里开始进入真正的收藏列表。左侧保留窄栏，右侧才是主题卡片，让页面仍然维持分区感，而不是直接铺满一整块。</p>
-        </div>
-        <div class="shelf-card image-card module-soft">
-          <div class="module-head"><b>still frame</b><span>insert</span></div>
-          <img class="ref-visual" src="img-lineart.jpg" alt="黑白线稿装饰图">
-        </div>
-      </aside>
-
-      <div class="shelf-main">
-        <div class="shelf-head">
-          <span>ARCHIVE</span>
-          <button type="button" id="viewToggle" aria-pressed="false">单列浏览</button>
-        </div>
-        <div class="favorite-grid" id="favoriteGrid"></div>
-      </div>
-    </div>
+    <div class="shelf-layout"><div class="shelf-main">
+      <div class="shelf-head"><span>ARCHIVE</span><button type="button" id="viewToggle" aria-pressed="false">单列浏览</button></div>
+      <div class="favorite-grid" id="favoriteGrid"></div>
+    </div></div>
   </section>
 
   <section class="archive-exit reveal-zone" aria-label="收藏页结尾">
@@ -1096,11 +1097,6 @@ button:focus-visible,
       <a href="archive.html">我的区</a>
       <a href="community.html">小兔区</a>
       <a href="#archiveConsole">返回筛选</a>
-    </div>
-    <div class="exit-image">
-      <div class="module-head"><b>last view</b><span>quiet field</span></div>
-      <img class="ref-visual" src="img-cemetery.jpg" alt="雪地墓园装饰图">
-      <span class="image-ghost">cloud-room / saved</span>
     </div>
   </section>
 
