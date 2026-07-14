@@ -641,33 +641,29 @@ function parseInfo(text, slug){
   const tagsRaw = get('tags') || '';
   const note = get('note') || '';
   const wallpaper = get('wallpaper') || '';
+  const series = get('series') || '';
   const tags = tagsRaw ? tagsRaw.split(/[\/、,，|]+/).map(x => x.trim()).filter(Boolean) : [];
-  return {title, author, tags, note, wallpaper};
-}
-function getSeriesBase(slug, allThemes){
-  const parts = slug.split('-');
-  if(parts.length < 2) return slug;
-  const base = parts.slice(0, -1).join('-');
-  const siblings = allThemes.filter(t => t.slug.startsWith(base + '-'));
-  return siblings.length >= 2 ? base : slug;
+  return {title, author, tags, note, wallpaper, series};
 }
 function buildGroups(allThemes){
   const map = new Map();
   allThemes.forEach(theme => {
-    const base = getSeriesBase(theme.slug, allThemes);
-    if(!map.has(base)) map.set(base, []);
-    map.get(base).push(theme);
+    const series = String(theme.series || '').trim();
+    const key = series ? 'series:' + series : 'theme:' + theme.slug;
+    if(!map.has(key)) map.set(key, []);
+    map.get(key).push(theme);
   });
-  return [...map.entries()].map(([base, items]) => {
+  return [...map.entries()].map(([key, items]) => {
     items.sort((a,b) => (b.updatedAt || 0) - (a.updatedAt || 0) || a.title.localeCompare(b.title, 'zh-CN'));
+    const seriesName = String(items[0].series || '').trim();
     return {
-      base,
+      base:key,
       items,
-      isSeries: items.length > 1,
-      title: items.length > 1 ? slugToTitle(base) : items[0].title,
-      author: items[0].author,
-      updatedAt: Math.max(...items.map(x => x.updatedAt || 0)),
-      searchText: items.map(x => x.searchText).join(' ')
+      isSeries: !!seriesName && items.length > 1,
+      title: seriesName && items.length > 1 ? seriesName : items[0].title,
+      author:items[0].author,
+      updatedAt:Math.max(...items.map(x => x.updatedAt || 0)),
+      searchText:items.map(x => x.searchText).join(' ')
     };
   }).sort((a,b) => (b.updatedAt || 0) - (a.updatedAt || 0) || a.title.localeCompare(b.title, 'zh-CN'));
 }
@@ -1023,8 +1019,8 @@ async function loadThemes(){
       const metaPromise = infoFile
         ? fetchTextFile(infoFile)
             .then(text => parseInfo(text, slug))
-            .catch(() => ({title: slugToTitle(slug), author: defaultAuthor, tags: [], note: '', wallpaper: ''}))
-        : Promise.resolve({title: slugToTitle(slug), author: defaultAuthor, tags: [], note: '', wallpaper: ''});
+            .catch(() => ({title: slugToTitle(slug), author: defaultAuthor, tags: [], note: '', wallpaper: '', series: ''}))
+        : Promise.resolve({title: slugToTitle(slug), author: defaultAuthor, tags: [], note: '', wallpaper: '', series: ''});
 
       const [meta, updatedAt] = await Promise.all([
         metaPromise,
@@ -1033,8 +1029,8 @@ async function loadThemes(){
 
       return {
         slug, cssFile, previewFile, updatedAt,
-        title: meta.title, author: meta.author, tags: meta.tags, note: meta.note, wallpaper: meta.wallpaper,
-        searchText: [meta.title, meta.author, meta.tags.join(' '), meta.note, slug].join(' ')
+        title: meta.title, author: meta.author, tags: meta.tags, note: meta.note, wallpaper: meta.wallpaper, series: meta.series || '',
+        searchText: [meta.title, meta.author, meta.tags.join(' '), meta.note, meta.series || '', slug].join(' ')
       };
     });
 
