@@ -887,6 +887,88 @@ button:focus-visible,
 }
 @media(prefers-reduced-motion:reduce){.eye-scene.is-transitioning .eye-image.is-visible,.resident-card.saved{animation:none!important}.visual-note img{transition:none!important;transform:none!important}}
 
+
+/* quiet dreamcore copy: light density without adding new image blocks */
+.dream-note{
+  width:min(78%,430px);
+  margin:0 auto 52px;
+  color:#777a80;
+  text-align:center;
+  pointer-events:none;
+}
+.dream-note .jp{
+  display:block;
+  font:500 9px/1.75 "Hiragino Mincho ProN","Yu Mincho",Georgia,serif;
+  letter-spacing:.11em;
+}
+.dream-note .en{
+  display:block;
+  margin-top:5px;
+  font:500 5.5px/1.5 var(--mono);
+  letter-spacing:.18em;
+  color:#b1b4b9;
+  text-transform:uppercase;
+}
+.dream-note::before{
+  content:"";
+  display:block;
+  width:28px;
+  height:1px;
+  margin:0 auto 12px;
+  background:rgba(24,25,28,.14);
+}
+
+.signal-note{
+  width:min(86%,470px);
+  margin:-16px auto 64px;
+  padding:12px 0 13px;
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  align-items:center;
+  gap:12px;
+  border-top:1px solid rgba(24,25,28,.09);
+  border-bottom:1px solid rgba(24,25,28,.09);
+  color:#8c8f94;
+  pointer-events:none;
+}
+.signal-note span{
+  font:500 5.5px/1.45 var(--mono);
+  letter-spacing:.15em;
+  text-transform:uppercase;
+}
+.signal-note span:first-child{text-align:left}
+.signal-note span:last-child{text-align:right}
+.signal-note i{
+  width:4px;
+  height:4px;
+  border-radius:50%;
+  background:#b8bbc0;
+  box-shadow:-9px 0 0 #d1d3d7,9px 0 0 #d1d3d7;
+}
+
+.archive-whisper{
+  width:min(84%,460px);
+  margin:0 auto 36px;
+  display:flex;
+  justify-content:space-between;
+  gap:18px;
+  color:#9da0a5;
+  pointer-events:none;
+}
+.archive-whisper span{
+  font:500 5.5px/1.55 var(--mono);
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+.archive-whisper span:last-child{text-align:right}
+@media(max-width:440px){
+  .dream-note{width:82%;margin-bottom:46px}
+  .dream-note .jp{font-size:8px}
+  .signal-note{width:84%;margin-bottom:56px;gap:9px}
+  .signal-note span,.archive-whisper span{font-size:5px}
+  .archive-whisper{width:82%;margin-bottom:30px}
+}
+
 </style>
 </head>
 <body>
@@ -946,6 +1028,12 @@ button:focus-visible,
     </article>
   </section>
 
+  <div class="dream-note reveal-zone" aria-hidden="true">
+    <span class="jp">この部屋は、まだ誰かを覚えている。</span>
+    <span class="en">a room keeps the trace after everyone leaves</span>
+  </div>
+
+
   <section class="ascii-chamber reveal-zone" aria-label="字符动画素材区">
     <div class="ascii-index" aria-hidden="true">01</div>
     <div class="ascii-track" aria-hidden="true"><span></span></div>
@@ -990,6 +1078,12 @@ button:focus-visible,
     </div>
   </section>
 
+  <div class="signal-note reveal-zone" aria-hidden="true">
+    <span>signal received / 01</span>
+    <i></i>
+    <span>do not wake the archive</span>
+  </div>
+
 <section class="story-vault reveal-zone" aria-label="长动画与收藏入口">
     <div class="story-number" aria-hidden="true">02</div>
     <div class="story-frame" data-motion-block>
@@ -1001,6 +1095,12 @@ button:focus-visible,
     </div>
     <button class="story-enter" id="storyEnter" type="button">OPEN ARCHIVE <span>↘</span></button>
   </section>
+
+
+  <div class="archive-whisper reveal-zone" aria-hidden="true">
+    <span>記録は静かに残る</span>
+    <span>saved fragments remain here</span>
+  </div>
 
 <section class="collection-shelf reveal-zone" id="collectionShelf" aria-label="收藏列表">
     <div class="shelf-head">
