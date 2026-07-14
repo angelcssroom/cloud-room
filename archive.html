@@ -502,6 +502,11 @@ const previewLabel = 'preview-cross';
 const newDays = 7;
 const FAVORITES_KEY = 'cloudRoomFavoritesV1';
 const roomLabel = 'Cross Room';
+const THEME_CACHE_KEY = `cloudRoomThemeCacheV4:${typePrefix}`;
+const FILE_STATE_KEY = `cloudRoomFileStateV4:${typePrefix}`;
+const CACHE_MAX_AGE = 30 * 24 * 60 * 60 * 1000;
+let isLoadingThemes = false;
+
 
 /*
   系列规则：
@@ -629,31 +634,220 @@ function highlightText(str, query){
 function slugToTitle(slug){
   return slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 }
-function rawUrl(fileName){
-  return `https://raw.githubusercontent.com/${repoOwner}/${repoName}/${branch}/${encodeURIComponent(fileName)}`;
+function safeJsonParse(value, fallback){
+  try{
+    const parsed = JSON.parse(value);
+    return parsed == null ? fallback : parsed;
+  }catch(error){
+    return fallback;
+  }
 }
+
+function normalizeCachedTheme(item){
+  if(!item || !item.slug || !item.cssFile) return null;
+  return {
+    slug:String(item.slug),
+    cssFile:String(item.cssFile),
+    previewFile:String(item.previewFile || ''),
+    updatedAt:Number(item.updatedAt) || 0,
+    title:String(item.title || slugToTitle(String(item.slug))),
+    author:String(item.author || defaultAuthor),
+    tags:Array.isArray(item.tags) ? item.tags.map(String) : [],
+    note:String(item.note || ''),
+    wallpaper:String(item.wallpaper || ''),
+    series:String(item.series || ''),
+    searchText:String(item.searchText || [
+      item.title || '', item.author || '',
+      Array.isArray(item.tags) ? item.tags.join(' ') : '',
+      item.note || '', item.series || '', item.slug || ''
+    ].join(' '))
+  };
+}
+
+function readThemeCache(){
+  try{
+    const cached = safeJsonParse(localStorage.getItem(THEME_CACHE_KEY), null);
+    if(!cached || !Array.isArray(cached.themes)) return null;
+    const normalized = cached.themes.map(normalizeCachedTheme).filter(Boolean);
+    if(!normalized.length) return null;
+    return {
+      savedAt:Number(cached.savedAt) || 0,
+      themes:normalized
+    };
+  }catch(error){
+    return null;
+  }
+}
+
+function writeThemeCache(value){
+  try{
+    localStorage.setItem(THEME_CACHE_KEY, JSON.stringify({
+      savedAt:Date.now(),
+      themes:value.map(theme => ({
+        slug:theme.slug,
+        cssFile:theme.cssFile,
+        previewFile:theme.previewFile || '',
+        updatedAt:Number(theme.updatedAt) || 0,
+        title:theme.title,
+        author:theme.author,
+        tags:Array.isArray(theme.tags) ? theme.tags : [],
+        note:theme.note || '',
+        wallpaper:theme.wallpaper || '',
+        series:theme.series || '',
+        searchText:theme.searchText || ''
+      }))
+    }));
+  }catch(error){
+    console.warn('Theme cache unavailable:', error);
+  }
+}
+
+function readFileState(){
+  try{
+    const state = safeJsonParse(localStorage.getItem(FILE_STATE_KEY), null);
+    if(!state || typeof state !== 'object') return {initializedAt:0, files:{}};
+    return {
+      initializedAt:Number(state.initializedAt) || 0,
+      files:state.files && typeof state.files === 'object' ? state.files : {}
+    };
+  }catch(error){
+    return {initializedAt:0, files:{}};
+  }
+}
+
+function writeFileState(state){
+  try{
+    localStorage.setItem(FILE_STATE_KEY, JSON.stringify(state));
+  }catch(error){
+    console.warn('File state cache unavailable:', error);
+  }
+}
+
+async function fetchWithTimeout(url, options={}, timeout=9000){
+  const canAbort = typeof AbortController !== 'undefined';
+  const controller = canAbort ? new AbortController() : null;
+  const timer = controller ? setTimeout(() => controller.abort(), timeout) : null;
+  try{
+    return await fetch(url, {
+      ...options,
+      ...(controller ? {signal:controller.signal} : {})
+    });
+  }finally{
+    if(timer) clearTimeout(timer);
+  }
+}
+
+function rawUrl(fileName){
+  const safePath = String(fileName).split('/').map(encodeURIComponent).join('/');
+  return `https://raw.githubusercontent.com/${repoOwner}/${repoName}/${branch}/${safePath}`;
+}
+
+function cdnUrl(fileName){
+  const safePath = String(fileName).split('/').map(encodeURIComponent).join('/');
+  return `https://cdn.jsdelivr.net/gh/${repoOwner}/${repoName}@${branch}/${safePath}`;
+}
+
 async function fetchTextFile(fileName){
   const safePath = String(fileName).split('/').map(encodeURIComponent).join('/');
   const localUrl = new URL('./' + safePath, window.location.href).href;
-  let res = await fetch(localUrl + '?v=' + Date.now(), {cache:'no-store'});
-  if(!res.ok){
-    res = await fetch(rawUrl(fileName) + '?v=' + Date.now(), {cache:'no-store'});
+  const sources = [localUrl, rawUrl(fileName), cdnUrl(fileName)];
+  let lastError = null;
+
+  for(const url of sources){
+    try{
+      const res = await fetchWithTimeout(url, {cache:'no-cache'}, 10000);
+      if(res.ok) return await res.text();
+      lastError = new Error(`HTTP ${res.status}: ${url}`);
+    }catch(error){
+      lastError = error;
+    }
   }
-  if(!res.ok) throw new Error('file not found: ' + fileName);
-  return await res.text();
+
+  throw lastError || new Error('file not found: ' + fileName);
 }
-async function fetchLastUpdated(fileName){
+
+function normalizeIndexName(value){
+  return String(value || '').replace(/^\/+/, '');
+}
+
+async function fetchRepoIndex(){
+  const githubApi = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/?ref=${encodeURIComponent(branch)}`;
   try{
-    const url = `https://api.github.com/repos/${repoOwner}/${repoName}/commits?sha=${encodeURIComponent(branch)}&path=${encodeURIComponent(fileName)}&per_page=1`;
-    const res = await fetch(url);
-    if(!res.ok) return 0;
+    const res = await fetchWithTimeout(githubApi, {cache:'no-cache'}, 8500);
+    if(!res.ok) throw new Error(`GitHub index HTTP ${res.status}`);
     const data = await res.json();
-    const date = data?.[0]?.commit?.committer?.date || data?.[0]?.commit?.author?.date;
-    return date ? new Date(date).getTime() : 0;
-  }catch(e){
-    return 0;
+    if(!Array.isArray(data)) throw new Error('GitHub index format error');
+    return {
+      source:'github',
+      files:data
+        .filter(item => item && item.type === 'file' && item.name)
+        .map(item => ({
+          name:String(item.name),
+          fingerprint:String(item.sha || '')
+        }))
+    };
+  }catch(githubError){
+    console.warn('GitHub index unavailable, trying CDN index:', githubError);
   }
+
+  const cdnApis = [
+    `https://data.jsdelivr.com/v1/packages/gh/${repoOwner}/${repoName}@${branch}?structure=flat`,
+    `https://data.jsdelivr.com/v1/package/gh/${repoOwner}/${repoName}@${branch}/flat`
+  ];
+  let cdnError = null;
+
+  for(const cdnApi of cdnApis){
+    try{
+      const res = await fetchWithTimeout(cdnApi, {cache:'no-cache'}, 10000);
+      if(!res.ok) throw new Error(`CDN index HTTP ${res.status}`);
+      const data = await res.json();
+      const entries = Array.isArray(data?.files) ? data.files : [];
+      const files = entries
+        .map(item => ({
+          name:normalizeIndexName(item?.name),
+          fingerprint:String(item?.hash || item?.sha || '')
+        }))
+        .filter(item => item.name && !item.name.includes('/'));
+
+      if(files.length) return {source:'cdn', files};
+      cdnError = new Error('CDN index format error');
+    }catch(error){
+      cdnError = error;
+    }
+  }
+
+  throw cdnError || new Error('CDN index unavailable');
 }
+
+function parseUpdatedValue(value){
+  const raw = String(value || '').trim();
+  if(!raw) return 0;
+
+  const numeric = Number(raw);
+  if(Number.isFinite(numeric) && numeric > 0){
+    return numeric < 100000000000 ? numeric * 1000 : numeric;
+  }
+
+  const parsed = Date.parse(raw);
+  return Number.isFinite(parsed) ? parsed : 0;
+}
+
+function resolveUpdatedAt({cssFile, fingerprint, explicitUpdatedAt, cachedTheme, fileState, hasBaseline}){
+  if(explicitUpdatedAt) return explicitUpdatedAt;
+
+  const previous = fileState.files?.[cssFile];
+  if(previous){
+    const previousFingerprint = String(previous.fingerprint || '');
+    if(fingerprint && previousFingerprint && fingerprint !== previousFingerprint){
+      return Date.now();
+    }
+    return Number(previous.updatedAt) || Number(cachedTheme?.updatedAt) || 0;
+  }
+
+  if(cachedTheme) return Number(cachedTheme.updatedAt) || 0;
+  return hasBaseline ? Date.now() : 0;
+}
+
 function parseInfo(text, slug){
   const get = key => {
     const m = text.match(new RegExp('^\\s*' + key + '\\s*[:：]\\s*(.+)$', 'im'));
@@ -665,8 +859,10 @@ function parseInfo(text, slug){
   const note = get('note') || '';
   const wallpaper = get('wallpaper') || '';
   const series = get('series') || '';
+  const updatedRaw = get('updated') || get('updatedAt') || get('date') || '';
+  const updatedAt = parseUpdatedValue(updatedRaw);
   const tags = tagsRaw ? tagsRaw.split(/[\/、,，|]+/).map(x => x.trim()).filter(Boolean) : [];
-  return {title, author, tags, note, wallpaper, series};
+  return {title, author, tags, note, wallpaper, series, updatedAt};
 }
 function buildGroups(allThemes){
   const map = new Map();
@@ -876,48 +1072,149 @@ function setupLazyCssLoading(){
   loadBatch();
 }
 
-function renderThemes(list, query=''){
-  themeList.innerHTML = '';
-  const groups = buildGroups(list);
-  const q = query.trim().toLowerCase();
-  let visibleGroups = 0;
-  groups.forEach(group => {
-    let visibleItems = group.items;
-    if(q){
-      const itemMatches = group.items.filter(item => item.searchText.toLowerCase().includes(q));
-      if(itemMatches.length){
-        visibleItems = itemMatches;
-      }else if(!group.searchText.toLowerCase().includes(q)){
-        return;
-      }
-    }
-    visibleGroups++;
-    if(!group.isSeries){
-      themeList.insertAdjacentHTML('beforeend', renderSingleTheme(visibleItems[0], query, visibleGroups));
-      return;
-    }
-    const article = document.createElement('article');
-    article.className = 'card series-card';
-    const commonTags = group.items[0].tags.filter(tag => group.items.every(item => item.tags.includes(tag)));
-    const tagsHtml = commonTags.map(t => `<span class="keyword">${highlightText(t, query)}</span>`).join('');
-    const newBadge = isNew(group.updatedAt) ? '<span class="new-badge">NEW</span>' : '';
-    article.innerHTML = `
-      <div class="theme-top">
-        <div>
-          <h3 class="theme-name">${highlightText(group.title, query)}${newBadge}</h3>
-          <p class="theme-alt">@${highlightText(group.author, query)}</p>
-        </div>
-        <div class="theme-no">${String(visibleGroups).padStart(2, '0')}</div>
+
+const RENDER_BATCH_SIZE = 8;
+let renderQueue = [];
+let renderedGroupCount = 0;
+let renderQuery = '';
+let renderObserver = null;
+
+function renderGroup(group, query, number){
+  const visibleItems = group.visibleItems || group.items;
+
+  if(!group.isSeries){
+    themeList.insertAdjacentHTML(
+      'beforeend',
+      renderSingleTheme(visibleItems[0], query, number)
+    );
+    return;
+  }
+
+  const article = document.createElement('article');
+  article.className = 'card series-card';
+
+  const commonTags = group.items[0].tags.filter(tag =>
+    group.items.every(item => item.tags.includes(tag))
+  );
+  const tagsHtml = commonTags
+    .map(tag => `<span class="keyword">${highlightText(tag, query)}</span>`)
+    .join('');
+  const newBadge = isNew(group.updatedAt)
+    ? '<span class="new-badge">NEW</span>'
+    : '';
+
+  article.innerHTML = `
+    <div class="theme-top">
+      <div>
+        <h3 class="theme-name">${highlightText(group.title, query)}${newBadge}</h3>
+        <p class="theme-alt">@${highlightText(group.author, query)}</p>
       </div>
-      ${tagsHtml ? `<div class="keywords">${tagsHtml}</div>` : ''}
-      <div class="series-list">${visibleItems.map(item => renderVariant(item, query)).join('')}</div>`;
-    themeList.appendChild(article);
-  });
-  count.textContent = visibleGroups ? String(visibleGroups) : '0';
+      <div class="theme-no">${String(number).padStart(2, '0')}</div>
+    </div>
+    ${tagsHtml ? `<div class="keywords">${tagsHtml}</div>` : ''}
+    <div class="series-list">
+      ${visibleItems.map(item => renderVariant(item, query)).join('')}
+    </div>`;
+
+  themeList.appendChild(article);
+}
+
+function appendNextRenderBatch(){
+  if(renderedGroupCount >= renderQueue.length) return;
+
+  const end = Math.min(
+    renderedGroupCount + RENDER_BATCH_SIZE,
+    renderQueue.length
+  );
+
+  for(let index = renderedGroupCount; index < end; index++){
+    renderGroup(renderQueue[index], renderQuery, index + 1);
+  }
+
+  renderedGroupCount = end;
   setupLazyCssLoading();
   syncFavoriteButtons();
 
+  const sentinel = document.getElementById('themeRenderSentinel');
+  if(sentinel && renderedGroupCount >= renderQueue.length){
+    sentinel.remove();
+    if(renderObserver){
+      renderObserver.disconnect();
+      renderObserver = null;
+    }
+  }
 }
+
+function setupProgressiveRendering(){
+  if(renderObserver){
+    renderObserver.disconnect();
+    renderObserver = null;
+  }
+
+  const oldSentinel = document.getElementById('themeRenderSentinel');
+  if(oldSentinel) oldSentinel.remove();
+
+  if(renderedGroupCount >= renderQueue.length) return;
+
+  const sentinel = document.createElement('div');
+  sentinel.id = 'themeRenderSentinel';
+  sentinel.setAttribute('aria-hidden', 'true');
+  sentinel.style.height = '1px';
+  sentinel.style.pointerEvents = 'none';
+  themeList.appendChild(sentinel);
+
+  if('IntersectionObserver' in window){
+    renderObserver = new IntersectionObserver(entries => {
+      if(entries.some(entry => entry.isIntersecting)){
+        appendNextRenderBatch();
+      }
+    }, {rootMargin:'1000px 0px'});
+
+    renderObserver.observe(sentinel);
+    return;
+  }
+
+  const fallbackLoad = () => {
+    if(renderedGroupCount >= renderQueue.length) return;
+    appendNextRenderBatch();
+    setTimeout(fallbackLoad, 120);
+  };
+  setTimeout(fallbackLoad, 120);
+}
+
+function renderThemes(list, query=''){
+  themeList.innerHTML = '';
+
+  const groups = buildGroups(list);
+  const q = query.trim().toLowerCase();
+
+  renderQueue = groups.reduce((result, group) => {
+    let visibleItems = group.items;
+
+    if(q){
+      const itemMatches = group.items.filter(item =>
+        item.searchText.toLowerCase().includes(q)
+      );
+
+      if(itemMatches.length){
+        visibleItems = itemMatches;
+      }else if(!group.searchText.toLowerCase().includes(q)){
+        return result;
+      }
+    }
+
+    result.push({...group, visibleItems});
+    return result;
+  }, []);
+
+  renderQuery = query;
+  renderedGroupCount = 0;
+  count.textContent = renderQueue.length ? String(renderQueue.length) : '0';
+
+  appendNextRenderBatch();
+  setupProgressiveRendering();
+}
+
 function updateThemeSearch(){
   renderThemes(themes, search.value.trim());
 }
@@ -1024,19 +1321,22 @@ async function mapWithConcurrency(items, limit, mapper){
 }
 
 async function loadThemes(){
-  try{
-    const api = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/?ref=${branch}`;
-    let res = await fetch(api + '&v=' + Date.now());
-    if(!res.ok){
-      await new Promise(r => setTimeout(r, 1200));
-      res = await fetch(api + '&v=' + Date.now());
-    }
-    if(!res.ok) throw new Error('repo contents failed');
-    const files = await res.json();
-    const names = files.map(f => f.name);
-    const cssRegex = new RegExp('^css-' + typePrefix + '-.+\\.txt$', 'i');
-    const cssNames = names.filter(n => cssRegex.test(n));
+  if(isLoadingThemes) return;
+  isLoadingThemes = true;
 
+  const cached = readThemeCache();
+  const cachedThemes = cached?.themes || [];
+  const cachedByCss = new Map(cachedThemes.map(theme => [theme.cssFile, theme]));
+  let cacheWasRendered = false;
+
+  if(cachedThemes.length){
+    themes = cachedThemes.slice().sort((a,b) =>
+      (b.updatedAt || 0) - (a.updatedAt || 0) ||
+      a.title.localeCompare(b.title, 'zh-CN')
+    );
+    renderThemes(themes, search.value);
+    cacheWasRendered = true;
+  }else{
     count.textContent = 'loading...';
     themeList.innerHTML = `
       <section class="card loading-card" aria-hidden="true">
@@ -1053,37 +1353,141 @@ async function loadThemes(){
           <span class="loading-action"></span>
         </div>
       </section>`;
+  }
 
-    const loaded = await mapWithConcurrency(cssNames, 6, async cssFile => {
-      const slug = cssFile.replace(new RegExp('^css-' + typePrefix + '-', 'i'), '').replace(/\.txt$/i, '');
+  try{
+    const index = await fetchRepoIndex();
+    const fileEntries = index.files;
+    const names = fileEntries.map(file => file.name);
+    const fingerprintByName = new Map(
+      fileEntries.map(file => [file.name, file.fingerprint || ''])
+    );
+
+    const cssRegex = new RegExp('^css-' + typePrefix + '-.+\\.txt$', 'i');
+    const cssNames = names.filter(name => cssRegex.test(name));
+
+    if(!cssNames.length) throw new Error('No theme files found');
+    if(cachedThemes.length && cssNames.length < Math.max(2, Math.floor(cachedThemes.length * 0.45))){
+      throw new Error('Theme index looks incomplete');
+    }
+
+    const fileState = readFileState();
+    const hasBaseline = Boolean(fileState.initializedAt || cachedThemes.length);
+    const nextStateFiles = {...fileState.files};
+
+    const loaded = await mapWithConcurrency(cssNames, 4, async cssFile => {
+      const slug = cssFile
+        .replace(new RegExp('^css-' + typePrefix + '-', 'i'), '')
+        .replace(/\.txt$/i, '');
       const safeSlug = escapeRegExp(slug);
-      const previewFile = names.find(n => new RegExp('^preview-' + typePrefix + '-' + safeSlug + '\\.(jpg|jpeg|png|webp)$', 'i').test(n)) || '';
-      const infoFile = names.find(n => new RegExp('^info-' + typePrefix + '-' + safeSlug + '\\.txt$', 'i').test(n)) || '';
+      const previewFile = names.find(name =>
+        new RegExp('^preview-' + typePrefix + '-' + safeSlug + '\\.(jpg|jpeg|png|webp)$', 'i').test(name)
+      ) || '';
+      const infoFile = names.find(name =>
+        new RegExp('^info-' + typePrefix + '-' + safeSlug + '\\.txt$', 'i').test(name)
+      ) || '';
+      const cachedTheme = cachedByCss.get(cssFile) || null;
 
-      const metaPromise = infoFile
-        ? fetchTextFile(infoFile)
+      const fallbackMeta = cachedTheme
+        ? {
+            title:cachedTheme.title,
+            author:cachedTheme.author,
+            tags:cachedTheme.tags,
+            note:cachedTheme.note,
+            wallpaper:cachedTheme.wallpaper,
+            series:cachedTheme.series,
+            updatedAt:cachedTheme.updatedAt
+          }
+        : {
+            title:slugToTitle(slug),
+            author:defaultAuthor,
+            tags:[],
+            note:'',
+            wallpaper:'',
+            series:'',
+            updatedAt:0
+          };
+
+      const meta = infoFile
+        ? await fetchTextFile(infoFile)
             .then(text => parseInfo(text, slug))
-            .catch(() => ({title: slugToTitle(slug), author: defaultAuthor, tags: [], note: '', wallpaper: '', series: ''}))
-        : Promise.resolve({title: slugToTitle(slug), author: defaultAuthor, tags: [], note: '', wallpaper: '', series: ''});
+            .catch(error => {
+              console.warn('Info load failed:', infoFile, error);
+              return fallbackMeta;
+            })
+        : fallbackMeta;
 
-      const [meta, updatedAt] = await Promise.all([
-        metaPromise,
-        fetchLastUpdated(cssFile)
-      ]);
+      const fingerprint = fingerprintByName.get(cssFile) || '';
+      const updatedAt = resolveUpdatedAt({
+        cssFile,
+        fingerprint,
+        explicitUpdatedAt:Number(meta.updatedAt) || 0,
+        cachedTheme,
+        fileState,
+        hasBaseline
+      });
+
+      nextStateFiles[cssFile] = {fingerprint, updatedAt};
 
       return {
-        slug, cssFile, previewFile, updatedAt,
-        title: meta.title, author: meta.author, tags: meta.tags, note: meta.note, wallpaper: meta.wallpaper, series: meta.series || '',
-        searchText: [meta.title, meta.author, meta.tags.join(' '), meta.note, meta.series || '', slug].join(' ')
+        slug,
+        cssFile,
+        previewFile:previewFile || cachedTheme?.previewFile || '',
+        updatedAt,
+        title:meta.title,
+        author:meta.author,
+        tags:Array.isArray(meta.tags) ? meta.tags : [],
+        note:meta.note || '',
+        wallpaper:meta.wallpaper || '',
+        series:meta.series || '',
+        searchText:[
+          meta.title,
+          meta.author,
+          Array.isArray(meta.tags) ? meta.tags.join(' ') : '',
+          meta.note || '',
+          meta.series || '',
+          slug
+        ].join(' ')
       };
     });
 
-    themes = loaded.sort((a,b) => (b.updatedAt || 0) - (a.updatedAt || 0) || a.title.localeCompare(b.title, 'zh-CN'));
+    let merged = loaded;
+    if(index.source !== 'github' && cachedThemes.length){
+      const loadedCss = new Set(loaded.map(theme => theme.cssFile));
+      merged = loaded.concat(
+        cachedThemes.filter(theme => !loadedCss.has(theme.cssFile))
+      );
+    }
+
+    themes = merged.sort((a,b) =>
+      (b.updatedAt || 0) - (a.updatedAt || 0) ||
+      a.title.localeCompare(b.title, 'zh-CN')
+    );
+
+    writeFileState({
+      initializedAt:fileState.initializedAt || Date.now(),
+      files:nextStateFiles
+    });
+    writeThemeCache(themes);
     renderThemes(themes, search.value);
   }catch(err){
-    count.textContent = 'refreshing needed';
-    themeList.innerHTML = '<section class="card theme-card"><div class="micro">GitHub 还没刷新出来。等半分钟后重新打开页面，或者在网址后面换一个 ?v=数字。</div></section>';
-    console.error(err);
+    console.error('Theme refresh failed:', err);
+
+    if(cacheWasRendered){
+      count.textContent = String(buildGroups(themes).length || 0);
+      return;
+    }
+
+    count.textContent = '暂时离线';
+    themeList.innerHTML = `
+      <section class="card theme-card">
+        <div class="micro">暂时没有读取到主题。网络恢复后点下面重新加载，不需要修改网址。</div>
+        <div class="action-row">
+          <button class="btn open" type="button" onclick="loadThemes()">重新加载</button>
+        </div>
+      </section>`;
+  }finally{
+    isLoadingThemes = false;
   }
 }
 window.addEventListener('storage', event => {
