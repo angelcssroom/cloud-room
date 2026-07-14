@@ -198,10 +198,10 @@ body{
   <div class="stack">
     <section class="card notice">
       <h2 class="notice-title">ご案内</h2>
-      <p>仅供群内成员个人使用。</p>
+      <p>仅供天国事务所群内成员个人使用。</p>
       <p>禁止商用、搬运、二传、倒卖及二次发布。</p>
-      <p>都是 iOS 机型的，请自行改适配。</p>
-      <p>不受理售后；有 bug 请复制代码发送给 AI 修改，群里管理可帮忙部分答疑。</p>
+      <p>机型请自行改适配。</p>
+      <p>不受理适配；有 bug 请复制代码发送给 AI 修改，群里管理可帮忙部分答疑。</p>
       <p class="foot">for personal use only · repost / resale prohibited</p>
     </section>
 
@@ -220,6 +220,14 @@ body{
       </div>
       <div class="badge" id="communityCount">loading</div>
     </a>
+
+    <a class="card link-card" href="favorites.html">
+      <div>
+        <h3 class="link-title">Favorites</h3>
+        <p class="link-sub">已收藏的主题</p>
+      </div>
+      <div class="badge" id="favoriteCount">0 saved</div>
+    </a>
   </div>
 
   <div class="footer">angelcssroom.github.io/cloud-room</div>
@@ -229,6 +237,21 @@ body{
 const repoOwner = "angelcssroom";
 const repoName = "cloud-room";
 const branch = "main";
+
+const favoriteStorageKey = "cloudRoomFavoritesV1";
+
+function updateFavoriteCount(){
+  const el = document.getElementById("favoriteCount");
+  if(!el) return;
+
+  try{
+    const value = JSON.parse(localStorage.getItem(favoriteStorageKey) || "[]");
+    const count = Array.isArray(value) ? value.filter(item => item && item.key).length : 0;
+    el.textContent = count + " saved";
+  }catch(e){
+    el.textContent = "0 saved";
+  }
+}
 
 function themeLabel(n){
   return n === 1 ? "1 theme" : n + " themes";
@@ -250,13 +273,7 @@ async function updateThemeCounts(){
     const files = await res.json();
     const names = files.map(f => f.name);
 
-    const crossNormalCount = names.filter(n =>
-      /^css-cross-.+\.txt$/i.test(n) &&
-      !/^css-cross-mamegoma-(yellow|blue|purple|pink|black)\.txt$/i.test(n) &&
-      !/^css-cross-mamegoma\.txt$/i.test(n)
-    ).length;
-    const hasMamegoma = names.some(n => /^css-cross-mamegoma-(yellow|blue|purple|pink|black)\.txt$/i.test(n));
-    const crossCount = crossNormalCount + (hasMamegoma ? 1 : 0);
+    const crossCount = names.filter(n => /^css-cross-.+\.txt$/i.test(n) && !/^css-cross-mamegoma\.txt$/i.test(n)).length;
     const communityCount = names.filter(n => /^css-community-.+\.txt$/i.test(n) && !/^css-community-sample\.txt$/i.test(n)).length;
 
     crossEl.textContent = themeLabel(crossCount);
@@ -268,6 +285,13 @@ async function updateThemeCounts(){
   }
 }
 updateThemeCounts();
+updateFavoriteCount();
+
+window.addEventListener("storage", event => {
+  if(event.key === favoriteStorageKey) updateFavoriteCount();
+});
+
+window.addEventListener("pageshow", updateFavoriteCount);
 </script>
 </body>
 </html>
