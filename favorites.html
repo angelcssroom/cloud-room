@@ -834,6 +834,72 @@ button:focus-visible,
 }
 @media(prefers-reduced-motion:reduce){.eye-scene.is-transitioning .eye-image.is-visible,.resident-card.saved{animation:none!important}}
 
+
+
+/* v26 refinement: compact resident card + balanced 01/02 transition */
+.resident-wrap{margin:0 0 62px!important}
+.resident-card{
+  width:min(72%,360px)!important;
+  aspect-ratio:1.78/1!important;
+  padding:22px 24px 19px!important;
+  border-radius:15px!important;
+  box-shadow:0 12px 30px rgba(0,0,0,.038)!important;
+}
+.resident-card::before{inset:8px!important;border-radius:10px!important;border-color:rgba(28,28,30,.19)!important}
+.star-row,.star-col{font-size:8px!important;color:rgba(30,30,34,.78)!important;z-index:1!important}
+.star-row{left:22px!important;right:22px!important}
+.star-row.top{top:7px!important}.star-row.bottom{bottom:7px!important}
+.star-col{top:24px!important;bottom:24px!important}
+.star-col.left{left:8px!important}.star-col.right{right:8px!important}
+.resident-grid{grid-template-columns:35% 1fr!important;gap:13px!important;z-index:3!important}
+.resident-avatar{border-radius:9px!important}
+.resident-avatar span{font-size:6.5px!important;line-height:1.45!important;letter-spacing:.12em!important}
+.resident-info{gap:5px!important;padding:3px 0!important}
+.resident-title{font-size:8px!important;line-height:1.05!important;letter-spacing:.035em!important;margin:0 8px 1px!important}
+.resident-field{grid-template-columns:27px 1fr!important;gap:5px!important}
+.resident-field label{font-size:5.8px!important;letter-spacing:.11em!important}
+.resident-field input{
+  font-size:16px!important;
+  line-height:1!important;
+  padding:0 0 2px!important;
+  zoom:.72;
+  width:138%!important;
+}
+.resident-field.note input{font-size:16px!important}
+.resident-actions{margin-top:1px!important;gap:6px!important}
+.resident-tones{gap:5px!important}
+.resident-tone{width:9px!important;height:9px!important;border-color:rgba(28,28,30,.12)!important;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.58)!important}
+.resident-tone[aria-pressed="true"]{outline-color:rgba(28,28,30,.26)!important;outline-offset:1px!important}
+.resident-save{padding:4px 8px!important;font-size:5.8px!important;border-color:rgba(28,28,30,.19)!important;background:rgba(255,255,255,.26)!important}
+
+/* low-saturation card palette */
+.resident-tone:nth-child(1){--tone:#ececef!important}
+.resident-tone:nth-child(2){--tone:#dfe5eb!important}
+.resident-tone:nth-child(3){--tone:#e8e0e3!important}
+.resident-tone:nth-child(4){--tone:#e1e2df!important}
+
+/* pull the small visual band into the intentional breathing room after 01 */
+.ascii-chamber{min-height:0!important;padding-bottom:118px!important;margin-bottom:0!important}
+.visual-notes{
+  height:104px!important;
+  margin:-92px 0 68px!important;
+}
+.visual-note-a{left:15%!important;top:8px!important;width:66px!important;height:80px!important;border-radius:5px 14px 5px 14px!important;transform:rotate(-1.5deg)!important}
+.visual-note-b{left:52%!important;top:37px!important;width:48px!important;height:48px!important}
+.visual-note-c{right:14%!important;top:4px!important;width:78px!important;height:49px!important;border-radius:13px 5px 13px 5px!important;transform:rotate(1.2deg)!important}
+
+@media(max-width:440px){
+  .resident-wrap{margin-bottom:58px!important}
+  .resident-card{width:78%!important;max-width:330px!important;padding:20px 21px 17px!important;border-radius:14px!important}
+  .resident-grid{grid-template-columns:34% 1fr!important;gap:11px!important}
+  .resident-title{font-size:7.4px!important}
+  .star-row{left:20px!important;right:20px!important}
+  .star-col{top:22px!important;bottom:22px!important}
+  .visual-notes{height:96px!important;margin:-84px 0 60px!important}
+  .visual-note-a{left:14%!important;width:61px!important;height:74px!important}
+  .visual-note-b{width:44px!important;height:44px!important;top:35px!important}
+  .visual-note-c{right:13%!important;width:72px!important;height:46px!important}
+}
 </style>
 </head>
 <body>
@@ -881,10 +947,10 @@ button:focus-visible,
           <div class="resident-field note"><label for="residentNote">NOTE</label><input id="residentNote" maxlength="42" value="leave a quiet trace"></div>
           <div class="resident-actions">
             <div class="resident-tones" aria-label="名片颜色">
-              <button class="resident-tone" type="button" data-tone="#eceef2" style="--tone:#eceef2" aria-pressed="true" aria-label="灰白"></button>
-              <button class="resident-tone" type="button" data-tone="#dfe7f3" style="--tone:#dfe7f3" aria-pressed="false" aria-label="浅蓝"></button>
-              <button class="resident-tone" type="button" data-tone="#eee3e7" style="--tone:#eee3e7" aria-pressed="false" aria-label="浅粉灰"></button>
-              <button class="resident-tone" type="button" data-tone="#dfe1df" style="--tone:#dfe1df" aria-pressed="false" aria-label="浅灰绿"></button>
+              <button class="resident-tone" type="button" data-tone="#ececef" style="--tone:#ececef" aria-pressed="true" aria-label="灰白"></button>
+              <button class="resident-tone" type="button" data-tone="#dfe5eb" style="--tone:#dfe5eb" aria-pressed="false" aria-label="浅蓝"></button>
+              <button class="resident-tone" type="button" data-tone="#e8e0e3" style="--tone:#e8e0e3" aria-pressed="false" aria-label="浅粉灰"></button>
+              <button class="resident-tone" type="button" data-tone="#e1e2df" style="--tone:#e1e2df" aria-pressed="false" aria-label="浅灰绿"></button>
             </div>
             <button class="resident-save" id="residentSave" type="button">SAVE</button>
           </div>
