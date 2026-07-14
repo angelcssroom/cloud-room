@@ -435,6 +435,29 @@ textarea{
   vertical-align:2px;
 }
 
+
+.btn.favorite-toggle{
+  flex:0 0 36px;
+  width:36px;
+  min-width:36px;
+  padding:0;
+  border:1px solid var(--line);
+  background:#ffffff;
+  color:#9a9a9e;
+  font-size:16px;
+  font-weight:430;
+  line-height:1;
+  transition:color .16s ease,border-color .16s ease,transform .16s ease,background .16s ease;
+}
+.btn.favorite-toggle.is-saved{
+  color:#202022;
+  border-color:#d1d1d4;
+  background:#ffffff;
+}
+.btn.favorite-toggle:active{
+  transform:scale(.92);
+}
+
 </style>
 </head>
 <body>
@@ -475,6 +498,8 @@ const typePrefix = 'community';
 const defaultAuthor = '小兔';
 const previewLabel = 'preview-community';
 const newDays = 7;
+const FAVORITES_KEY = 'cloudRoomFavoritesV1';
+const roomLabel = 'Bunny Room';
 
 const themeList = document.getElementById('themeList');
 const search = document.getElementById('themeSearch');
@@ -483,6 +508,84 @@ let themes = [];
 const cssTextCache = new Map();
 const cssLoadingTasks = new Map();
 let cssObserver = null;
+
+
+function readFavorites(){
+  try{
+    const value = JSON.parse(localStorage.getItem(FAVORITES_KEY) || '[]');
+    return Array.isArray(value) ? value.filter(item => item && item.key) : [];
+  }catch(error){
+    console.error(error);
+    return [];
+  }
+}
+
+function favoriteKey(theme){
+  return typePrefix + ':' + theme.slug;
+}
+
+function isFavoriteTheme(theme){
+  const key = favoriteKey(theme);
+  return readFavorites().some(item => item.key === key);
+}
+
+function favoriteButton(theme){
+  const saved = isFavoriteTheme(theme);
+  return `<button class="btn favorite-toggle${saved ? ' is-saved' : ''}"
+    type="button"
+    data-favorite-key="${escapeHtml(favoriteKey(theme))}"
+    data-slug="${escapeHtml(theme.slug)}"
+    aria-label="${saved ? '取消收藏' : '收藏主题'}"
+    aria-pressed="${saved ? 'true' : 'false'}"
+    onclick="toggleFavorite(this.dataset.slug)">${saved ? '♥' : '♡'}</button>`;
+}
+
+function syncFavoriteButtons(){
+  const savedKeys = new Set(readFavorites().map(item => item.key));
+  document.querySelectorAll('.favorite-toggle[data-favorite-key]').forEach(button => {
+    const saved = savedKeys.has(button.dataset.favoriteKey);
+    button.classList.toggle('is-saved', saved);
+    button.textContent = saved ? '♥' : '♡';
+    button.setAttribute('aria-label', saved ? '取消收藏' : '收藏主题');
+    button.setAttribute('aria-pressed', saved ? 'true' : 'false');
+  });
+}
+
+function toggleFavorite(slug){
+  const theme = themes.find(item => item.slug === slug);
+  if(!theme) return;
+
+  const key = favoriteKey(theme);
+  const items = readFavorites();
+  const index = items.findIndex(item => item.key === key);
+
+  if(index >= 0){
+    items.splice(index, 1);
+    localStorage.setItem(FAVORITES_KEY, JSON.stringify(items));
+    syncFavoriteButtons();
+    showToast('已取消收藏');
+    return;
+  }
+
+  items.unshift({
+    key,
+    room: typePrefix,
+    roomLabel,
+    slug: theme.slug,
+    title: theme.title,
+    author: theme.author,
+    tags: Array.isArray(theme.tags) ? theme.tags : [],
+    note: theme.note || '',
+    cssFile: theme.cssFile,
+    previewFile: theme.previewFile || '',
+    wallpaper: theme.wallpaper || '',
+    savedAt: Date.now()
+  });
+
+  localStorage.setItem(FAVORITES_KEY, JSON.stringify(items));
+  syncFavoriteButtons();
+  showToast('已加入收藏');
+}
 
 function escapeHtml(str){
   return String(str || '').replace(/[&<>"']/g, s => ({
@@ -606,6 +709,7 @@ function renderVariant(theme, query=''){
       ${theme.note ? `<div class="micro">${highlightText(theme.note, query)}</div>` : ''}
       ${theme.previewFile ? `<div class="preview-image-wrap"><img src="${escapeHtml(theme.previewFile)}" alt="${escapeHtml(theme.title)} preview" loading="lazy" decoding="async" onerror="previewFallback(this)" onclick="openImageLightbox(this.src,this.alt)" /></div>` : `<div class="preview-missing">暂无预览</div>`}
       <div class="action-row">
+        ${favoriteButton(theme)}
         <button class="btn copy" type="button" data-css-file="${escapeHtml(theme.cssFile)}" ${cssTextCache.has(theme.cssFile) ? '' : 'disabled'} onclick="copyFile('${escapeHtml(theme.cssFile)}','wrap-${escapeHtml(theme.slug)}')">${cssTextCache.has(theme.cssFile) ? '复制' : '载入中'}</button>
         <button class="btn open" type="button" onclick="previewFile('${escapeHtml(theme.cssFile)}','wrap-${escapeHtml(theme.slug)}','area-${escapeHtml(theme.slug)}')">代码</button>
         ${wallpaperBtn}
@@ -632,6 +736,7 @@ function renderSingleTheme(theme, query, number){
       ${theme.note ? `<div class="micro">${highlightText(theme.note, query)}</div>` : ''}
       ${theme.previewFile ? `<div class="preview-image-wrap"><img src="${escapeHtml(theme.previewFile)}" alt="${escapeHtml(theme.title)} preview" loading="lazy" decoding="async" onerror="previewFallback(this)" onclick="openImageLightbox(this.src,this.alt)" /></div>` : `<div class="preview-missing">暂无预览</div>`}
       <div class="action-row">
+        ${favoriteButton(theme)}
         <button class="btn copy" type="button" data-css-file="${escapeHtml(theme.cssFile)}" ${cssTextCache.has(theme.cssFile) ? '' : 'disabled'} onclick="copyFile('${escapeHtml(theme.cssFile)}','wrap-${escapeHtml(theme.slug)}')">${cssTextCache.has(theme.cssFile) ? '复制' : '载入中'}</button>
         <button class="btn open" type="button" onclick="previewFile('${escapeHtml(theme.cssFile)}','wrap-${escapeHtml(theme.slug)}','area-${escapeHtml(theme.slug)}')">代码</button>
         ${wallpaperBtn}
@@ -768,6 +873,7 @@ function renderThemes(list, query=''){
   });
   count.textContent = visibleGroups ? String(visibleGroups) : '0';
   setupLazyCssLoading();
+  syncFavoriteButtons();
 
 }
 function updateThemeSearch(){
@@ -938,6 +1044,11 @@ async function loadThemes(){
     console.error(err);
   }
 }
+window.addEventListener('storage', event => {
+  if(event.key === FAVORITES_KEY) syncFavoriteButtons();
+});
+window.addEventListener('pageshow', syncFavoriteButtons);
+
 loadThemes();
 </script>
 </body>
