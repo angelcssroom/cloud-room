@@ -502,8 +502,8 @@ const previewLabel = 'preview-cross';
 const newDays = 7;
 const FAVORITES_KEY = 'cloudRoomFavoritesV1';
 const roomLabel = 'Cross Room';
-const THEME_CACHE_KEY = `cloudRoomThemeCacheV4:${typePrefix}`;
-const FILE_STATE_KEY = `cloudRoomFileStateV4:${typePrefix}`;
+const THEME_CACHE_KEY = `cloudRoomThemeCacheV5:${typePrefix}`;
+const FILE_STATE_KEY = `cloudRoomFileStateV5:${typePrefix}`;
 const CACHE_MAX_AGE = 30 * 24 * 60 * 60 * 1000;
 let isLoadingThemes = false;
 
@@ -817,6 +817,21 @@ async function fetchRepoIndex(){
   }
 
   throw cdnError || new Error('CDN index unavailable');
+}
+
+
+async function fetchLastUpdated(fileName){
+  try{
+    const url = `https://api.github.com/repos/${repoOwner}/${repoName}/commits?sha=${encodeURIComponent(branch)}&path=${encodeURIComponent(fileName)}&per_page=1`;
+    const res = await fetchWithTimeout(url, {cache:'no-cache'}, 9000);
+    if(!res.ok) return 0;
+    const data = await res.json();
+    const date = data?.[0]?.commit?.committer?.date || data?.[0]?.commit?.author?.date;
+    return date ? new Date(date).getTime() : 0;
+  }catch(error){
+    console.warn('Last updated lookup failed:', fileName, error);
+    return 0;
+  }
 }
 
 function parseUpdatedValue(value){
@@ -1418,7 +1433,7 @@ async function loadThemes(){
         : fallbackMeta;
 
       const fingerprint = fingerprintByName.get(cssFile) || '';
-      const updatedAt = resolveUpdatedAt({
+      let updatedAt = resolveUpdatedAt({
         cssFile,
         fingerprint,
         explicitUpdatedAt:Number(meta.updatedAt) || 0,
@@ -1426,6 +1441,10 @@ async function loadThemes(){
         fileState,
         hasBaseline
       });
+
+      if(!updatedAt){
+        updatedAt = await fetchLastUpdated(cssFile);
+      }
 
       nextStateFiles[cssFile] = {fingerprint, updatedAt};
 
