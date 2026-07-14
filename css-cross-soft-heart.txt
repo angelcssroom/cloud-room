@@ -1,0 +1,204 @@
+/* ====== 主题：Soft Heart  by자훤 ====== */
+源代码：ee 整理：喵个弥
+只有聊天页面，转账其余的配套美化没有做。需要打开简洁聊天界面使用。备注位置需修改已标注🪽，除修改所有移位操作禁止二改。
+禁二传，借鉴，商用。
+
+❕已知bug：进入多选时状态栏是空白的要摸瞎，自定义不了背景图。
+
+:root {
+  --main-text-color: #333333;
+  --sub-text-color: #ADADAD;
+  --avatar-border-color: #BCBCBC;
+}
+
+/* --- 1. 全局白底与强调色 --- */
+body { --accent-color: #ffffff !important; }
+
+#chat-interface-screen, 
+#chat-messages,
+#chat-interface-screen .header,
+#chat-input-area {
+  background: #ffffff !important;
+  background-image: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* --- 2. 文字与状态 --- */
+#chat-header-title {
+  color: var(--main-text-color) !important;
+  position: relative !important;
+  transform: translateY(5px) !important;
+}
+#status-bar-time { color: var(--sub-text-color) !important; }
+#chat-header-status { display: none !important; }
+
+/* ====== 备注位置控制：左右微调 ====== */
+
+#chat-header-title {
+  color: var(--main-text-color) !important;
+  position: relative !important;
+  /* 🪽 第一个数字是左右（正数向右，负数向左），第二个数字是上下（也就是你之前的5px） */
+  transform: translate(-20px, 5px) !important; 
+}
+
+/* --- 3. 头像 --- */
+.message-bubble .avatar,
+.message-bubble .avatar img {
+  border-radius: 25px !important;
+  border: 1px solid var(--avatar-border-color) !important; 
+}
+
+/* ====== 气泡精细微调版 ====== */
+
+/* --- 气泡基础 --- */
+.message-wrapper.user .content,
+.message-wrapper.ai .content {
+  border-radius: 20px !important;   /* 稍微小一点更精致 */
+  padding: 6px 12px !important;     /* 缩小气泡体积 */
+  line-height: 1.5 !important;
+  position: relative !important;
+  overflow: visible !important;
+  word-break: break-word !important;
+  max-width: 78% !important;        /* 防止过宽撑变形 */
+}
+
+/* --- 右侧气泡 --- */
+.message-wrapper.user .content {
+  background-color: #F6F6F6 !important;
+  border: 1px solid #DADADA !important;
+}
+
+/* --- 左侧气泡 --- */
+.message-wrapper.ai .content {
+  background-color: #ffffff !important;
+  border: 1px solid #DADADA !important;
+}
+
+/* --- 爱心贴边微调（往内收） --- */
+.message-wrapper.ai .content::after {
+  content: "" !important;
+  position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
+
+  /* 往内收一点 */
+  transform: translate(35%, -36%) !important;
+
+  width: 36px !important;
+  height: 36px !important;
+
+  background-image: url("https://i.postimg.cc/T1mXxCKx/IMG-0829.png") !important;
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  pointer-events: none !important;
+}
+
+/* --- 隐藏气泡时间戳 --- */
+.timestamp,
+.message-bubble .timestamp,
+.message-wrapper .timestamp {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* --- 系统时间提示优化（去灰块，只留文字） --- */
+.system-message,
+.system-time,
+.chat-divider {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+.system-message *,
+.system-time *,
+.chat-divider * {
+  background: transparent !important;
+}
+
+.system-message {
+  color: #B5B5B5 !important;
+  font-size: 12px !important;
+  text-align: center !important;
+}
+
+/* --- 输入框 --- */
+#chat-input::placeholder { color: transparent !important; }
+#chat-input-main-row::before { display: none !important; }
+
+#chat-input {
+  color: var(--main-text-color) !important;
+  border: 0px solid #E0E0E0 !important;
+  background-color: #F9F9F9 !important;
+}
+
+/* --- 图标核心修改 --- */
+
+#open-memory-screen-btn {
+  display: none !important;
+}
+
+.header .back-btn *, 
+.header #listen-together-btn *, 
+.header #chat-settings-btn *,
+#send-btn *, 
+#wait-reply-btn *,
+#chat-expand-btn::before {
+  display: none !important;
+  opacity: 0 !important;
+}
+
+.header .back-btn, 
+#listen-together-btn, 
+#chat-settings-btn {
+  background-image: url('https://i.postimg.cc/BQX1ssvR/IMG-0826.png') !important;
+  background-color: transparent !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  border: none !important;
+  box-shadow: none !important;
+  filter: none !important;
+  font-size: 0 !important;
+  color: transparent !important;
+  width: 45px !important;
+  height: 45px !important;
+  background-size: 40px !important;
+  transform: translateY(5px) !important;
+}
+
+#send-btn, 
+#wait-reply-btn, 
+#chat-expand-btn {
+  background-image: url('https://i.postimg.cc/BQX1ssvR/IMG-0826.png') !important;
+  background-color: transparent !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  border: none !important;
+  box-shadow: none !important;
+  filter: none !important;
+  font-size: 0 !important;
+  color: transparent !important;
+  width: 45px !important;
+  height: 45px !important;
+  background-size: 40px !important;
+}
+
+/* 不影响菜单内部图标 */
+/* ====== 日期/时间 分割线样式 (强力修正版) ====== */
+
+#chat-messages .time-divider {
+  background-color: #ffffff !important; /* 🪽 背景色 */
+  color: #EBEBEB !important;            /* 🪽 时间文字颜色 */
+  box-shadow: none !important;
+  border: none !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  padding: 2px 10px !important;
+  border-radius: 12px !important; 
+}
