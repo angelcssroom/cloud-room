@@ -6,72 +6,123 @@
 <title>Cloud Room · 成员管理</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-:root{--text:#171717;--sub:#6f6f6f;--muted:#a0a0a0;--line:#e9e9e9;--soft:#f7f7f7;--danger:#a73d3d;--ok:#2d7044}
+:root{--text:#171717;--sub:#777;--line:#e8e8e8;--soft:#f7f7f7;--danger:#a53d3d;--ok:#287a4b}
 html,body{margin:0;min-height:100%;background:#fff;color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue","PingFang SC",sans-serif}
-body{padding:28px 16px 48px}.page{width:min(100%,720px);margin:0 auto}
-.header{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin:0 2px 22px}.header h1{margin:0;font-size:20px;font-weight:680;letter-spacing:-.02em}.header p{margin:7px 0 0;color:var(--sub);font-size:11px}.text-button{width:auto;height:auto;margin:0;padding:5px 0;background:none;color:var(--sub);font-size:11px;border-radius:0}
-.card{border:1px solid var(--line);border-radius:15px;padding:19px;background:#fff;box-shadow:0 6px 22px rgba(0,0,0,.025)}.card+.card{margin-top:14px}
-h2{margin:0 0 15px;font-size:13px;font-weight:670}.row{display:flex;gap:9px;align-items:center}.row input{flex:1}.row button{flex:0 0 auto;width:auto;padding:0 18px;margin:0}
-input{width:100%;height:44px;border:1px solid var(--line);border-radius:10px;padding:0 12px;font-size:14px;outline:none;background:#fff;color:var(--text)}input:focus{border-color:#b8b8b8;box-shadow:0 0 0 3px rgba(0,0,0,.035)}
-button{height:44px;border:0;border-radius:10px;background:#171717;color:#fff;padding:0 17px;font-size:12px;font-weight:640;cursor:pointer}button:disabled{opacity:.45;cursor:default}
-.message{display:none;margin:12px 1px 0;font-size:11px;line-height:1.6;color:var(--danger)}.message.ok{color:var(--ok)}
-.code-box{display:none;margin-top:14px;border:1px solid #dedede;border-radius:12px;background:var(--soft);padding:14px}.code-box .caption{font-size:10px;color:var(--sub);margin-bottom:7px}.code-box strong{font-size:18px;letter-spacing:.07em;word-break:break-all}.code-actions{display:flex;gap:8px;margin-top:12px}.code-actions button{height:36px;font-size:11px}.code-actions .secondary{background:#fff;color:#222;border:1px solid var(--line)}
-.toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}.toolbar h2{margin:0}.count{font-size:10px;color:var(--sub)}
-.search-row{display:flex;gap:8px;margin-bottom:13px}.search-row input{flex:1}.search-row button{height:44px;margin:0;width:auto}
-.member-list{display:flex;flex-direction:column;gap:9px}.empty{padding:26px 6px;text-align:center;color:var(--muted);font-size:11px}
-.member{display:flex;align-items:center;justify-content:space-between;gap:14px;border:1px solid var(--line);border-radius:12px;padding:13px 12px}.member-main{min-width:0}.member-qq{font-size:14px;font-weight:660}.member-meta{margin-top:6px;color:var(--sub);font-size:10px;line-height:1.55}.member button{height:34px;margin:0;padding:0 12px;background:#fff;color:var(--danger);border:1px solid #ebd7d7;font-size:10px;flex:0 0 auto}
-#loginPanel{max-width:430px;margin:13vh auto 0}.login-note{margin:13px 1px 0;color:var(--sub);font-size:10px;line-height:1.7}.login-button{width:100%;margin-top:14px}
-#managePanel{display:none}.footer{text-align:center;margin-top:20px;color:#c2c2c2;font-size:9px;letter-spacing:.04em}
-@media(max-width:520px){.row{align-items:stretch;flex-direction:column}.row button{width:100%}.member{align-items:flex-start}.search-row button{padding:0 13px}}
+body{padding:24px 16px 52px}
+.shell{width:min(100%,720px);margin:0 auto}
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+h1{font-size:20px;margin:0;letter-spacing:-.02em}
+.sub{margin:6px 0 0;color:var(--sub);font-size:11px}
+.panel{border:1px solid var(--line);border-radius:16px;padding:18px;margin-top:14px}
+.panel h2{font-size:14px;margin:0 0 6px}
+.help{font-size:10px;color:#8c8c8c;line-height:1.7;margin:0 0 13px}
+label{display:block;font-size:11px;font-weight:650;margin:0 0 7px}
+input,textarea{width:100%;border:1px solid var(--line);border-radius:10px;background:#fff;padding:0 12px;color:var(--text);font:inherit;outline:none}
+input{height:44px;font-size:14px}
+textarea{min-height:132px;padding-top:11px;padding-bottom:11px;font-size:13px;line-height:1.6;resize:vertical}
+input:focus,textarea:focus{border-color:#b8b8b8;box-shadow:0 0 0 3px rgba(0,0,0,.035)}
+button{border:0;border-radius:10px;height:42px;padding:0 15px;background:#171717;color:#fff;font-size:12px;font-weight:650;cursor:pointer;white-space:nowrap}
+button:disabled{opacity:.45;cursor:default}
+button.secondary{background:var(--soft);color:#222;border:1px solid var(--line)}
+button.danger{background:#fff;color:var(--danger);border:1px solid #edd7d7}
+button.small{height:34px;padding:0 11px;font-size:11px}
+.row{display:flex;gap:8px;align-items:center}
+.row input{flex:1;min-width:0}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.full{width:100%}
+.msg{display:none;font-size:11px;line-height:1.6;margin:10px 1px 0;color:var(--danger)}
+.msg.ok{color:var(--ok)}
+.status{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 12px;border-radius:10px;background:var(--soft);font-size:11px;margin-bottom:12px}
+.status strong{font-size:12px}
+.toolbar{display:flex;gap:8px;align-items:center;margin-bottom:12px}
+.toolbar form{display:flex;gap:8px;flex:1}
+.toolbar input{flex:1;min-width:0}
+.count{font-size:11px;color:var(--sub);white-space:nowrap}
+.member-list{border-top:1px solid var(--line)}
+.member{display:flex;align-items:center;gap:10px;padding:13px 0;border-bottom:1px solid var(--line)}
+.member-main{flex:1;min-width:0}
+.member-qq{font-size:14px;font-weight:660}
+.member-meta{font-size:9px;color:#999;line-height:1.55;margin-top:4px}
+.member-actions{display:flex;gap:6px;flex-shrink:0}
+.empty{text-align:center;color:#aaa;font-size:11px;padding:26px 0}
+.login-wrap{width:min(100%,420px);margin:12vh auto 0}
+.login-wrap .panel{padding:22px 20px}
+.login-button{width:100%;margin-top:14px}
+.logout{height:34px;background:#fff;color:#555;border:1px solid var(--line);font-size:11px}
+.divider{height:1px;background:var(--line);margin:16px 0}
+@media(max-width:560px){
+  .row{align-items:stretch;flex-direction:column}.row button{width:100%}
+  .toolbar{align-items:stretch;flex-direction:column}.toolbar form{width:100%}.count{align-self:flex-start}
+  .member{align-items:flex-start;flex-direction:column}.member-actions{width:100%}.member-actions button{flex:1}
+}
 </style>
 </head>
 <body>
-<main class="page">
-  <section id="loginPanel" class="card">
-    <h2>管理员登录</h2>
+<div id="loginPanel" class="login-wrap" style="display:none">
+  <div class="top"><div><h1>成员管理</h1><p class="sub">Cloud Room · administrator</p></div></div>
+  <section class="panel">
     <form id="adminLoginForm">
-      <input id="adminPassword" type="password" autocomplete="current-password" placeholder="输入管理员密码" required>
-      <button class="login-button" id="adminLoginButton" type="submit">进入成员管理</button>
-      <p class="message" id="adminLoginMessage"></p>
+      <label for="adminPassword">管理员密码</label>
+      <input id="adminPassword" type="password" autocomplete="current-password" placeholder="请输入管理员密码" required>
+      <button id="adminLoginButton" class="login-button" type="submit">进入成员管理</button>
+      <p id="adminLoginMessage" class="msg"></p>
     </form>
-    <p class="login-note">管理员密码只保存在 Cloudflare 的加密变量中，不会写进公开仓库。</p>
+  </section>
+</div>
+
+<main id="managePanel" class="shell" style="display:none">
+  <div class="top">
+    <div><h1>成员管理</h1><p class="sub">成员名单、群访问码与设备绑定</p></div>
+    <button id="logoutButton" class="logout" type="button">退出后台</button>
+  </div>
+
+  <section class="panel">
+    <h2>群访问码</h2>
+    <p class="help">全群只用这一个访问码。保存新访问码后，已登录成员会退出一次，但设备绑定不会清除。</p>
+    <div class="status"><span>当前状态</span><strong id="codeStatus">正在读取</strong></div>
+    <label for="groupCode">设置或更换群访问码</label>
+    <input id="groupCode" type="text" autocapitalize="characters" maxlength="32" placeholder="6–24 位英文字母或数字">
+    <div class="actions">
+      <button id="generateCodeButton" class="secondary" type="button">生成随机码</button>
+      <button id="copyCodeButton" class="secondary" type="button">复制当前输入</button>
+      <button id="saveCodeButton" type="button">保存群访问码</button>
+    </div>
+    <p id="codeMessage" class="msg"></p>
   </section>
 
-  <section id="managePanel">
-    <div class="header">
-      <div><h1>成员管理</h1><p>Cloud Room · QQ 号＋访问码</p></div>
-      <button class="text-button" id="logoutButton" type="button">退出管理</button>
+  <section class="panel">
+    <h2>批量导入成员</h2>
+    <p class="help">把群成员 QQ 一次性粘贴进来。一行一个，或用空格、逗号分隔；已经存在的 QQ 会自动跳过。</p>
+    <textarea id="bulkQqs" placeholder="123456789&#10;987654321&#10;……"></textarea>
+    <button id="bulkButton" class="full" type="button" style="margin-top:10px">批量导入 QQ</button>
+    <p id="bulkMessage" class="msg"></p>
+  </section>
+
+  <section class="panel">
+    <h2>添加单个成员</h2>
+    <p class="help">以后有新成员进群，只添加她的 QQ 即可，不需要单独生成验证码。</p>
+    <form id="addForm" class="row">
+      <input id="addQq" inputmode="numeric" maxlength="12" placeholder="输入成员 QQ 号" required>
+      <button id="addButton" type="submit">添加成员</button>
+    </form>
+    <p id="addMessage" class="msg"></p>
+  </section>
+
+  <section class="panel">
+    <h2>成员名单</h2>
+    <p class="help">换手机或换浏览器时点“重置设备”；退群时点“删除”。</p>
+    <div class="toolbar">
+      <form id="searchForm">
+        <input id="searchQq" inputmode="numeric" maxlength="12" placeholder="搜索 QQ 号">
+        <button type="submit" class="secondary">搜索</button>
+      </form>
+      <span id="memberCount" class="count">0 位成员</span>
     </div>
-
-    <section class="card">
-      <h2>添加成员</h2>
-      <form id="addForm" class="row">
-        <input id="addQq" inputmode="numeric" maxlength="12" placeholder="输入成员 QQ 号" required>
-        <button id="addButton" type="submit">添加成员</button>
-      </form>
-      <p class="message" id="addMessage"></p>
-      <div class="code-box" id="codeBox">
-        <div class="caption">请立即复制并发送给该成员，访问码只显示这一次</div>
-        <strong id="newCredentials"></strong>
-        <div class="code-actions">
-          <button id="copyButton" type="button">复制 QQ 与访问码</button>
-          <button class="secondary" id="closeCodeButton" type="button">收起</button>
-        </div>
-      </div>
-    </section>
-
-    <section class="card">
-      <div class="toolbar"><h2>成员列表</h2><div class="count" id="memberCount">0 位成员</div></div>
-      <form id="searchForm" class="search-row">
-        <input id="searchQq" inputmode="numeric" maxlength="12" placeholder="搜索 QQ 号；留空查看最近成员">
-        <button type="submit">搜索</button>
-      </form>
-      <div class="member-list" id="memberList"><div class="empty">正在读取</div></div>
-      <p class="message" id="listMessage"></p>
-    </section>
-    <div class="footer">删除成员后，其登录状态立即失效</div>
+    <p id="listMessage" class="msg"></p>
+    <div id="memberList" class="member-list"></div>
   </section>
 </main>
+
 <script>
 const loginPanel=document.getElementById('loginPanel');
 const managePanel=document.getElementById('managePanel');
@@ -79,35 +130,42 @@ const adminLoginForm=document.getElementById('adminLoginForm');
 const adminPassword=document.getElementById('adminPassword');
 const adminLoginButton=document.getElementById('adminLoginButton');
 const adminLoginMessage=document.getElementById('adminLoginMessage');
+const logoutButton=document.getElementById('logoutButton');
+
+const codeStatus=document.getElementById('codeStatus');
+const groupCode=document.getElementById('groupCode');
+const generateCodeButton=document.getElementById('generateCodeButton');
+const copyCodeButton=document.getElementById('copyCodeButton');
+const saveCodeButton=document.getElementById('saveCodeButton');
+const codeMessage=document.getElementById('codeMessage');
+
+const bulkQqs=document.getElementById('bulkQqs');
+const bulkButton=document.getElementById('bulkButton');
+const bulkMessage=document.getElementById('bulkMessage');
+
 const addForm=document.getElementById('addForm');
 const addQq=document.getElementById('addQq');
 const addButton=document.getElementById('addButton');
 const addMessage=document.getElementById('addMessage');
-const codeBox=document.getElementById('codeBox');
-const newCredentials=document.getElementById('newCredentials');
-const copyButton=document.getElementById('copyButton');
-const closeCodeButton=document.getElementById('closeCodeButton');
+
 const searchForm=document.getElementById('searchForm');
 const searchQq=document.getElementById('searchQq');
-const memberList=document.getElementById('memberList');
 const memberCount=document.getElementById('memberCount');
 const listMessage=document.getElementById('listMessage');
-const logoutButton=document.getElementById('logoutButton');
-let latestCredentialText='';
+const memberList=document.getElementById('memberList');
 
-for(const input of [addQq,searchQq]) input.addEventListener('input',()=>{input.value=input.value.replace(/\D/g,'').slice(0,12)});
+init();
 
-boot();
-async function boot(){
+async function init(){
   try{
     const response=await fetch('/api/admin/session',{cache:'no-store'});
-    const data=await response.json();
-    if(data.authenticated) showManage(); else showLogin();
+    const data=await response.json().catch(()=>({}));
+    data.authenticated?showManage():showLogin();
   }catch{showLogin()}
 }
 
 adminLoginForm.addEventListener('submit',async(event)=>{
-  event.preventDefault();setMessage(adminLoginMessage,'');adminLoginButton.disabled=true;adminLoginButton.textContent='正在验证';
+  event.preventDefault();setMessage(adminLoginMessage,'');adminLoginButton.disabled=true;adminLoginButton.textContent='正在登录';
   try{
     const response=await fetch('/api/admin/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:adminPassword.value})});
     const data=await response.json().catch(()=>({}));
@@ -117,30 +175,86 @@ adminLoginForm.addEventListener('submit',async(event)=>{
   finally{adminLoginButton.disabled=false;adminLoginButton.textContent='进入成员管理'}
 });
 
+logoutButton.addEventListener('click',async()=>{await fetch('/api/admin/logout',{method:'POST'}).catch(()=>{});showLogin()});
+
+groupCode.addEventListener('input',()=>{
+  const raw=groupCode.value.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,24);
+  groupCode.value=raw.match(/.{1,4}/g)?.join('-')||'';
+});
+
+generateCodeButton.addEventListener('click',()=>{
+  const alphabet='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  const bytes=crypto.getRandomValues(new Uint8Array(10));
+  const raw=Array.from(bytes,byte=>alphabet[byte%alphabet.length]).join('');
+  groupCode.value=raw.match(/.{1,4}/g).join('-');
+  setMessage(codeMessage,'已生成。保存后再复制到群公告。',true);
+});
+
+copyCodeButton.addEventListener('click',async()=>{
+  if(!groupCode.value){setMessage(codeMessage,'输入框里还没有访问码。');return}
+  try{await navigator.clipboard.writeText(groupCode.value);setMessage(codeMessage,'已复制当前输入。',true)}
+  catch{setMessage(codeMessage,'复制失败，请长按输入框手动复制。')}
+});
+
+saveCodeButton.addEventListener('click',async()=>{
+  setMessage(codeMessage,'');saveCodeButton.disabled=true;
+  try{
+    const response=await fetch('/api/admin/settings/access-code',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({accessCode:groupCode.value})});
+    const data=await response.json().catch(()=>({}));
+    if(response.status===401){showLogin();return}
+    if(!response.ok||!data.ok) throw new Error(data.error||'保存失败。');
+    setMessage(codeMessage,'群访问码已保存。请把当前输入发到群公告。',true);await loadCodeStatus();
+  }catch(error){setMessage(codeMessage,error.message||'保存失败。')}
+  finally{saveCodeButton.disabled=false}
+});
+
+bulkButton.addEventListener('click',async()=>{
+  setMessage(bulkMessage,'');bulkButton.disabled=true;bulkButton.textContent='正在导入';
+  try{
+    const response=await fetch('/api/admin/members/bulk',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({qqs:bulkQqs.value})});
+    const data=await response.json().catch(()=>({}));
+    if(response.status===401){showLogin();return}
+    if(!response.ok||!data.ok) throw new Error(data.error||'导入失败。');
+    const extra=[];
+    if(data.existed) extra.push(`${data.existed} 个已存在`);
+    if(data.duplicates) extra.push(`${data.duplicates} 个重复`);
+    if(data.invalid) extra.push(`${data.invalid} 个无效`);
+    setMessage(bulkMessage,`已新增 ${data.added} 位成员${extra.length?'，'+extra.join('，'):''}。`,true);
+    bulkQqs.value='';await loadMembers();
+  }catch(error){setMessage(bulkMessage,error.message||'导入失败。')}
+  finally{bulkButton.disabled=false;bulkButton.textContent='批量导入 QQ'}
+});
+
+addQq.addEventListener('input',()=>{addQq.value=addQq.value.replace(/\D/g,'').slice(0,12)});
+searchQq.addEventListener('input',()=>{searchQq.value=searchQq.value.replace(/\D/g,'').slice(0,12)});
+
 addForm.addEventListener('submit',async(event)=>{
   event.preventDefault();setMessage(addMessage,'');addButton.disabled=true;
   try{
     const response=await fetch('/api/admin/members',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({qq:addQq.value})});
     const data=await response.json().catch(()=>({}));
-    if(response.status===401){showLogin();throw new Error('管理员登录已失效。')}
+    if(response.status===401){showLogin();return}
     if(!response.ok||!data.ok) throw new Error(data.error||'添加失败。');
-    latestCredentialText=`QQ：${data.member.qq}\n访问码：${data.member.accessCode}`;
-    newCredentials.textContent=`${data.member.qq} · ${data.member.accessCode}`;
-    codeBox.style.display='block';addQq.value='';setMessage(addMessage,'成员已添加。',true);await loadMembers();
+    addQq.value='';setMessage(addMessage,'成员已添加。',true);await loadMembers();
   }catch(error){setMessage(addMessage,error.message||'添加失败。')}
   finally{addButton.disabled=false}
 });
 
 searchForm.addEventListener('submit',(event)=>{event.preventDefault();loadMembers(searchQq.value)});
-copyButton.addEventListener('click',async()=>{
-  try{await navigator.clipboard.writeText(latestCredentialText);copyButton.textContent='已复制';setTimeout(()=>copyButton.textContent='复制 QQ 与访问码',1400)}
-  catch{setMessage(addMessage,'复制失败，请长按上方内容手动复制。')}
-});
-closeCodeButton.addEventListener('click',()=>{codeBox.style.display='none';latestCredentialText=''});
-logoutButton.addEventListener('click',async()=>{await fetch('/api/admin/logout',{method:'POST'}).catch(()=>{});showLogin()});
 
 function showLogin(){loginPanel.style.display='block';managePanel.style.display='none'}
-function showManage(){loginPanel.style.display='none';managePanel.style.display='block';loadMembers()}
+function showManage(){loginPanel.style.display='none';managePanel.style.display='block';loadCodeStatus();loadMembers()}
+
+async function loadCodeStatus(){
+  codeStatus.textContent='正在读取';
+  try{
+    const response=await fetch('/api/admin/settings/access-code',{cache:'no-store'});
+    const data=await response.json().catch(()=>({}));
+    if(response.status===401){showLogin();return}
+    if(!response.ok||!data.ok) throw new Error(data.error||'读取失败。');
+    codeStatus.textContent=data.configured?'已设置':'尚未设置';
+  }catch{codeStatus.textContent='读取失败'}
+}
 
 async function loadMembers(query=''){
   setMessage(listMessage,'');memberList.innerHTML='<div class="empty">正在读取</div>';
@@ -149,8 +263,7 @@ async function loadMembers(query=''){
     const data=await response.json().catch(()=>({}));
     if(response.status===401){showLogin();return}
     if(!response.ok||!data.ok) throw new Error(data.error||'读取失败。');
-    memberCount.textContent=`${data.total} 位成员`;
-    renderMembers(data.members||[]);
+    memberCount.textContent=`${data.total} 位成员`;renderMembers(data.members||[]);
   }catch(error){memberList.innerHTML='';setMessage(listMessage,error.message||'读取失败。')}
 }
 
@@ -165,14 +278,29 @@ function renderMembers(members){
     const bound=member.deviceBound?'已绑定设备':'未绑定设备';
     const created=formatTime(member.createdAt);const last=member.lastLoginAt?formatTime(member.lastLoginAt):'尚未登录';
     meta.textContent=`${bound} · 添加 ${created} · 最近登录 ${last}`;
-    const remove=document.createElement('button');remove.type='button';remove.textContent='删除';
+    const actions=document.createElement('div');actions.className='member-actions';
+    const reset=document.createElement('button');reset.type='button';reset.className='secondary small';reset.textContent='重置设备';
+    reset.addEventListener('click',()=>resetDevice(member.qq,reset));
+    const remove=document.createElement('button');remove.type='button';remove.className='danger small';remove.textContent='删除';
     remove.addEventListener('click',()=>removeMember(member.qq,remove));
-    main.append(qq,meta);item.append(main,remove);memberList.append(item);
+    main.append(qq,meta);actions.append(reset,remove);item.append(main,actions);memberList.append(item);
   }
 }
 
+async function resetDevice(qq,button){
+  if(!confirm(`确定重置 QQ ${qq} 的设备？\n她当前会退出，下次可在新手机或浏览器重新绑定。`)) return;
+  button.disabled=true;
+  try{
+    const response=await fetch('/api/admin/members/'+encodeURIComponent(qq)+'/reset-device',{method:'POST'});
+    const data=await response.json().catch(()=>({}));
+    if(response.status===401){showLogin();return}
+    if(!response.ok||!data.ok) throw new Error(data.error||'重置失败。');
+    await loadMembers(searchQq.value);
+  }catch(error){setMessage(listMessage,error.message||'重置失败。');button.disabled=false}
+}
+
 async function removeMember(qq,button){
-  if(!confirm(`确定删除 QQ ${qq}？\n删除后该成员会立即退出，重新添加可解除设备绑定。`)) return;
+  if(!confirm(`确定删除 QQ ${qq}？\n删除后该成员刷新页面就会失效。`)) return;
   button.disabled=true;
   try{
     const response=await fetch('/api/admin/members/'+encodeURIComponent(qq),{method:'DELETE'});

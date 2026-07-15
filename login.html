@@ -6,7 +6,7 @@
 <title>Cloud Room · 登录</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-:root{--text:#171717;--sub:#777;--line:#e9e9e9;--soft:#f7f7f7;--danger:#a53d3d}
+:root{--text:#171717;--sub:#777;--line:#e9e9e9;--danger:#a53d3d}
 html,body{margin:0;min-height:100%;background:#fff;color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue","PingFang SC",sans-serif}
 body{display:grid;place-items:center;padding:28px 18px;min-height:100svh}
 .wrap{width:min(100%,420px)}
@@ -15,7 +15,7 @@ body{display:grid;place-items:center;padding:28px 18px;min-height:100svh}
 .brand p{margin:8px 0 0;color:var(--sub);font-size:11px;letter-spacing:.04em}
 .card{border:1px solid var(--line);border-radius:16px;padding:22px 20px 20px;box-shadow:0 8px 28px rgba(0,0,0,.035)}
 label{display:block;font-size:12px;font-weight:620;margin:0 0 8px}
-.field+ .field{margin-top:17px}
+.field+.field{margin-top:17px}
 input{width:100%;height:46px;border:1px solid var(--line);border-radius:11px;background:#fff;padding:0 13px;font-size:15px;color:var(--text);outline:none}
 input:focus{border-color:#b8b8b8;box-shadow:0 0 0 3px rgba(0,0,0,.035)}
 input::placeholder{color:#b8b8b8}
@@ -39,13 +39,13 @@ button:disabled{opacity:.48;cursor:default}
         <input id="qq" name="qq" inputmode="numeric" autocomplete="username" maxlength="12" placeholder="请输入群成员 QQ 号" required>
       </div>
       <div class="field">
-        <label for="accessCode">访问码</label>
-        <input id="accessCode" name="accessCode" autocapitalize="characters" autocomplete="current-password" maxlength="16" placeholder="XXXX-XXXX-XX" required>
+        <label for="accessCode">群访问码</label>
+        <input id="accessCode" name="accessCode" autocapitalize="characters" autocomplete="current-password" maxlength="32" placeholder="请输入群公告中的访问码" required>
       </div>
       <button id="submitButton" type="submit">进入 Cloud Room</button>
       <p class="msg" id="message" role="alert"></p>
     </form>
-    <p class="note">首次登录后会绑定当前浏览器。更换手机或浏览器前，请联系管理员重新添加账号。</p>
+    <p class="note">第一次登录会绑定这台手机上的当前浏览器。换手机、换浏览器或清除浏览器数据后，请联系管理员重置设备。</p>
   </section>
   <div class="footer">private archive · personal use only</div>
 </main>
@@ -56,11 +56,11 @@ const message=document.getElementById('message');
 const qqInput=document.getElementById('qq');
 const codeInput=document.getElementById('accessCode');
 
-codeInput.addEventListener('input',()=>{
-  const raw=codeInput.value.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,10);
-  codeInput.value=[raw.slice(0,4),raw.slice(4,8),raw.slice(8,10)].filter(Boolean).join('-');
-});
 qqInput.addEventListener('input',()=>{qqInput.value=qqInput.value.replace(/\D/g,'').slice(0,12)});
+codeInput.addEventListener('input',()=>{
+  const raw=codeInput.value.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,24);
+  codeInput.value=raw.match(/.{1,4}/g)?.join('-')||'';
+});
 
 form.addEventListener('submit',async(event)=>{
   event.preventDefault();

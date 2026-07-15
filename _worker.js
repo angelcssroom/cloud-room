@@ -8,9 +8,9 @@ const ADMIN_SESSION_SECONDS = 12 * 60 * 60;
 const LOGIN_WINDOW_SECONDS = 15 * 60;
 const LOGIN_BLOCK_SECONDS = 30 * 60;
 const LOGIN_MAX_FAILURES = 8;
-const MAX_JSON_BYTES = 8192;
+const MAX_JSON_BYTES = 64 * 1024;
+const MAX_BULK_MEMBERS = 500;
 
-const ACCESS_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 let schemaReady = false;
 
 class SetupError extends Error {}
@@ -41,15 +41,11 @@ export default {
         return redirectResponse(`/login?next=${encodeURIComponent(next)}`);
       }
 
-      const assetPath = mapFriendlyPath(path);
-      return secureResponse(await serveAsset(request, env, assetPath), "protected");
+      return secureResponse(await serveAsset(request, env, mapFriendlyPath(path)), "protected");
     } catch (error) {
       console.error("Cloud Room request failed", error);
       if (error instanceof SetupError) {
-        return secureResponse(
-          htmlResponse(setupErrorHtml(), 503),
-          "public"
-        );
+        return secureResponse(htmlResponse(setupErrorHtml(), 503), "public");
       }
       return secureResponse(
         htmlResponse("<!doctype html><meta charset=\"utf-8\"><title>Cloud Room</title><p style=\"font-family:system-ui;padding:32px\">页面暂时无法打开，请稍后重试。</p>", 500),
@@ -60,9 +56,7 @@ export default {
 };
 
 async function handleApi(request, env, path) {
-  if (request.method === "OPTIONS") {
-    return new Response(null, { status: 204 });
-  }
+  if (request.method === "OPTIONS") return new Response(null, { status: 204 });
 
   if (["POST", "PUT", "PATCH", "DELETE"].includes(request.method) && !isSameOriginRequest(request)) {
     return jsonResponse({ ok: false, error: "请求来源无效。" }, 403);
@@ -98,24 +92,39 @@ async function handleApi(request, env, path) {
   if (path === "/api/admin/session") {
     if (request.method !== "GET") return methodNotAllowed(["GET"]);
     const admin = await getAdminSession(request, env);
-    if (!admin) return jsonResponse({ ok: true, authenticated: false });
-    return jsonResponse({ ok: true, authenticated: true });
+    return jsonResponse({ ok: true, authenticated: Boolean(admin) });
+  }
+
+  const admin = await getAdminSession(request, env);
+  if (!admin) return jsonResponse({ ok: false, error: "管理员登录已失效。" }, 401);
+
+  if (path === "/api/admin/settings/access-code") {
+    if (request.method === "GET") return getAccessCodeStatus(env);
+    if (request.method === "PUT") return setAccessCode(request, env);
+    return methodNotAllowed(["GET", "PUT"]);
+  }
+
+  if (path === "/api/admin/members/bulk") {
+    if (request.method !== "POST") return methodNotAllowed(["POST"]);
+    return bulkAddMembers(request, env);
+  }
+
+  const resetMatch = path.match(/^\/api\/admin\/members\/([^/]+)\/reset-device$/);
+  if (resetMatch) {
+    if (request.method !== "POST") return methodNotAllowed(["POST"]);
+    return resetMemberDevice(env, decodeURIComponent(resetMatch[1]));
   }
 
   if (path === "/api/admin/members") {
-    const admin = await getAdminSession(request, env);
-    if (!admin) return jsonResponse({ ok: false, error: "管理员登录已失效。" }, 401);
     if (request.method === "GET") return listMembers(request, env);
     if (request.method === "POST") return addMember(request, env);
     return methodNotAllowed(["GET", "POST"]);
   }
 
-  if (path.startsWith("/api/admin/members/")) {
-    const admin = await getAdminSession(request, env);
-    if (!admin) return jsonResponse({ ok: false, error: "管理员登录已失效。" }, 401);
+  const memberMatch = path.match(/^\/api\/admin\/members\/([^/]+)$/);
+  if (memberMatch) {
     if (request.method !== "DELETE") return methodNotAllowed(["DELETE"]);
-    const qq = decodeURIComponent(path.slice("/api/admin/members/".length));
-    return deleteMember(env, qq);
+    return deleteMember(env, decodeURIComponent(memberMatch[1]));
   }
 
   return jsonResponse({ ok: false, error: "接口不存在。" }, 404);
@@ -129,7 +138,7 @@ async function memberLogin(request, env) {
   const qq = normalizeQq(body.qq);
   const accessCode = normalizeAccessCode(body.accessCode);
   if (!qq || !accessCode) {
-    return jsonResponse({ ok: false, error: "请填写正确的 QQ 号和访问码。" }, 400);
+    return jsonResponse({ ok: false, error: "请填写正确的 QQ 号和群访问码。" }, 400);
   }
 
   const attemptKey = await attemptHash(env.AUTH_SECRET, request, `member:${qq}`);
@@ -138,17 +147,22 @@ async function memberLogin(request, env) {
     return jsonResponse({ ok: false, error: `尝试次数过多，请 ${Math.ceil(blockedFor / 60)} 分钟后再试。` }, 429);
   }
 
-  const member = await env.DB.prepare(
-    "SELECT id, qq, access_code_hash, device_hash FROM members WHERE qq = ? LIMIT 1"
-  ).bind(qq).first();
+  const [member, codeSetting] = await Promise.all([
+    env.DB.prepare("SELECT id, qq, device_hash FROM members WHERE qq = ? LIMIT 1").bind(qq).first(),
+    env.DB.prepare("SELECT value FROM app_settings WHERE key = 'group_access_code_hash' LIMIT 1").first(),
+  ]);
 
-  const suppliedHash = await hmacHex(env.AUTH_SECRET, `access:${qq}:${accessCode}`);
-  const expectedHash = member?.access_code_hash || await hmacHex(env.AUTH_SECRET, `access:${qq}:invalid`);
-  const validCode = member && timingSafeEqual(suppliedHash, expectedHash);
+  if (!codeSetting?.value) {
+    return jsonResponse({ ok: false, error: "管理员尚未设置群访问码，请稍后再试。" }, 503);
+  }
 
-  if (!validCode) {
+  const suppliedHash = await hmacHex(env.AUTH_SECRET, `group-access:${accessCode}`);
+  const expectedHash = String(codeSetting.value);
+  const valid = Boolean(member) && timingSafeEqual(suppliedHash, expectedHash);
+
+  if (!valid) {
     await recordFailure(env.DB, attemptKey);
-    return jsonResponse({ ok: false, error: "QQ 号或访问码不正确。" }, 401);
+    return jsonResponse({ ok: false, error: "QQ 号不在成员名单中，或群访问码不正确。" }, 401);
   }
 
   const cookies = parseCookies(request.headers.get("Cookie") || "");
@@ -173,7 +187,7 @@ async function memberLogin(request, env) {
   if (!bound?.device_hash || !timingSafeEqual(bound.device_hash, deviceHash)) {
     await recordFailure(env.DB, attemptKey);
     return jsonResponse(
-      { ok: false, code: "DEVICE_MISMATCH", error: "该 QQ 号已经绑定其他设备。需要换设备时，请联系管理员删除后重新添加。" },
+      { ok: false, code: "DEVICE_MISMATCH", error: "这个 QQ 已绑定其他手机或浏览器。请联系管理员重置设备。" },
       409
     );
   }
@@ -263,21 +277,52 @@ async function adminLogout(request, env) {
   return new Response(JSON.stringify({ ok: true }), { status: 200, headers });
 }
 
+async function getAccessCodeStatus(env) {
+  await ensureSchema(env.DB);
+  const row = await env.DB.prepare(
+    "SELECT updated_at FROM app_settings WHERE key = 'group_access_code_hash' LIMIT 1"
+  ).first();
+  return jsonResponse({
+    ok: true,
+    configured: Boolean(row),
+    updatedAt: row ? Number(row.updated_at) : null,
+  });
+}
+
+async function setAccessCode(request, env) {
+  await ensureSchema(env.DB);
+  const body = await readJson(request);
+  const accessCode = normalizeAccessCode(body.accessCode);
+  if (!accessCode) {
+    return jsonResponse({ ok: false, error: "群访问码需为 6–24 位英文字母或数字。" }, 400);
+  }
+
+  const hash = await hmacHex(env.AUTH_SECRET, `group-access:${accessCode}`);
+  const now = unixNow();
+  await env.DB.batch([
+    env.DB.prepare(
+      `INSERT INTO app_settings (key, value, updated_at)
+       VALUES ('group_access_code_hash', ?, ?)
+       ON CONFLICT(key) DO UPDATE SET value = excluded.value, updated_at = excluded.updated_at`
+    ).bind(hash, now),
+    env.DB.prepare("DELETE FROM member_sessions"),
+  ]);
+
+  return jsonResponse({ ok: true, configured: true, updatedAt: now });
+}
+
 async function listMembers(request, env) {
   await ensureSchema(env.DB);
   const url = new URL(request.url);
   const q = normalizeQqSearch(url.searchParams.get("q") || "");
 
-  let statement;
-  if (q) {
-    statement = env.DB.prepare(
-      "SELECT id, qq, device_hash, created_at, last_login_at FROM members WHERE qq LIKE ? ORDER BY created_at DESC LIMIT 100"
-    ).bind(`%${q}%`);
-  } else {
-    statement = env.DB.prepare(
-      "SELECT id, qq, device_hash, created_at, last_login_at FROM members ORDER BY created_at DESC LIMIT 100"
-    );
-  }
+  const statement = q
+    ? env.DB.prepare(
+        "SELECT id, qq, device_hash, created_at, last_login_at FROM members WHERE qq LIKE ? ORDER BY created_at DESC LIMIT 500"
+      ).bind(`%${q}%`)
+    : env.DB.prepare(
+        "SELECT id, qq, device_hash, created_at, last_login_at FROM members ORDER BY created_at DESC LIMIT 500"
+      );
 
   const [rows, countRow] = await Promise.all([
     statement.all(),
@@ -288,8 +333,8 @@ async function listMembers(request, env) {
     id: row.id,
     qq: row.qq,
     deviceBound: Boolean(row.device_hash),
-    createdAt: row.created_at,
-    lastLoginAt: row.last_login_at,
+    createdAt: Number(row.created_at),
+    lastLoginAt: row.last_login_at ? Number(row.last_login_at) : null,
   }));
 
   return jsonResponse({ ok: true, total: Number(countRow?.total || 0), members });
@@ -302,21 +347,65 @@ async function addMember(request, env) {
   if (!qq) return jsonResponse({ ok: false, error: "请输入正确的 QQ 号。" }, 400);
 
   const existing = await env.DB.prepare("SELECT id FROM members WHERE qq = ? LIMIT 1").bind(qq).first();
-  if (existing) return jsonResponse({ ok: false, error: "这个 QQ 号已经存在。" }, 409);
+  if (existing) return jsonResponse({ ok: false, error: "这个 QQ 号已经在名单里。" }, 409);
 
-  const rawCode = randomAccessCode(10);
-  const displayCode = formatAccessCode(rawCode);
-  const codeHash = await hmacHex(env.AUTH_SECRET, `access:${qq}:${rawCode}`);
+  const now = unixNow();
+  await env.DB.prepare(
+    "INSERT INTO members (qq, access_code_hash, device_hash, created_at, last_login_at) VALUES (?, '', NULL, ?, NULL)"
+  ).bind(qq, now).run();
+
+  return jsonResponse({ ok: true, member: { qq, deviceBound: false, createdAt: now } }, 201);
+}
+
+async function bulkAddMembers(request, env) {
+  await ensureSchema(env.DB);
+  const body = await readJson(request);
+  const parsed = parseQqList(body.qqs);
+
+  if (!parsed.unique.length) {
+    return jsonResponse({ ok: false, error: "没有识别到有效 QQ 号。" }, 400);
+  }
+  if (parsed.unique.length > MAX_BULK_MEMBERS) {
+    return jsonResponse({ ok: false, error: `一次最多导入 ${MAX_BULK_MEMBERS} 个 QQ。` }, 400);
+  }
+
+  const existing = await findExistingQqs(env.DB, parsed.unique);
+  const toInsert = parsed.unique.filter((qq) => !existing.has(qq));
   const now = unixNow();
 
-  await env.DB.prepare(
-    "INSERT INTO members (qq, access_code_hash, device_hash, created_at, last_login_at) VALUES (?, ?, NULL, ?, NULL)"
-  ).bind(qq, codeHash, now).run();
+  for (const chunk of chunkArray(toInsert, 50)) {
+    if (!chunk.length) continue;
+    await env.DB.batch(
+      chunk.map((qq) => env.DB.prepare(
+        "INSERT OR IGNORE INTO members (qq, access_code_hash, device_hash, created_at, last_login_at) VALUES (?, '', NULL, ?, NULL)"
+      ).bind(qq, now))
+    );
+  }
 
   return jsonResponse({
     ok: true,
-    member: { qq, accessCode: displayCode, deviceBound: false, createdAt: now },
+    received: parsed.unique.length,
+    added: toInsert.length,
+    existed: existing.size,
+    invalid: parsed.invalid,
+    duplicates: parsed.duplicates,
   }, 201);
+}
+
+async function resetMemberDevice(env, rawQq) {
+  await ensureSchema(env.DB);
+  const qq = normalizeQq(rawQq);
+  if (!qq) return jsonResponse({ ok: false, error: "QQ 号无效。" }, 400);
+
+  const member = await env.DB.prepare("SELECT id FROM members WHERE qq = ? LIMIT 1").bind(qq).first();
+  if (!member) return jsonResponse({ ok: false, error: "没有找到这个成员。" }, 404);
+
+  await env.DB.batch([
+    env.DB.prepare("DELETE FROM member_sessions WHERE member_id = ?").bind(member.id),
+    env.DB.prepare("UPDATE members SET device_hash = NULL WHERE id = ?").bind(member.id),
+  ]);
+
+  return jsonResponse({ ok: true, resetQq: qq });
 }
 
 async function deleteMember(env, rawQq) {
@@ -332,6 +421,18 @@ async function deleteMember(env, rawQq) {
     env.DB.prepare("DELETE FROM members WHERE id = ?").bind(member.id),
   ]);
   return jsonResponse({ ok: true, deletedQq: qq });
+}
+
+async function findExistingQqs(db, qqs) {
+  const found = new Set();
+  for (const chunk of chunkArray(qqs, 50)) {
+    const placeholders = chunk.map(() => "?").join(",");
+    const rows = await db.prepare(
+      `SELECT qq FROM members WHERE qq IN (${placeholders})`
+    ).bind(...chunk).all();
+    for (const row of rows.results || []) found.add(String(row.qq));
+  }
+  return found;
 }
 
 async function getMemberSession(request, env) {
@@ -412,7 +513,7 @@ async function ensureSchema(db) {
     db.prepare(`CREATE TABLE IF NOT EXISTS members (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       qq TEXT NOT NULL UNIQUE,
-      access_code_hash TEXT NOT NULL,
+      access_code_hash TEXT NOT NULL DEFAULT '',
       device_hash TEXT,
       created_at INTEGER NOT NULL,
       last_login_at INTEGER
@@ -434,6 +535,11 @@ async function ensureSchema(db) {
       first_attempt_at INTEGER NOT NULL,
       attempt_count INTEGER NOT NULL,
       blocked_until INTEGER NOT NULL DEFAULT 0
+    )`),
+    db.prepare(`CREATE TABLE IF NOT EXISTS app_settings (
+      key TEXT PRIMARY KEY,
+      value TEXT NOT NULL,
+      updated_at INTEGER NOT NULL
     )`),
     db.prepare("CREATE INDEX IF NOT EXISTS idx_member_sessions_member_id ON member_sessions(member_id)"),
     db.prepare("CREATE INDEX IF NOT EXISTS idx_member_sessions_expires_at ON member_sessions(expires_at)"),
@@ -494,6 +600,18 @@ async function readJson(request) {
   }
 }
 
+function parseQqList(value) {
+  const source = Array.isArray(value) ? value.join("\n") : String(value ?? "");
+  const tokens = source.split(/\D+/).filter(Boolean);
+  const valid = tokens.map(normalizeQq).filter(Boolean);
+  const unique = [...new Set(valid)];
+  return {
+    unique,
+    invalid: tokens.length - valid.length,
+    duplicates: valid.length - unique.length,
+  };
+}
+
 function normalizeQq(value) {
   const qq = String(value ?? "").trim();
   return /^\d{4,12}$/.test(qq) ? qq : "";
@@ -505,18 +623,15 @@ function normalizeQqSearch(value) {
 
 function normalizeAccessCode(value) {
   const code = String(value ?? "").toUpperCase().replace(/[^A-Z0-9]/g, "");
-  return code.length >= 8 && code.length <= 16 ? code : "";
+  return code.length >= 6 && code.length <= 24 ? code : "";
 }
 
-function randomAccessCode(length) {
-  const bytes = crypto.getRandomValues(new Uint8Array(length));
-  let out = "";
-  for (const byte of bytes) out += ACCESS_ALPHABET[byte % ACCESS_ALPHABET.length];
-  return out;
-}
-
-function formatAccessCode(code) {
-  return `${code.slice(0, 4)}-${code.slice(4, 8)}-${code.slice(8)}`;
+function chunkArray(items, size) {
+  const chunks = [];
+  for (let index = 0; index < items.length; index += size) {
+    chunks.push(items.slice(index, index + size));
+  }
+  return chunks;
 }
 
 function randomToken(byteLength) {
@@ -556,7 +671,9 @@ function timingSafeEqual(a, b) {
   const right = String(b ?? "");
   if (left.length !== right.length) return false;
   let mismatch = 0;
-  for (let i = 0; i < left.length; i += 1) mismatch |= left.charCodeAt(i) ^ right.charCodeAt(i);
+  for (let index = 0; index < left.length; index += 1) {
+    mismatch |= left.charCodeAt(index) ^ right.charCodeAt(index);
+  }
   return mismatch === 0;
 }
 
@@ -671,7 +788,9 @@ function secureResponse(response, mode) {
     "Content-Security-Policy",
     "default-src 'self'; base-uri 'none'; frame-ancestors 'none'; object-src 'none'; form-action 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: blob: https://cdn.jsdelivr.net https://raw.githubusercontent.com https://i.postimg.cc; media-src 'self' blob:; connect-src 'self' https://api.github.com https://data.jsdelivr.com https://cdn.jsdelivr.net https://raw.githubusercontent.com; worker-src 'self' blob:"
   );
-  if (mode === "api") headers.set("Content-Type", headers.get("Content-Type") || "application/json; charset=utf-8");
+  if (mode === "api") {
+    headers.set("Content-Type", headers.get("Content-Type") || "application/json; charset=utf-8");
+  }
   return new Response(response.body, { status: response.status, statusText: response.statusText, headers });
 }
 

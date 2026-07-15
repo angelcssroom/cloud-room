@@ -1,10 +1,10 @@
 -- Cloud Room D1 schema
--- _worker.js 会在第一次使用时自动创建这些表；本文件仅作为完整数据库结构备份。
+-- _worker.js 会自动创建并兼容现有数据库；本文件仅作为完整结构备份。
 
 CREATE TABLE IF NOT EXISTS members (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   qq TEXT NOT NULL UNIQUE,
-  access_code_hash TEXT NOT NULL,
+  access_code_hash TEXT NOT NULL DEFAULT '',
   device_hash TEXT,
   created_at INTEGER NOT NULL,
   last_login_at INTEGER
@@ -29,6 +29,12 @@ CREATE TABLE IF NOT EXISTS login_attempts (
   first_attempt_at INTEGER NOT NULL,
   attempt_count INTEGER NOT NULL,
   blocked_until INTEGER NOT NULL DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS app_settings (
+  key TEXT PRIMARY KEY,
+  value TEXT NOT NULL,
+  updated_at INTEGER NOT NULL
 );
 
 CREATE INDEX IF NOT EXISTS idx_member_sessions_member_id ON member_sessions(member_id);
