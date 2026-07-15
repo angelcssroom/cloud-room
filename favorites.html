@@ -1399,17 +1399,17 @@ button:focus-visible,
   <section class="bubble-studio-entry reveal-zone" aria-label="Bubble Studio 调色入口">
     <div class="studio-entry-top">
       <div class="studio-entry-copy">
-        <span class="studio-entry-kicker">bubble studio / 01 available</span>
+        <span class="studio-entry-kicker">bubble studio / 02 available</span>
         <h2>气泡调色室</h2>
-        <p class="studio-entry-description">为当前开放的主题调整双方气泡颜色与质感。编辑将在独立页面完成，不占用收藏页空间。</p>
+        <p class="studio-entry-description">选择开放主题，再调整双方气泡颜色。编辑在独立页面完成，不占用收藏页空间。</p>
       </div>
     </div>
     <div class="studio-entry-theme">
       <div class="studio-theme-name">
         <span class="studio-theme-mark" aria-hidden="true"></span>
         <span class="studio-theme-text">
-          <strong>夜间飞行</strong>
-          <span>open studio</span>
+          <strong>2 个可调色主题</strong>
+          <span>choose a theme</span>
         </span>
       </div>
       <a class="studio-open" href="bubble-studio.html">进入调色 →</a>
@@ -1595,7 +1595,7 @@ const collectionShelf=document.getElementById('collectionShelf');
 const searchInput=document.getElementById('searchInput');
 const tabs=[...document.querySelectorAll('.tab')];
 let favorites=readFavorites();
-let previewMode=favorites.length===0&&new URLSearchParams(location.search).has('demo');
+let previewMode=favorites.length===0&&(new URLSearchParams(location.search).has('demo')||location.hostname!=='angelcssroom.github.io');
 let activeFilter='all';
 let currentItem=null;
 let removedSnapshot=null;
