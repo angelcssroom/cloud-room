@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cloud Room · 成员管理</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--text:#171717;--sub:#6f6f6f;--muted:#a0a0a0;--line:#e9e9e9;--soft:#f7f7f7;--danger:#a73d3d;--ok:#2d7044}
+html,body{margin:0;min-height:100%;background:#fff;color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue","PingFang SC",sans-serif}
+body{padding:28px 16px 48px}.page{width:min(100%,720px);margin:0 auto}
+.header{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin:0 2px 22px}.header h1{margin:0;font-size:20px;font-weight:680;letter-spacing:-.02em}.header p{margin:7px 0 0;color:var(--sub);font-size:11px}.text-button{width:auto;height:auto;margin:0;padding:5px 0;background:none;color:var(--sub);font-size:11px;border-radius:0}
+.card{border:1px solid var(--line);border-radius:15px;padding:19px;background:#fff;box-shadow:0 6px 22px rgba(0,0,0,.025)}.card+.card{margin-top:14px}
+h2{margin:0 0 15px;font-size:13px;font-weight:670}.row{display:flex;gap:9px;align-items:center}.row input{flex:1}.row button{flex:0 0 auto;width:auto;padding:0 18px;margin:0}
+input{width:100%;height:44px;border:1px solid var(--line);border-radius:10px;padding:0 12px;font-size:14px;outline:none;background:#fff;color:var(--text)}input:focus{border-color:#b8b8b8;box-shadow:0 0 0 3px rgba(0,0,0,.035)}
+button{height:44px;border:0;border-radius:10px;background:#171717;color:#fff;padding:0 17px;font-size:12px;font-weight:640;cursor:pointer}button:disabled{opacity:.45;cursor:default}
+.message{display:none;margin:12px 1px 0;font-size:11px;line-height:1.6;color:var(--danger)}.message.ok{color:var(--ok)}
+.code-box{display:none;margin-top:14px;border:1px solid #dedede;border-radius:12px;background:var(--soft);padding:14px}.code-box .caption{font-size:10px;color:var(--sub);margin-bottom:7px}.code-box strong{font-size:18px;letter-spacing:.07em;word-break:break-all}.code-actions{display:flex;gap:8px;margin-top:12px}.code-actions button{height:36px;font-size:11px}.code-actions .secondary{background:#fff;color:#222;border:1px solid var(--line)}
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}.toolbar h2{margin:0}.count{font-size:10px;color:var(--sub)}
+.search-row{display:flex;gap:8px;margin-bottom:13px}.search-row input{flex:1}.search-row button{height:44px;margin:0;width:auto}
+.member-list{display:flex;flex-direction:column;gap:9px}.empty{padding:26px 6px;text-align:center;color:var(--muted);font-size:11px}
+.member{display:flex;align-items:center;justify-content:space-between;gap:14px;border:1px solid var(--line);border-radius:12px;padding:13px 12px}.member-main{min-width:0}.member-qq{font-size:14px;font-weight:660}.member-meta{margin-top:6px;color:var(--sub);font-size:10px;line-height:1.55}.member button{height:34px;margin:0;padding:0 12px;background:#fff;color:var(--danger);border:1px solid #ebd7d7;font-size:10px;flex:0 0 auto}
+#loginPanel{max-width:430px;margin:13vh auto 0}.login-note{margin:13px 1px 0;color:var(--sub);font-size:10px;line-height:1.7}.login-button{width:100%;margin-top:14px}
+#managePanel{display:none}.footer{text-align:center;margin-top:20px;color:#c2c2c2;font-size:9px;letter-spacing:.04em}
+@media(max-width:520px){.row{align-items:stretch;flex-direction:column}.row button{width:100%}.member{align-items:flex-start}.search-row button{padding:0 13px}}
+</style>
+</head>
+<body>
+<main class="page">
+  <section id="loginPanel" class="card">
+    <h2>管理员登录</h2>
+    <form id="adminLoginForm">
+      <input id="adminPassword" type="password" autocomplete="current-password" placeholder="输入管理员密码" required>
+      <button class="login-button" id="adminLoginButton" type="submit">进入成员管理</button>
+      <p class="message" id="adminLoginMessage"></p>
+    </form>
+    <p class="login-note">管理员密码只保存在 Cloudflare 的加密变量中，不会写进公开仓库。</p>
+  </section>
+
+  <section id="managePanel">
+    <div class="header">
+      <div><h1>成员管理</h1><p>Cloud Room · QQ 号＋访问码</p></div>
+      <button class="text-button" id="logoutButton" type="button">退出管理</button>
+    </div>
+
+    <section class="card">
+      <h2>添加成员</h2>
+      <form id="addForm" class="row">
+        <input id="addQq" inputmode="numeric" maxlength="12" placeholder="输入成员 QQ 号" required>
+        <button id="addButton" type="submit">添加成员</button>
+      </form>
+      <p class="message" id="addMessage"></p>
+      <div class="code-box" id="codeBox">
+        <div class="caption">请立即复制并发送给该成员，访问码只显示这一次</div>
+        <strong id="newCredentials"></strong>
+        <div class="code-actions">
+          <button id="copyButton" type="button">复制 QQ 与访问码</button>
+          <button class="secondary" id="closeCodeButton" type="button">收起</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="toolbar"><h2>成员列表</h2><div class="count" id="memberCount">0 位成员</div></div>
+      <form id="searchForm" class="search-row">
+        <input id="searchQq" inputmode="numeric" maxlength="12" placeholder="搜索 QQ 号；留空查看最近成员">
+        <button type="submit">搜索</button>
+      </form>
+      <div class="member-list" id="memberList"><div class="empty">正在读取</div></div>
+      <p class="message" id="listMessage"></p>
+    </section>
+    <div class="footer">删除成员后，其登录状态立即失效</div>
+  </section>
+</main>
+<script>
+const loginPanel=document.getElementById('loginPanel');
+const managePanel=document.getElementById('managePanel');
+const adminLoginForm=document.getElementById('adminLoginForm');
+const adminPassword=document.getElementById('adminPassword');
+const adminLoginButton=document.getElementById('adminLoginButton');
+const adminLoginMessage=document.getElementById('adminLoginMessage');
+const addForm=document.getElementById('addForm');
+const addQq=document.getElementById('addQq');
+const addButton=document.getElementById('addButton');
+const addMessage=document.getElementById('addMessage');
+const codeBox=document.getElementById('codeBox');
+const newCredentials=document.getElementById('newCredentials');
+const copyButton=document.getElementById('copyButton');
+const closeCodeButton=document.getElementById('closeCodeButton');
+const searchForm=document.getElementById('searchForm');
+const searchQq=document.getElementById('searchQq');
+const memberList=document.getElementById('memberList');
+const memberCount=document.getElementById('memberCount');
+const listMessage=document.getElementById('listMessage');
+const logoutButton=document.getElementById('logoutButton');
+let latestCredentialText='';
+
+for(const input of [addQq,searchQq]) input.addEventListener('input',()=>{input.value=input.value.replace(/\D/g,'').slice(0,12)});
+
+boot();
+async function boot(){
+  try{
+    const response=await fetch('/api/admin/session',{cache:'no-store'});
+    const data=await response.json();
+    if(data.authenticated) showManage(); else showLogin();
+  }catch{showLogin()}
+}
+
+adminLoginForm.addEventListener('submit',async(event)=>{
+  event.preventDefault();setMessage(adminLoginMessage,'');adminLoginButton.disabled=true;adminLoginButton.textContent='正在验证';
+  try{
+    const response=await fetch('/api/admin/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:adminPassword.value})});
+    const data=await response.json().catch(()=>({}));
+    if(!response.ok||!data.ok) throw new Error(data.error||'登录失败。');
+    adminPassword.value='';showManage();
+  }catch(error){setMessage(adminLoginMessage,error.message||'登录失败。')}
+  finally{adminLoginButton.disabled=false;adminLoginButton.textContent='进入成员管理'}
+});
+
+addForm.addEventListener('submit',async(event)=>{
+  event.preventDefault();setMessage(addMessage,'');addButton.disabled=true;
+  try{
+    const response=await fetch('/api/admin/members',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({qq:addQq.value})});
+    const data=await response.json().catch(()=>({}));
+    if(response.status===401){showLogin();throw new Error('管理员登录已失效。')}
+    if(!response.ok||!data.ok) throw new Error(data.error||'添加失败。');
+    latestCredentialText=`QQ：${data.member.qq}\n访问码：${data.member.accessCode}`;
+    newCredentials.textContent=`${data.member.qq} · ${data.member.accessCode}`;
+    codeBox.style.display='block';addQq.value='';setMessage(addMessage,'成员已添加。',true);await loadMembers();
+  }catch(error){setMessage(addMessage,error.message||'添加失败。')}
+  finally{addButton.disabled=false}
+});
+
+searchForm.addEventListener('submit',(event)=>{event.preventDefault();loadMembers(searchQq.value)});
+copyButton.addEventListener('click',async()=>{
+  try{await navigator.clipboard.writeText(latestCredentialText);copyButton.textContent='已复制';setTimeout(()=>copyButton.textContent='复制 QQ 与访问码',1400)}
+  catch{setMessage(addMessage,'复制失败，请长按上方内容手动复制。')}
+});
+closeCodeButton.addEventListener('click',()=>{codeBox.style.display='none';latestCredentialText=''});
+logoutButton.addEventListener('click',async()=>{await fetch('/api/admin/logout',{method:'POST'}).catch(()=>{});showLogin()});
+
+function showLogin(){loginPanel.style.display='block';managePanel.style.display='none'}
+function showManage(){loginPanel.style.display='none';managePanel.style.display='block';loadMembers()}
+
+async function loadMembers(query=''){
+  setMessage(listMessage,'');memberList.innerHTML='<div class="empty">正在读取</div>';
+  try{
+    const response=await fetch('/api/admin/members?q='+encodeURIComponent(query),{cache:'no-store'});
+    const data=await response.json().catch(()=>({}));
+    if(response.status===401){showLogin();return}
+    if(!response.ok||!data.ok) throw new Error(data.error||'读取失败。');
+    memberCount.textContent=`${data.total} 位成员`;
+    renderMembers(data.members||[]);
+  }catch(error){memberList.innerHTML='';setMessage(listMessage,error.message||'读取失败。')}
+}
+
+function renderMembers(members){
+  if(!members.length){memberList.innerHTML='<div class="empty">没有找到成员</div>';return}
+  memberList.innerHTML='';
+  for(const member of members){
+    const item=document.createElement('div');item.className='member';
+    const main=document.createElement('div');main.className='member-main';
+    const qq=document.createElement('div');qq.className='member-qq';qq.textContent=member.qq;
+    const meta=document.createElement('div');meta.className='member-meta';
+    const bound=member.deviceBound?'已绑定设备':'未绑定设备';
+    const created=formatTime(member.createdAt);const last=member.lastLoginAt?formatTime(member.lastLoginAt):'尚未登录';
+    meta.textContent=`${bound} · 添加 ${created} · 最近登录 ${last}`;
+    const remove=document.createElement('button');remove.type='button';remove.textContent='删除';
+    remove.addEventListener('click',()=>removeMember(member.qq,remove));
+    main.append(qq,meta);item.append(main,remove);memberList.append(item);
+  }
+}
+
+async function removeMember(qq,button){
+  if(!confirm(`确定删除 QQ ${qq}？\n删除后该成员会立即退出，重新添加可解除设备绑定。`)) return;
+  button.disabled=true;
+  try{
+    const response=await fetch('/api/admin/members/'+encodeURIComponent(qq),{method:'DELETE'});
+    const data=await response.json().catch(()=>({}));
+    if(response.status===401){showLogin();return}
+    if(!response.ok||!data.ok) throw new Error(data.error||'删除失败。');
+    await loadMembers(searchQq.value);
+  }catch(error){setMessage(listMessage,error.message||'删除失败。');button.disabled=false}
+}
+
+function formatTime(seconds){
+  if(!seconds)return'—';
+  return new Intl.DateTimeFormat('zh-CN',{year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(seconds*1000));
+}
+function setMessage(element,text,ok=false){element.textContent=text;element.classList.toggle('ok',ok);element.style.display=text?'block':'none'}
+</script>
+</body>
+</html>

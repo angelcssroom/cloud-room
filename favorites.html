@@ -1595,7 +1595,7 @@ const collectionShelf=document.getElementById('collectionShelf');
 const searchInput=document.getElementById('searchInput');
 const tabs=[...document.querySelectorAll('.tab')];
 let favorites=readFavorites();
-let previewMode=favorites.length===0&&(new URLSearchParams(location.search).has('demo')||location.hostname!=='angelcssroom.github.io');
+let previewMode=favorites.length===0&&new URLSearchParams(location.search).has('demo');
 let activeFilter='all';
 let currentItem=null;
 let removedSnapshot=null;

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cloud Room · 登录</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--text:#171717;--sub:#777;--line:#e9e9e9;--soft:#f7f7f7;--danger:#a53d3d}
+html,body{margin:0;min-height:100%;background:#fff;color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue","PingFang SC",sans-serif}
+body{display:grid;place-items:center;padding:28px 18px;min-height:100svh}
+.wrap{width:min(100%,420px)}
+.brand{text-align:center;margin-bottom:28px}
+.brand h1{margin:0;font-size:21px;letter-spacing:-.02em;font-weight:680}
+.brand p{margin:8px 0 0;color:var(--sub);font-size:11px;letter-spacing:.04em}
+.card{border:1px solid var(--line);border-radius:16px;padding:22px 20px 20px;box-shadow:0 8px 28px rgba(0,0,0,.035)}
+label{display:block;font-size:12px;font-weight:620;margin:0 0 8px}
+.field+ .field{margin-top:17px}
+input{width:100%;height:46px;border:1px solid var(--line);border-radius:11px;background:#fff;padding:0 13px;font-size:15px;color:var(--text);outline:none}
+input:focus{border-color:#b8b8b8;box-shadow:0 0 0 3px rgba(0,0,0,.035)}
+input::placeholder{color:#b8b8b8}
+button{width:100%;height:46px;border:0;border-radius:11px;margin-top:20px;background:#171717;color:#fff;font-size:13px;font-weight:650;cursor:pointer}
+button:disabled{opacity:.48;cursor:default}
+.msg{display:none;margin:13px 1px 0;font-size:11px;line-height:1.65;color:var(--danger)}
+.note{margin:17px 2px 0;color:#929292;font-size:10px;line-height:1.75;text-align:center}
+.footer{text-align:center;margin-top:20px;color:#c1c1c1;font-size:9px;letter-spacing:.04em}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <div class="brand">
+    <h1>Cloud Room</h1>
+    <p>members only · 天国事务所</p>
+  </div>
+  <section class="card">
+    <form id="loginForm" novalidate>
+      <div class="field">
+        <label for="qq">QQ 号</label>
+        <input id="qq" name="qq" inputmode="numeric" autocomplete="username" maxlength="12" placeholder="请输入群成员 QQ 号" required>
+      </div>
+      <div class="field">
+        <label for="accessCode">访问码</label>
+        <input id="accessCode" name="accessCode" autocapitalize="characters" autocomplete="current-password" maxlength="16" placeholder="XXXX-XXXX-XX" required>
+      </div>
+      <button id="submitButton" type="submit">进入 Cloud Room</button>
+      <p class="msg" id="message" role="alert"></p>
+    </form>
+    <p class="note">首次登录后会绑定当前浏览器。更换手机或浏览器前，请联系管理员重新添加账号。</p>
+  </section>
+  <div class="footer">private archive · personal use only</div>
+</main>
+<script>
+const form=document.getElementById('loginForm');
+const button=document.getElementById('submitButton');
+const message=document.getElementById('message');
+const qqInput=document.getElementById('qq');
+const codeInput=document.getElementById('accessCode');
+
+codeInput.addEventListener('input',()=>{
+  const raw=codeInput.value.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,10);
+  codeInput.value=[raw.slice(0,4),raw.slice(4,8),raw.slice(8,10)].filter(Boolean).join('-');
+});
+qqInput.addEventListener('input',()=>{qqInput.value=qqInput.value.replace(/\D/g,'').slice(0,12)});
+
+form.addEventListener('submit',async(event)=>{
+  event.preventDefault();
+  setMessage('');
+  button.disabled=true;
+  button.textContent='正在验证';
+  try{
+    const response=await fetch('/api/login',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({qq:qqInput.value,accessCode:codeInput.value})
+    });
+    const data=await response.json().catch(()=>({}));
+    if(!response.ok||!data.ok) throw new Error(data.error||'登录失败，请重试。');
+    const params=new URLSearchParams(location.search);
+    const next=params.get('next')||'/';
+    const safeNext=next.startsWith('/')&&!next.startsWith('//')&&!next.startsWith('/login')&&!next.startsWith('/admin')&&!next.startsWith('/api/')?next:'/';
+    location.replace(safeNext);
+  }catch(error){
+    setMessage(error.message||'登录失败，请重试。');
+  }finally{
+    button.disabled=false;
+    button.textContent='进入 Cloud Room';
+  }
+});
+
+function setMessage(text){
+  message.textContent=text;
+  message.style.display=text?'block':'none';
+}
+</script>
+</body>
+</html>
