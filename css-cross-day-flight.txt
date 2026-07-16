@@ -1,5 +1,5 @@
 /*
-Theme: 夜间飞行
+Theme: 日间飞行
 气泡尾巴: 秩
 Author: 天使
 Source: -ee
@@ -2830,7 +2830,290 @@ Source: -ee
     margin-top: -8px !important;
 }
 
-:root{--flight-wrap:58vw;--flight-kit-card-1:#303238;--flight-kit-card-2:#1B1C20;--flight-kit-line:rgba(255,255,255,.13);--flight-kit-text:#F4F5F7;--flight-kit-soft:#B8BBC3;--flight-kit-badge-1:#F8F9FB;--flight-kit-badge-2:#D9DDE4;--flight-kit-badge-text:#24262B;--flight-kit-badge-line:rgba(255,255,255,.18);--flight-kit-quote-line:rgba(255,255,255,.22);--flight-kit-separator:rgba(255,255,255,.10);--flight-kit-shadow:rgba(0,0,0,.20);--flight-kit-inset:rgba(255,255,255,.08)}
+/* ========================================================= */
+/* 日间飞行｜日光最终覆盖 */
+/* 保留气泡尾巴、心声点击、贴边、间距逻辑，只改日光配色 */
+/* ========================================================= */
+
+:root {
+    --kkt-night-bg: #FFFFFF;
+    --kkt-night-top-bottom: #FFFFFF;
+    --kkt-night-input: #FFFFFF;
+    --kkt-night-input-border: #DADDE3;
+
+    --kkt-night-panel: #FFFFFF;
+    --kkt-night-panel-item: #F5F6F8;
+    --kkt-night-panel-border: #DADDE3;
+
+    --kkt-night-text: #111214;
+    --kkt-night-soft-text: #3B3D42;
+    --kkt-night-muted-text: #8C8F96;
+
+    --kkt-night-send-bg: #F2F3F5;
+    --kkt-night-send-border: #D5D8DE;
+    --kkt-night-send-icon: #111214;
+
+    --theme-icon-color: #111214;
+    --bottom-plus-color: #111214;
+
+    --bottom-bar-bg: #FFFFFF;
+    --bottom-input-bg: #FFFFFF;
+    --bottom-input-border: #DADDE3;
+    --bottom-input-text: #111214;
+
+    --night-flight-user-bubble-bg: #173FD3;
+    --night-flight-char-bubble-bg: #E8E9ED;
+
+    --night-flight-user-bubble-text: #FFFFFF;
+    --night-flight-char-bubble-text: #222326;
+}
+
+#chat-interface-screen,
+#chat-interface-screen #chat-messages,
+#chat-interface-screen #chat-messages-container {
+    background: #FFFFFF !important;
+    background-color: #FFFFFF !important;
+}
+
+#chat-interface-screen > .header,
+#phone-screen.dark-mode #chat-interface-screen > .header {
+    background: #FFFFFF !important;
+    background-color: #FFFFFF !important;
+    border: none !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+}
+
+#chat-interface-screen #chat-header-title,
+#chat-interface-screen #chat-header-title * {
+    color: #111214 !important;
+    -webkit-text-fill-color: #111214 !important;
+}
+
+#chat-interface-screen #chat-header-status,
+#chat-interface-screen #chat-header-status *,
+#chat-interface-screen .status-text,
+#chat-interface-screen .status-dot {
+    color: #8C8F96 !important;
+    -webkit-text-fill-color: #8C8F96 !important;
+}
+
+#chat-interface-screen:not(.selection-mode) > .header .back-btn::before,
+#chat-interface-screen:not(.selection-mode) > .header #listen-together-btn::before,
+#chat-interface-screen:not(.selection-mode) > .header #chat-settings-btn::before {
+    background-image: none !important;
+    background-color: #111214 !important;
+}
+
+#chat-interface-screen.selection-mode > .header,
+#chat-interface-screen.selection-mode > .header .selection-controls,
+#chat-interface-screen.selection-mode > .header .selection-controls *,
+#chat-interface-screen.selection-mode > .header button,
+#chat-interface-screen.selection-mode > .header button *,
+#chat-interface-screen.selection-mode .selection-controls,
+#chat-interface-screen.selection-mode .selection-controls * {
+    background-color: #FFFFFF !important;
+    color: #111214 !important;
+    -webkit-text-fill-color: #111214 !important;
+    border-color: #DADDE3 !important;
+}
+
+#chat-interface-screen #chat-input-area,
+#phone-screen.dark-mode #chat-interface-screen #chat-input-area {
+    background: #FFFFFF !important;
+    background-color: #FFFFFF !important;
+    border: none !important;
+    border-top: none !important;
+    box-shadow: none !important;
+}
+
+#chat-interface-screen #chat-input,
+#phone-screen.dark-mode #chat-interface-screen #chat-input {
+    background: #FFFFFF !important;
+    background-color: #FFFFFF !important;
+    border: 1px solid #DADDE3 !important;
+    box-shadow: none !important;
+    color: #111214 !important;
+    -webkit-text-fill-color: #111214 !important;
+    caret-color: #111214 !important;
+}
+
+#chat-interface-screen #chat-input:focus {
+    background: #FFFFFF !important;
+    background-color: #FFFFFF !important;
+    border-color: #C8CCD4 !important;
+    color: #111214 !important;
+    -webkit-text-fill-color: #111214 !important;
+}
+
+#chat-interface-screen #chat-input-actions-top::before {
+    color: #111214 !important;
+    -webkit-text-fill-color: #111214 !important;
+}
+
+#chat-interface-screen #chat-input-actions-top.menu-open,
+#chat-interface-screen #chat-input-actions-top:hover {
+    background: #FFFFFF !important;
+    background-color: #FFFFFF !important;
+    border: 1px solid #DADDE3 !important;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.10) !important;
+}
+
+#chat-interface-screen #chat-input-actions-top.menu-open .chat-action-icon-btn,
+#chat-interface-screen #chat-input-actions-top:hover .chat-action-icon-btn,
+#chat-interface-screen #chat-input-actions-top.menu-open #reroll-btn,
+#chat-interface-screen #chat-input-actions-top:hover #reroll-btn {
+    background: #F5F6F8 !important;
+    background-color: #F5F6F8 !important;
+    border-color: #DADDE3 !important;
+    color: #111214 !important;
+    -webkit-text-fill-color: #111214 !important;
+}
+
+#chat-interface-screen #chat-input-actions-top .chat-action-icon-btn:hover {
+    background: #ECEEF2 !important;
+    background-color: #ECEEF2 !important;
+    border-color: #C8CCD4 !important;
+}
+
+#chat-interface-screen #wait-reply-btn::before {
+    background-image: none !important;
+    background-color: #111214 !important;
+    -webkit-mask-image: url("https://i.postimg.cc/R01gmv6b/IMG-3387.png") !important;
+    mask-image: url("https://i.postimg.cc/R01gmv6b/IMG-3387.png") !important;
+    -webkit-mask-size: contain !important;
+    mask-size: contain !important;
+    -webkit-mask-position: center !important;
+    mask-position: center !important;
+    -webkit-mask-repeat: no-repeat !important;
+    mask-repeat: no-repeat !important;
+}
+
+#chat-interface-screen #send-btn::before {
+    content: "" !important;
+    position: absolute !important;
+    inset: 0 !important;
+    display: block !important;
+    border-radius: 50% !important;
+    background: #F2F3F5 !important;
+    background-color: #F2F3F5 !important;
+    border: 1px solid #D5D8DE !important;
+    box-shadow: none !important;
+    pointer-events: none !important;
+    text-indent: 0 !important;
+}
+
+#chat-interface-screen #send-btn::after {
+    background-image: none !important;
+    background-color: #111214 !important;
+    -webkit-mask-image: url("https://i.postimg.cc/yNhLK7gQ/IMG-3388.png") !important;
+    mask-image: url("https://i.postimg.cc/yNhLK7gQ/IMG-3388.png") !important;
+    -webkit-mask-size: contain !important;
+    mask-size: contain !important;
+    -webkit-mask-position: center !important;
+    mask-position: center !important;
+    -webkit-mask-repeat: no-repeat !important;
+    mask-repeat: no-repeat !important;
+    box-shadow: none !important;
+    filter: none !important;
+}
+
+#chat-interface-screen
+#chat-messages
+.message-bubble.user:not(.has-image):not(.is-realimag):not(.is-sticker):not(.is-ai-image):not(.is-waimai-request):not(.is-red-packet):not(.is-poll):not(.is-link-share):not(.is-location-share)
+.content {
+    background: #173FD3 !important;
+    background-color: #173FD3 !important;
+    color: #FFFFFF !important;
+    -webkit-text-fill-color: #FFFFFF !important;
+}
+
+#chat-interface-screen
+#chat-messages
+.message-bubble.ai:not(.has-image):not(.is-realimag):not(.is-sticker):not(.is-ai-image):not(.is-waimai-request):not(.is-red-packet):not(.is-poll):not(.is-link-share):not(.is-location-share)
+.content {
+    background: #E8E9ED !important;
+    background-color: #E8E9ED !important;
+    color: #222326 !important;
+    -webkit-text-fill-color: #222326 !important;
+}
+
+#chat-interface-screen
+#chat-messages
+.message-bubble.ai:not(.has-image):not(.is-realimag):not(.is-sticker):not(.is-ai-image):not(.is-waimai-request):not(.is-red-packet):not(.is-poll):not(.is-link-share):not(.is-location-share)
+.content::after {
+    background: #E8E9ED !important;
+    background-color: #E8E9ED !important;
+}
+
+#chat-interface-screen
+#chat-messages
+.message-bubble.user:not(.has-image):not(.is-realimag):not(.is-sticker):not(.is-ai-image):not(.is-waimai-request):not(.is-red-packet):not(.is-poll):not(.is-link-share):not(.is-location-share)
+.content::after {
+    background: #173FD3 !important;
+    background-color: #173FD3 !important;
+}
+
+#chat-interface-screen
+#chat-messages
+.message-wrapper.system-pat .message-bubble.system-bubble {
+    background: #F2F3F5 !important;
+    background-color: #F2F3F5 !important;
+    border: 1px solid #DADDE3 !important;
+    color: #8C8F96 !important;
+    -webkit-text-fill-color: #8C8F96 !important;
+}
+
+#chat-interface-screen #chat-messages .quoted-message,
+#chat-interface-screen .message-bubble .quoted-message {
+    background: #F4F5F7 !important;
+    background-color: #F4F5F7 !important;
+    border-left-color: #B8BDC8 !important;
+    color: #545861 !important;
+    -webkit-text-fill-color: #545861 !important;
+}
+
+#chat-interface-screen #chat-messages .quoted-message *,
+#chat-interface-screen .message-bubble .quoted-message * {
+    color: #545861 !important;
+    -webkit-text-fill-color: #545861 !important;
+}
+
+#chat-interface-screen #chat-messages .quoted-message .quoted-sender,
+#chat-interface-screen .message-bubble .quoted-message .quoted-sender {
+    color: #222326 !important;
+    -webkit-text-fill-color: #222326 !important;
+}
+
+#chat-interface-screen #reply-preview-bar {
+    background: #F4F5F7 !important;
+    background-color: #F4F5F7 !important;
+    border-color: #DADDE3 !important;
+    border-left-color: #B8BDC8 !important;
+    box-shadow: none !important;
+    color: #545861 !important;
+    -webkit-text-fill-color: #545861 !important;
+}
+
+#chat-interface-screen #reply-preview-bar .reply-preview-content .sender {
+    color: #222326 !important;
+    -webkit-text-fill-color: #222326 !important;
+}
+
+#chat-interface-screen #reply-preview-bar .reply-preview-content .text {
+    color: #545861 !important;
+    -webkit-text-fill-color: #545861 !important;
+}
+
+#chat-interface-screen #cancel-reply-btn {
+    background: #ECEEF2 !important;
+    background-color: #ECEEF2 !important;
+    border-color: #DADDE3 !important;
+    color: #222326 !important;
+    -webkit-text-fill-color: #222326 !important;
+}
+
+:root{--flight-wrap:58vw;--flight-kit-card-1:#FFFFFF;--flight-kit-card-2:#ECEFF3;--flight-kit-line:rgba(32,34,38,.18);--flight-kit-text:#202226;--flight-kit-soft:#626873;--flight-kit-badge-1:#3B3D43;--flight-kit-badge-2:#191A1E;--flight-kit-badge-text:#FFFFFF;--flight-kit-badge-line:rgba(32,34,38,.15);--flight-kit-quote-line:#A3A8B1;--flight-kit-separator:rgba(32,34,38,.12);--flight-kit-shadow:rgba(0,0,0,.10);--flight-kit-inset:rgba(255,255,255,.85)}
 
 #chat-interface-screen #chat-messages
 .message-bubble.user:not(.is-transfer):not(.is-voice-message):not(.has-image):not(.is-realimag):not(.is-sticker):not(.is-ai-image):not(.is-waimai-request):not(.is-red-packet):not(.is-poll):not(.is-link-share):not(.is-location-share) .content,
