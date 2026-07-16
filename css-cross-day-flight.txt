@@ -3113,7 +3113,7 @@ Source: -ee
     -webkit-text-fill-color: #222326 !important;
 }
 
-:root{--flight-wrap:58vw;--flight-kit-card-1:#FFFFFF;--flight-kit-card-2:#ECEFF3;--flight-kit-line:rgba(32,34,38,.18);--flight-kit-text:#202226;--flight-kit-soft:#626873;--flight-kit-badge-1:#3B3D43;--flight-kit-badge-2:#191A1E;--flight-kit-badge-text:#FFFFFF;--flight-kit-badge-line:rgba(32,34,38,.15);--flight-kit-quote-line:#A3A8B1;--flight-kit-separator:rgba(32,34,38,.12);--flight-kit-shadow:rgba(0,0,0,.10);--flight-kit-inset:rgba(255,255,255,.85)}
+:root{--flight-wrap:72vw;--flight-kit-card-1:#FFFFFF;--flight-kit-card-2:#ECEFF3;--flight-kit-line:rgba(32,34,38,.18);--flight-kit-text:#202226;--flight-kit-soft:#626873;--flight-kit-badge-1:#3B3D43;--flight-kit-badge-2:#191A1E;--flight-kit-badge-text:#FFFFFF;--flight-kit-badge-line:rgba(32,34,38,.15);--flight-kit-quote-line:#A3A8B1;--flight-kit-separator:rgba(32,34,38,.12);--flight-kit-shadow:rgba(0,0,0,.10);--flight-kit-inset:rgba(255,255,255,.85)}
 
 #chat-interface-screen #chat-messages
 .message-bubble.user:not(.is-transfer):not(.is-voice-message):not(.has-image):not(.is-realimag):not(.is-sticker):not(.is-ai-image):not(.is-waimai-request):not(.is-red-packet):not(.is-poll):not(.is-link-share):not(.is-location-share) .content,
