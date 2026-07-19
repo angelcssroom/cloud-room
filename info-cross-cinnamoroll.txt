@@ -2,3 +2,4 @@ title: Cinnamoroll
 author: Cross
 tags: 玉桂狗 / 蓝白 / 淡黄 / 萌物 / 330
 wallpaper: wallpaper-cross-cinnamoroll.jpg
+series: Cinnamoroll 系列

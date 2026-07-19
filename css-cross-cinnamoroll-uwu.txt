@@ -1,0 +1,972 @@
+/*
+ * Cinnamoroll Theme · uwu适配版
+ * 原主题：天使 / 整理：喵个弥 / 菜单：愫 /uwu二改：小君
+*/
+
+:root {
+    --cinna-white: #ffffff;
+    --cinna-bg: #f8fbfd;
+    --cinna-line: #a79589;
+    --cinna-line-soft: #e7dfda;
+    --cinna-text: #585858;
+    --cinna-text-dark: #4f4945;
+    --cinna-text-soft: #aaa09a;
+    --cinna-accent: #8f7d71;
+    --cinna-soft: #f7f4f2;
+    --cinna-blue: #cfeaf6;
+    --cinna-blue-deep: #8fcbe4;
+    --cinna-decoration: url("https://i.postimg.cc/xCS95XCq/IMG-3435.png");
+    --cinna-user-avatar: url("https://i.postimg.cc/LXKcSjkz/IMG-3427.png");
+    --cinna-bubble-radius: 18px;
+    --cinna-same-side-gap: 7px;
+}
+
+/* ==================== 聊天页面 ==================== */
+
+#chat-room-screen {
+    background-color: var(--cinna-bg) !important;
+    background-size: cover !important;
+    background-position: center !important;
+}
+
+#chat-room-screen > .content {
+    padding: 0 !important;
+    background: transparent !important;
+}
+
+#message-area {
+    padding: 12px 10px 14px !important;
+    background: transparent !important;
+}
+
+/* ==================== 顶栏 ==================== */
+
+#chat-room-header-default {
+    position: relative !important;
+    z-index: 50 !important;
+    width: 100% !important;
+    min-height: calc(36px + env(safe-area-inset-top)) !important;
+    height: calc(36px + env(safe-area-inset-top)) !important;
+    padding: env(safe-area-inset-top) 14px 0 !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    background: var(--cinna-white) !important;
+    border: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    overflow: visible !important;
+}
+
+#chat-room-header-default .title-container,
+#chat-room-header-default.title-centered .title-container {
+    position: absolute !important;
+    left: 50% !important;
+    top: calc(50% + env(safe-area-inset-top) / 2) !important;
+    transform: translate(-50%, calc(-50% - 3px)) !important;
+    width: auto !important;
+    max-width: 56% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    align-items: center !important;
+    text-align: center !important;
+    pointer-events: auto !important;
+    cursor: pointer !important;
+}
+
+#chat-room-title {
+    margin: 0 !important;
+    padding: 0 !important;
+    color: #111111 !important;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Helvetica Neue", sans-serif !important;
+    font-size: 16px !important;
+    line-height: 1.15 !important;
+    font-weight: 500 !important;
+    letter-spacing: 0 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    pointer-events: none !important;
+}
+
+#chat-room-subtitle {
+    display: none !important;
+}
+
+/* 隐藏状态入口图标，点击角色备注打开 OVO 原状态面板 */
+#char-status-btn {
+    position: absolute !important;
+    left: -12px !important;
+    top: -8px !important;
+    right: auto !important;
+    bottom: auto !important;
+    z-index: 5 !important;
+    display: block !important;
+    width: calc(100% + 24px) !important;
+    min-width: calc(100% + 24px) !important;
+    height: calc(100% + 16px) !important;
+    min-height: calc(100% + 16px) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    opacity: 0 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    cursor: pointer !important;
+    touch-action: manipulation !important;
+    -webkit-tap-highlight-color: transparent !important;
+}
+
+#char-status-btn svg {
+    display: none !important;
+}
+
+#chat-room-header-default .back-btn,
+#chat-room-header-default .action-btn {
+    position: relative !important;
+    width: 28px !important;
+    min-width: 28px !important;
+    max-width: 28px !important;
+    height: 28px !important;
+    min-height: 28px !important;
+    max-height: 28px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    color: transparent !important;
+    font-size: 0 !important;
+    overflow: visible !important;
+}
+
+#chat-room-header-default .back-btn {
+    margin-left: -6px !important;
+    transform: translateY(-3px) !important;
+}
+
+#chat-room-header-default .action-btn-group {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 11px !important;
+    min-width: 67px !important;
+    height: 36px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: translateY(-3px) !important;
+}
+
+#chat-room-header-default .back-btn svg,
+#chat-room-header-default .action-btn svg,
+#chat-room-header-default .action-btn img,
+#chat-room-header-default .nav-badge {
+    display: none !important;
+}
+
+#chat-room-header-default .back-btn::before,
+#chat-room-header-default #peek-btn::before,
+#chat-room-header-default #chat-settings-btn::before {
+    content: "" !important;
+    display: block !important;
+    background-size: contain !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    pointer-events: none !important;
+}
+
+#chat-room-header-default .back-btn::before {
+    width: 16px !important;
+    height: 16px !important;
+    background-image: url("https://i.postimg.cc/5twQk0Yw/IMG-3392.png") !important;
+}
+
+#chat-room-header-default #peek-btn::before {
+    width: 17px !important;
+    height: 17px !important;
+    background-image: url("https://i.postimg.cc/JnMHwLZN/IMG-3393.png") !important;
+}
+
+#chat-room-header-default #chat-settings-btn::before {
+    width: 18px !important;
+    height: 18px !important;
+    background-image: url("https://i.postimg.cc/vmR6z9BH/IMG-3394.png") !important;
+}
+
+#chat-room-header-select {
+    min-height: calc(36px + env(safe-area-inset-top)) !important;
+    padding-top: env(safe-area-inset-top) !important;
+    background: var(--cinna-white) !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* ==================== 底部输入区 ==================== */
+
+.chat-input-wrapper {
+    position: relative !important;
+    z-index: 100 !important;
+    width: 100% !important;
+    flex-shrink: 0 !important;
+    background: var(--cinna-white) !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+#message-input-default {
+    position: relative !important;
+    width: 100% !important;
+    min-height: 50px !important;
+    padding: 7px 9px 7px 9px !important;
+    padding-bottom: calc(7px + env(safe-area-inset-bottom)) !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    background: var(--cinna-white) !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+}
+
+#toggle-expansion-btn {
+    width: 35px !important;
+    min-width: 35px !important;
+    height: 35px !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 50% !important;
+    color: #d4c1ae !important;
+    box-shadow: none !important;
+}
+
+#toggle-expansion-btn svg {
+    display: block !important;
+    width: 29px !important;
+    height: 29px !important;
+    stroke: currentColor !important;
+    stroke-width: 1.4px !important;
+}
+
+#toggle-expansion-btn.rotate-45 {
+    background: transparent !important;
+    transform: rotate(45deg) !important;
+}
+
+#message-input-default .input-wrapper {
+    position: relative !important;
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    height: 36px !important;
+    margin: 0 !important;
+}
+
+#message-input {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    margin: 0 !important;
+    padding: 7px 74px 7px 14px !important;
+    box-sizing: border-box !important;
+    background: var(--cinna-white) !important;
+    border: 1px solid #ececec !important;
+    border-radius: 999px !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.96), 0 1px 3px rgba(0,0,0,.03) !important;
+    outline: none !important;
+    color: #4a4a4a !important;
+    -webkit-text-fill-color: #4a4a4a !important;
+    caret-color: #929292 !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC", sans-serif !important;
+    font-size: 16px !important;
+    line-height: 20px !important;
+    font-weight: 400 !important;
+}
+
+#message-input:focus {
+    background: var(--cinna-white) !important;
+    border-color: #e8e8e8 !important;
+    outline: none !important;
+}
+
+#message-input::placeholder {
+    color: transparent !important;
+    -webkit-text-fill-color: transparent !important;
+    opacity: 0 !important;
+}
+
+#sticker-toggle-btn {
+    position: absolute !important;
+    right: 37px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    width: 24px !important;
+    height: 24px !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border: none !important;
+}
+
+#sticker-toggle-btn img {
+    display: none !important;
+}
+
+#sticker-toggle-btn::before {
+    content: "" !important;
+    display: block !important;
+    width: 21px !important;
+    height: 21px !important;
+    background: url("https://i.postimg.cc/R01gmv6b/IMG-3387.png") center / contain no-repeat !important;
+}
+
+#get-reply-btn,
+#send-message-btn {
+    position: absolute !important;
+    right: 14px !important;
+    top: 12px !important;
+    transform: none !important;
+    z-index: 20 !important;
+    width: 26px !important;
+    min-width: 26px !important;
+    max-width: 26px !important;
+    height: 26px !important;
+    min-height: 26px !important;
+    max-height: 26px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    flex-shrink: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: transparent !important;
+    font-size: 0 !important;
+    overflow: visible !important;
+}
+
+#get-reply-btn svg,
+#send-message-btn svg {
+    display: none !important;
+}
+
+#get-reply-btn::before {
+    content: "" !important;
+    position: absolute !important;
+    inset: 0 !important;
+    display: block !important;
+    border-radius: 50% !important;
+    background: rgba(255,255,255,.82) !important;
+    border: 1px solid rgba(230,230,230,.98) !important;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.96), 0 1px 2px rgba(0,0,0,.025) !important;
+}
+
+#send-message-btn::before {
+    content: "" !important;
+    position: absolute !important;
+    inset: 0 !important;
+    display: block !important;
+    border-radius: 50% !important;
+    background: rgba(255,255,255,.82) !important;
+    border: 1px solid rgba(230,230,230,.98) !important;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.96), 0 1px 2px rgba(0,0,0,.025) !important;
+}
+
+#get-reply-btn::after,
+#send-message-btn::after {
+    content: "↑" !important;
+    position: absolute !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: auto !important;
+    height: auto !important;
+    background: none !important;
+    color: #b4b4b4 !important;
+    -webkit-text-fill-color: #b4b4b4 !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif !important;
+    font-size: 20px !important;
+    line-height: 1 !important;
+    font-weight: 300 !important;
+}
+
+#get-reply-btn:active,
+#send-message-btn:active {
+    transform: scale(.94) !important;
+}
+
+/* ==================== OVO 原功能菜单适配 ==================== */
+
+#chat-expansion-panel {
+    background: #fbfcfd !important;
+    border-top: none !important;
+    box-shadow: none !important;
+}
+
+#chat-expansion-panel.visible {
+    border-top: 1px solid #edf1f3 !important;
+}
+
+#chat-expansion-panel .expansion-item-icon {
+    background: var(--cinna-white) !important;
+    border: 1px solid #e7edf0 !important;
+    border-radius: 15px !important;
+    box-shadow: 0 2px 6px rgba(86,126,145,.05) !important;
+    color: #8fbfd4 !important;
+}
+
+#chat-expansion-panel .expansion-item-name {
+    color: #7f8588 !important;
+}
+
+#chat-expansion-panel .function-pagination .dot.active {
+    background-color: var(--cinna-blue-deep) !important;
+}
+
+/* ==================== 消息布局与头像 ==================== */
+
+#message-area .message-wrapper {
+    margin: 0 0 12px !important;
+    overflow: visible !important;
+}
+
+#message-area .message-wrapper.sent + .message-wrapper.sent,
+#message-area .message-wrapper.received + .message-wrapper.received {
+    margin-top: calc(var(--cinna-same-side-gap) - 12px) !important;
+}
+
+#message-area .message-wrapper.sent + .message-wrapper.received,
+#message-area .message-wrapper.received + .message-wrapper.sent {
+    margin-top: 7px !important;
+}
+
+#message-area .message-bubble-row {
+    align-items: flex-end !important;
+    overflow: visible !important;
+}
+
+#message-area .message-info {
+    overflow: visible !important;
+}
+
+#message-area .message-wrapper.received .message-info {
+    width: 34px !important;
+    min-width: 34px !important;
+    height: 34px !important;
+    margin: 0 !important;
+}
+
+#message-area .message-wrapper.received .message-avatar {
+    width: 34px !important;
+    min-width: 34px !important;
+    height: 34px !important;
+    border: 1px solid #d8d8d8 !important;
+    border-radius: 42% 42% 38% 38% / 36% 36% 44% 44% !important;
+    box-sizing: border-box !important;
+    object-fit: cover !important;
+    background: var(--cinna-white) !important;
+}
+
+#message-area .message-wrapper.sent .message-info {
+    position: relative !important;
+    align-self: flex-start !important;
+    width: 58px !important;
+    min-width: 58px !important;
+    height: 48px !important;
+    margin: 0 -5px 0 -2px !important;
+}
+
+#message-area .message-wrapper.sent .message-info::before {
+    content: "" !important;
+    position: absolute !important;
+    left: 0 !important;
+    top: -32px !important;
+    bottom: auto !important;
+    width: 58px !important;
+    height: 58px !important;
+    background: var(--cinna-user-avatar) center bottom / contain no-repeat !important;
+    pointer-events: none !important;
+}
+
+#message-area .message-wrapper.sent .message-avatar {
+    opacity: 0 !important;
+    visibility: hidden !important;
+}
+
+#message-area .message-wrapper.received + .message-wrapper.received .message-info,
+#message-area .message-wrapper.sent + .message-wrapper.sent .message-info {
+    visibility: hidden !important;
+}
+
+#message-area .message-wrapper.received + .message-wrapper.received .group-nickname {
+    display: none !important;
+}
+
+#message-area .group-nickname {
+    margin: 0 0 3px 8px !important;
+    color: #8d8580 !important;
+    font-size: 11px !important;
+}
+
+/* ==================== 普通气泡 ==================== */
+
+#message-area .message-bubble:not(.html-bubble):not(.debug-visible) {
+    position: relative !important;
+    max-width: 75% !important;
+    margin: 0 8px !important;
+    padding: 6px 12px !important;
+    box-sizing: border-box !important;
+    background: var(--cinna-white) !important;
+    background-image: none !important;
+    border: 1px solid var(--cinna-line) !important;
+    border-radius: var(--cinna-bubble-radius) !important;
+    box-shadow: none !important;
+    color: var(--cinna-text) !important;
+    -webkit-text-fill-color: var(--cinna-text) !important;
+    font-size: calc(15px * var(--app-font-scale)) !important;
+    line-height: 1.35 !important;
+    word-break: break-word !important;
+    overflow-wrap: anywhere !important;
+    overflow: visible !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+#message-area .message-bubble .bubble-content {
+    color: inherit !important;
+    -webkit-text-fill-color: inherit !important;
+}
+
+#message-area .message-bubble::before,
+#message-area .message-bubble::after {
+    display: none !important;
+}
+
+#message-area .message-wrapper.received:first-child .message-bubble::after,
+#message-area .message-wrapper.sent:first-child .message-bubble::after,
+#message-area .message-wrapper.sent + .message-wrapper.received .message-bubble::after,
+#message-area .message-wrapper.received + .message-wrapper.sent .message-bubble::after,
+#message-area .system-notification + .message-wrapper.received .message-bubble::after,
+#message-area .system-notification + .message-wrapper.sent .message-bubble::after {
+    content: "" !important;
+    position: absolute !important;
+    display: block !important;
+    bottom: -4px !important;
+    width: 11px !important;
+    height: 11px !important;
+    background: var(--cinna-decoration) center / contain no-repeat !important;
+    opacity: 1 !important;
+    pointer-events: none !important;
+    z-index: 5 !important;
+}
+
+#message-area .message-wrapper.received:first-child .message-bubble::after,
+#message-area .message-wrapper.sent + .message-wrapper.received .message-bubble::after,
+#message-area .system-notification + .message-wrapper.received .message-bubble::after {
+    right: 1px !important;
+    left: auto !important;
+}
+
+#message-area .message-wrapper.sent:first-child .message-bubble::after,
+#message-area .message-wrapper.received + .message-wrapper.sent .message-bubble::after,
+#message-area .system-notification + .message-wrapper.sent .message-bubble::after {
+    left: 1px !important;
+    right: auto !important;
+}
+
+/* 图片、照片、语音、转账和礼物保持与普通气泡相同的组间距 */
+#message-area .image-bubble,
+#message-area .pv-card,
+#message-area .voice-bubble,
+#message-area .transfer-card,
+#message-area .gift-card,
+#message-area .location-card {
+    margin-left: 8px !important;
+    margin-right: 8px !important;
+}
+
+#message-area .image-bubble img {
+    border-radius: 12px !important;
+}
+
+/* ==================== 消息时间 ==================== */
+
+#chat-room-screen.show-timestamp .message-time {
+    font-size: 9px !important;
+    line-height: 1 !important;
+    color: #9c9692 !important;
+    opacity: .82 !important;
+    white-space: nowrap !important;
+}
+
+#message-area .message-wrapper.sent:has(+ .message-wrapper.sent) .message-time,
+#message-area .message-wrapper.received:has(+ .message-wrapper.received) .message-time {
+    display: none !important;
+}
+
+/* ==================== 语音 ==================== */
+
+#message-area .voice-bubble {
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    min-width: 112px !important;
+    max-width: 196px !important;
+    height: 38px !important;
+    padding: 0 8px !important;
+    box-sizing: border-box !important;
+    background: var(--cinna-white) !important;
+    border: 1px solid var(--cinna-line) !important;
+    border-radius: 999px !important;
+    box-shadow: 0 2px 7px rgba(77,65,58,.04) !important;
+    color: #625953 !important;
+    overflow: visible !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+#message-area .voice-bubble .play-icon,
+#message-area .voice-bubble .pause-icon {
+    width: 26px !important;
+    min-width: 26px !important;
+    height: 26px !important;
+    padding: 6px !important;
+    box-sizing: border-box !important;
+    background: var(--cinna-soft) !important;
+    border: 1px solid var(--cinna-line-soft) !important;
+    border-radius: 50% !important;
+    color: #625953 !important;
+}
+
+#message-area .voice-bubble .duration {
+    margin: 0 7px !important;
+    color: #a89d96 !important;
+    font-size: 11px !important;
+    font-weight: 500 !important;
+}
+
+#message-area .voice-transcript {
+    max-width: calc(100% - 88px) !important;
+    margin-top: 6px !important;
+    padding: 8px 11px !important;
+    background: var(--cinna-white) !important;
+    border: 1px solid var(--cinna-line-soft) !important;
+    border-radius: 10px !important;
+    color: var(--cinna-text) !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+/* ==================== 转账 ==================== */
+
+#message-area .transfer-card {
+    position: relative !important;
+    width: 188px !important;
+    min-width: 188px !important;
+    height: auto !important;
+    padding: 13px 14px !important;
+    box-sizing: border-box !important;
+    display: block !important;
+    background: var(--cinna-white) !important;
+    border: 1px solid var(--cinna-line) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 2px 7px rgba(77,65,58,.045) !important;
+    color: var(--cinna-text-dark) !important;
+    overflow: hidden !important;
+}
+
+#message-area .transfer-card::before {
+    display: none !important;
+}
+
+#message-area .transfer-card::after {
+    content: "↗" !important;
+    position: absolute !important;
+    left: auto !important;
+    right: 12px !important;
+    top: 12px !important;
+    bottom: auto !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 25px !important;
+    height: 25px !important;
+    background: var(--cinna-soft) !important;
+    border: 1px solid var(--cinna-line-soft) !important;
+    border-radius: 50% !important;
+    color: var(--cinna-accent) !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    pointer-events: none !important;
+}
+
+#message-area .transfer-content {
+    min-height: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    background: transparent !important;
+}
+
+#message-area .transfer-title {
+    min-height: 25px !important;
+    margin: 0 34px 7px 0 !important;
+    padding: 0 !important;
+    color: var(--cinna-text-soft) !important;
+    font-size: 11px !important;
+    line-height: 1.2 !important;
+    font-weight: 500 !important;
+}
+
+#message-area .transfer-title::before,
+#message-area .transfer-card .overlay {
+    display: none !important;
+}
+
+#message-area .transfer-amount {
+    margin: 0 !important;
+    padding: 0 0 11px !important;
+    color: var(--cinna-text-dark) !important;
+    font-size: 27px !important;
+    line-height: 1.05 !important;
+    font-weight: 600 !important;
+    letter-spacing: -.035em !important;
+}
+
+#message-area .transfer-remark {
+    margin: 0 !important;
+    padding: 9px 0 0 !important;
+    border-top: 1px solid #ece7e3 !important;
+    color: var(--cinna-text-soft) !important;
+    font-size: 10px !important;
+    line-height: 1.4 !important;
+    font-style: normal !important;
+}
+
+#message-area .transfer-status,
+#message-area .transfer-card.received .transfer-status {
+    margin: 8px 0 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    color: var(--cinna-accent) !important;
+    font-size: 10px !important;
+    line-height: 1.3 !important;
+    text-align: left !important;
+    font-weight: 500 !important;
+}
+
+/* ==================== 礼物 ==================== */
+
+#message-area .gift-card {
+    width: 188px !important;
+    min-height: 94px !important;
+    padding: 13px !important;
+    box-sizing: border-box !important;
+    background: var(--cinna-white) !important;
+    border: 1px solid var(--cinna-line) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 2px 7px rgba(77,65,58,.045) !important;
+    color: var(--cinna-text-dark) !important;
+    overflow: hidden !important;
+}
+
+#message-area .gift-card-icon {
+    width: 38px !important;
+    height: 38px !important;
+    object-fit: contain !important;
+}
+
+#message-area .gift-card-text {
+    color: var(--cinna-text-dark) !important;
+    font-size: 13px !important;
+}
+
+#message-area .gift-card-description {
+    padding: 8px 11px !important;
+    background: var(--cinna-white) !important;
+    border: 1px solid var(--cinna-line-soft) !important;
+    border-radius: 10px !important;
+    color: var(--cinna-text) !important;
+    box-shadow: none !important;
+}
+
+/* ==================== 引用消息 ==================== */
+
+#message-area .message-wrapper:has(.quoted-message) {
+    margin-bottom: 12px !important;
+}
+
+#message-area .quoted-message {
+    position: relative !important;
+    inset: auto !important;
+    display: block !important;
+    width: auto !important;
+    min-width: 90px !important;
+    max-width: 100% !important;
+    height: auto !important;
+    margin: 0 0 7px !important;
+    padding: 7px 9px !important;
+    box-sizing: border-box !important;
+    background: var(--cinna-soft) !important;
+    border: none !important;
+    border-left: 2px solid var(--cinna-line) !important;
+    border-radius: 7px !important;
+    box-shadow: none !important;
+    color: #8e8580 !important;
+    font-size: 12px !important;
+    line-height: 1.35 !important;
+    text-align: left !important;
+    white-space: normal !important;
+    overflow: hidden !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+#message-area .quoted-sender {
+    display: block !important;
+    margin: 0 0 3px !important;
+    color: #786b63 !important;
+    font-size: 12px !important;
+    line-height: 1.2 !important;
+    font-weight: 600 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+#message-area .quoted-sender::after {
+    content: "" !important;
+}
+
+#message-area .quoted-text {
+    display: -webkit-box !important;
+    margin: 0 !important;
+    color: #8e8580 !important;
+    font-size: 12px !important;
+    line-height: 1.35 !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-line-clamp: 3 !important;
+    overflow: hidden !important;
+}
+
+/* ==================== 输入区回复预览 ==================== */
+
+#reply-preview-bar.visible {
+    display: flex !important;
+}
+
+#reply-preview-bar {
+    position: relative !important;
+    width: auto !important;
+    min-height: 38px !important;
+    margin: 7px 9px 0 !important;
+    padding: 7px 34px 7px 11px !important;
+    box-sizing: border-box !important;
+    align-items: center !important;
+    background: var(--cinna-white) !important;
+    border: 1px solid #ece7e3 !important;
+    border-left: 2px solid var(--cinna-line) !important;
+    border-radius: 9px !important;
+    box-shadow: 0 1px 3px rgba(77,65,58,.025) !important;
+    color: #8e8580 !important;
+    overflow: hidden !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+#reply-preview-bar .reply-preview-content {
+    padding: 0 !important;
+    border: none !important;
+}
+
+#reply-preview-bar .reply-preview-name {
+    display: block !important;
+    margin: 0 0 2px !important;
+    color: #625953 !important;
+    font-size: 11px !important;
+    line-height: 1.2 !important;
+    font-weight: 600 !important;
+}
+
+#reply-preview-bar .reply-preview-text {
+    display: block !important;
+    margin: 0 !important;
+    color: #8e8580 !important;
+    font-size: 11px !important;
+    line-height: 1.3 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+#cancel-reply-btn {
+    position: absolute !important;
+    right: 8px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 20px !important;
+    height: 20px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: var(--cinna-soft) !important;
+    border: 1px solid var(--cinna-line-soft) !important;
+    border-radius: 50% !important;
+    color: var(--cinna-accent) !important;
+    font-size: 13px !important;
+    line-height: 1 !important;
+}
+
+/* ==================== 系统提示与暗色覆盖 ==================== */
+
+#message-area .system-notification-bubble,
+#message-area .time-divider .system-notification-bubble {
+    padding: 3px 9px !important;
+    background: rgba(255,255,255,.9) !important;
+    border: 1px solid #e2e2e2 !important;
+    border-radius: 999px !important;
+    box-shadow: none !important;
+    color: #a6a6a6 !important;
+    font-size: 10px !important;
+}
+
+body.night-mode-active #chat-room-screen,
+body.night-mode-active #chat-room-header-default,
+body.night-mode-active .chat-input-wrapper,
+body.night-mode-active #message-input-default,
+body.night-mode-active #message-input,
+body.night-mode-active #reply-preview-bar {
+    background-color: var(--cinna-white) !important;
+    color: var(--cinna-text) !important;
+}
+
+@media (max-width: 360px) {
+    #message-area .transfer-card,
+    #message-area .gift-card {
+        width: 178px !important;
+        min-width: 178px !important;
+    }
+
+    #message-area .transfer-amount {
+        font-size: 25px !important;
+    }
+
+    #message-area .voice-bubble {
+        min-width: 104px !important;
+        max-width: 180px !important;
+    }
+}
