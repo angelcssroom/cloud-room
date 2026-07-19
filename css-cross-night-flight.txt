@@ -900,7 +900,6 @@ Source: -ee
 #chat-interface-screen #chat-messages .message-bubble.has-image .content {
     padding: 5px !important;}
 
-
 /* ========================================================= */
 /* 引用消息配套美化 */
 /* 必须放在全部CSS最末尾 */
@@ -1011,7 +1010,6 @@ Source: -ee
     color: #8E8580 !important;
     -webkit-text-fill-color: #8E8580 !important;}
 
-
 /* ========================================================= */
 /* 输入区回复预览 */
 /* ========================================================= */
@@ -1096,14 +1094,12 @@ Source: -ee
     line-height: 1 !important;
     cursor: pointer !important;}
 
-
 /* ========================================================= */
 /* char连续消息紧凑对齐 */
 /* ========================================================= */
 
 :root {
     --same-side-message-gap: 7px;}
-
 
 /* 两边连续消息统一间距 */
 #chat-interface-screen
@@ -1119,7 +1115,6 @@ Source: -ee
 .message-wrapper.ai {
     margin-top:
         calc(var(--same-side-message-gap) - 20px) !important;}
-
 
 /* char连续消息隐藏重复头像 */
 #chat-interface-screen
@@ -1152,7 +1147,6 @@ Source: -ee
 
     overflow: hidden !important;}
 
-
 /* char连续消息隐藏名称 */
 #chat-interface-screen
 #chat-messages
@@ -1161,7 +1155,6 @@ Source: -ee
 .message-wrapper.ai
 .sender-name {
     display: none !important;}
-
 
 /*
  * char头像宽34px，源结构内部间距12px
@@ -1174,7 +1167,6 @@ Source: -ee
 .message-wrapper.ai
 .message-bubble {
     margin-left: 46px !important;}
-
 
 /* 防止旧头像透明规则继续占位 */
 #chat-interface-screen
@@ -1222,14 +1214,12 @@ Source: -ee
 .message-wrapper.ai {
     position: relative !important;}
 
-
 /* char所有气泡统一保留头像横向位置 */
 #chat-interface-screen
 #chat-messages
 .message-wrapper.ai
 .message-bubble {
     margin-left: 46px !important;}
-
 
 /* 首条char头像改为绝对定位，不再撑高消息 */
 #chat-interface-screen
@@ -1259,7 +1249,6 @@ Source: -ee
 
     overflow: visible !important;}
 
-
 /* 连续char隐藏重复头像 */
 #chat-interface-screen
 #chat-messages
@@ -1276,7 +1265,6 @@ Source: -ee
 .message-bubble > .avatar {
     display: none !important;}
 
-
 /* 连续char统一实际间距 */
 #chat-interface-screen
 #chat-messages
@@ -1285,7 +1273,6 @@ Source: -ee
 .message-wrapper.ai {
     margin-top:
         calc(var(--same-side-message-gap, 7px) - 20px) !important;}
-
 
 /* 连续char名称隐藏 */
 #chat-interface-screen
@@ -1314,13 +1301,11 @@ Source: -ee
 
     --theme-icon-color: #000000;}
 
-
 /* user头像 */
 #chat-messages .message-wrapper.user .avatar-group::before,
 #chat-messages .message-wrapper.user .message-bubble > .avatar {
     background-image:
         url("") !important;}
-
 
 /* 连续消息也显示新装饰 */
 #chat-interface-screen
@@ -1340,7 +1325,6 @@ Source: -ee
 .content::after {
     content: "" !important;
     display: block !important;}
-
 
 /* ========================================================= */
 /* 顶栏图标统一为 #7F8184 */
@@ -1400,7 +1384,6 @@ Source: -ee
     -webkit-mask-repeat: no-repeat !important;
     mask-repeat: no-repeat !important;}
 
-
 /* ========================================================= */
 /* 底栏图标统一为 #7F8184 */
 /* ========================================================= */
@@ -1455,7 +1438,6 @@ Source: -ee
     text-indent: 0 !important;
 }
 
-
 /* ========================================================= */
 /* 引用配套同步新配色 */
 /* ========================================================= */
@@ -1497,7 +1479,6 @@ Source: -ee
 
     --theme-icon-color: #000000;}
 
-
 /* ========================================================= */
 /* 图标与引用同步 */
 /* ========================================================= */
@@ -1505,7 +1486,6 @@ Source: -ee
 #chat-input-actions-top::before {
     color: var(--theme-icon-color) !important;
     -webkit-text-fill-color: var(--theme-icon-color) !important;}
-
 
 #send-btn::before {
     content: "" !important;
@@ -1521,11 +1501,9 @@ Source: -ee
     text-indent: 0 !important;
 }
 
-
 #reply-preview-bar {
     border-color: var(--kkt-border) !important;
     border-left-color: var(--kkt-green) !important;}
-
 
 #chat-messages
 .quoted-message,
@@ -1536,7 +1514,6 @@ Source: -ee
 .message-bubble
 .quoted-message {
     border-left-color: var(--kkt-green) !important;}
-
 
 #chat-messages
 .quoted-message
@@ -1573,7 +1550,6 @@ Source: -ee
     --kkt-radius: 15px;
     --kkt-border-width: 1.5px;}
 
-
 /* 连续消息继续保留装饰 */
 #chat-interface-screen
 #chat-messages
@@ -1593,7 +1569,6 @@ Source: -ee
     content: "" !important;
     display: block !important;}
 
-
 /* ========================================================= */
 /* 引用 */
 /* ========================================================= */
@@ -1612,7 +1587,6 @@ Source: -ee
     border-left-color: var(--kkt-green-dark) !important;
     border-radius: 7px !important;}
 
-
 #chat-messages
 .quoted-message
 .quoted-sender,
@@ -1622,7 +1596,6 @@ Source: -ee
 .quoted-sender {
     color: var(--theme-icon-color) !important;
     -webkit-text-fill-color: var(--theme-icon-color) !important;}
-
 
 #reply-preview-bar {
     background: #F7FAF8 !important;
@@ -1634,7 +1607,6 @@ Source: -ee
     box-shadow:
         2px 2px 0 rgba(205,230,217,0.72) !important;}
 
-
 /* ========================================================= */
 /* 图标 */
 /* ========================================================= */
@@ -1642,7 +1614,6 @@ Source: -ee
 #chat-input-actions-top::before {
     color: var(--theme-icon-color) !important;
     -webkit-text-fill-color: var(--theme-icon-color) !important;}
-
 
 #send-btn::before {
     content: "" !important;
@@ -1706,22 +1677,18 @@ Source: -ee
     --kkt-shadow: rgba(0, 0, 0, 0.32);
 }
 
-
 /* ========================================================= */
 /* 聊天页背景 */
 /* ========================================================= */
 
 #chat-interface-screen {
-    background: var(--kkt-night-bg) !important;
     background-color: var(--kkt-night-bg) !important;
 }
 
 #chat-interface-screen #chat-messages,
 #chat-interface-screen #chat-messages-container {
-    background: var(--kkt-night-bg) !important;
-    background-color: var(--kkt-night-bg) !important;
+    background-color: transparent !important;
 }
-
 
 /* ========================================================= */
 /* 顶栏夜间 */
@@ -1750,7 +1717,6 @@ Source: -ee
     -webkit-text-fill-color: var(--kkt-night-muted-text) !important;
 }
 
-
 /* 顶栏图标：返回 / 听歌 / 设置 */
 #chat-interface-screen:not(.selection-mode) > .header .back-btn::before,
 #chat-interface-screen:not(.selection-mode) > .header #listen-together-btn::before,
@@ -1758,7 +1724,6 @@ Source: -ee
     background-image: none !important;
     background-color: var(--theme-icon-color) !important;
 }
-
 
 /* 多选状态顶栏，不出现黑字黑底 */
 #chat-interface-screen.selection-mode > .header {
@@ -1779,7 +1744,6 @@ Source: -ee
     border-color: var(--kkt-night-panel-border) !important;
 }
 
-
 /* ========================================================= */
 /* 中间聊天区文字 */
 /* ========================================================= */
@@ -1797,8 +1761,6 @@ Source: -ee
     color: var(--kkt-night-muted-text) !important;
     -webkit-text-fill-color: var(--kkt-night-muted-text) !important;
 }
-
-
 
 /* ========================================================= */
 /* 引用 / 回复预览 夜间 */
@@ -1854,7 +1816,6 @@ Source: -ee
     -webkit-text-fill-color: var(--kkt-night-text) !important;
 }
 
-
 /* ========================================================= */
 /* 底栏夜间 */
 /* ========================================================= */
@@ -1889,13 +1850,11 @@ Source: -ee
     -webkit-text-fill-color: var(--kkt-night-text) !important;
 }
 
-
 /* 菜单键 */
 #chat-interface-screen #chat-input-actions-top::before {
     color: var(--bottom-plus-color) !important;
     -webkit-text-fill-color: var(--bottom-plus-color) !important;
 }
-
 
 /* 菜单展开面板 */
 #chat-interface-screen #chat-input-actions-top.menu-open,
@@ -1924,7 +1883,6 @@ Source: -ee
     border-color: #484C56 !important;
 }
 
-
 /* 表情键：夜间白色 */
 #chat-interface-screen #wait-reply-btn::before {
     background-image: none !important;
@@ -1942,7 +1900,6 @@ Source: -ee
     -webkit-mask-repeat: no-repeat !important;
     mask-repeat: no-repeat !important;
 }
-
 
 /* 发送键：浅灰圆底 + 深色箭头，避免黑底黑键 */
 #chat-interface-screen #send-btn::before {
@@ -2005,15 +1962,15 @@ Source: -ee
     --night-flight-tail-svg: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20200%20200'%3E%3Cpath%20fill='%238fb2c8'%20d='M34%209L33%2010L33%2088L32%2089L32%2099L33%20100L33%20107L32%20109L33%20110L34%20120L35%20121L35%20124L36%20125L38%20133L43%20143L45%20145L47%20150L50%20153L50%20154L61%20165L62%20165L66%20169L67%20169L72%20173L75%20174L77%20176L79%20176L93%20183L95%20183L99%20185L107%20186L108%20187L114%20187L115%20188L120%20188L121%20189L126%20189L127%20190L137%20190L138%20189L144%20189L145%20188L149%20188L151%20186L151%20185L148%20184L140%20177L139%20177L133%20171L133%20170L130%20167L130%20166L126%20161L120%20149L120%20147L119%20146L119%20144L118%20143L118%20141L116%20137L116%20134L115%20133L114%20123L113%20122L113%20113L112%20112L112%2098L111%2097L112%2096L112%2085L111%2084L111%2078L112%2077L112%2061L111%2060L112%2059L112%2014L113%2013L113%2010L109%2010L108%209Z'/%3E%3C/svg%3E");
 }
 
-
-/* 聊天背景纯黑 */
-#chat-interface-screen,
-#chat-interface-screen #chat-messages,
-#chat-interface-screen #chat-messages-container {
-    background: #000000 !important;
+/* 聊天背景：无自定义图片时使用纯黑；设置中的图片保持生效 */
+#chat-interface-screen {
     background-color: #000000 !important;
 }
 
+#chat-interface-screen #chat-messages,
+#chat-interface-screen #chat-messages-container {
+    background-color: transparent !important;
+}
 
 /* 顶底栏黑色通屏，无分割线 */
 #chat-interface-screen > .header,
@@ -2034,7 +1991,6 @@ Source: -ee
     box-shadow: none !important;
 }
 
-
 /* 按源文件保留消息基础布局，不用 translateX，不乱改 avatar-group 宽度 */
 #chat-interface-screen
 #chat-messages
@@ -2046,7 +2002,6 @@ Source: -ee
     transform: none !important;
     max-width: 92% !important;
 }
-
 
 /* 头像容器按源文件保留：34px、flex内占位、relative。
    这样头像区域点击逻辑不丢。 */
@@ -2078,7 +2033,6 @@ Source: -ee
     z-index: 30 !important;
 }
 
-
 /* 只隐藏头像视觉层，不隐藏头像容器本身。
    不使用 display:none，避免心声点击区域消失。 */
 #chat-interface-screen
@@ -2108,7 +2062,6 @@ Source: -ee
     visibility: hidden !important;
     pointer-events: auto !important;
 }
-
 
 /* 心声/内心类点击层保留 */
 #chat-interface-screen
@@ -2156,14 +2109,12 @@ Source: -ee
     z-index: 50 !important;
 }
 
-
 /* 隐藏名字，不影响头像点击区 */
 #chat-interface-screen
 #chat-messages
 .sender-name {
     display: none !important;
 }
-
 
 /* 时间戳隐藏。系统提示如果源码单独显示，不套气泡尾巴。 */
 #chat-interface-screen
@@ -2195,7 +2146,6 @@ Source: -ee
     overflow: hidden !important;
     pointer-events: none !important;
 }
-
 
 /* 清理原主题对 message-bubble 的旧头像占位，但不改变 wrapper 主布局 */
 #chat-interface-screen
@@ -2231,7 +2181,6 @@ Source: -ee
     overflow: visible !important;
 }
 
-
 /* 普通文字气泡通用样式 */
 #chat-interface-screen
 #chat-messages
@@ -2262,7 +2211,6 @@ Source: -ee
     overflow-wrap: break-word !important;
 }
 
-
 /* user 蓝色气泡 */
 #chat-interface-screen
 #chat-messages
@@ -2275,7 +2223,6 @@ Source: -ee
     -webkit-text-fill-color: var(--night-flight-user-bubble-text) !important;
 }
 
-
 /* char 深灰气泡 */
 #chat-interface-screen
 #chat-messages
@@ -2287,7 +2234,6 @@ Source: -ee
     color: var(--night-flight-char-bubble-text) !important;
     -webkit-text-fill-color: var(--night-flight-char-bubble-text) !important;
 }
-
 
 /* 气泡内部文字继承 */
 #chat-interface-screen
@@ -2302,7 +2248,6 @@ Source: -ee
     color: inherit !important;
     -webkit-text-fill-color: inherit !important;
 }
-
 
 /* 关闭旧气泡装饰：只关闭 bubble 本体和 content::before。
    不关闭 content::after，因为气泡尾巴使用 content::after。 */
@@ -2334,7 +2279,6 @@ Source: -ee
     content: none !important;
     display: none !important;
 }
-
 
 /* 默认：char 左侧气泡尾巴 */
 #chat-interface-screen
@@ -2378,7 +2322,6 @@ Source: -ee
     z-index: 9 !important;
 }
 
-
 /* 默认：user 右侧气泡尾巴，颜色同步 #173FD3 */
 #chat-interface-screen
 #chat-messages
@@ -2421,7 +2364,6 @@ Source: -ee
     z-index: 9 !important;
 }
 
-
 /* 连续同侧消息：缩小间距 */
 #chat-interface-screen
 #chat-messages
@@ -2437,7 +2379,6 @@ Source: -ee
     margin-top:
         calc(var(--night-flight-same-side-gap) - 20px) !important;
 }
-
 
 /* 连续同侧第二条开始：完全圆角 */
 #chat-interface-screen
@@ -2457,7 +2398,6 @@ Source: -ee
 .content {
     border-radius: var(--night-flight-bubble-radius) !important;
 }
-
 
 /* 连续同侧第二条开始：隐藏尾巴 */
 #chat-interface-screen
@@ -2490,7 +2430,6 @@ Source: -ee
     opacity: 0 !important;
     visibility: hidden !important;
 }
-
 
 /* 系统提示不套普通气泡尾巴 */
 #chat-interface-screen
@@ -2525,7 +2464,6 @@ Source: -ee
     transform: none !important;
     max-width: 92% !important;
 }
-
 
 /* 头像容器退出排版，但继续存在 */
 #chat-interface-screen
@@ -2562,7 +2500,6 @@ Source: -ee
     z-index: 40 !important;
 }
 
-
 /* char 心声点击区留在左侧原区域，但不占气泡位置 */
 #chat-interface-screen
 #chat-messages
@@ -2574,7 +2511,6 @@ Source: -ee
     top: auto !important;
 }
 
-
 /* user 心声点击区留在右侧原区域，但不占气泡位置 */
 #chat-interface-screen
 #chat-messages
@@ -2585,7 +2521,6 @@ Source: -ee
     bottom: 0 !important;
     top: auto !important;
 }
-
 
 /* 隐藏头像视觉层，不隐藏容器 */
 #chat-interface-screen
@@ -2611,7 +2546,6 @@ Source: -ee
     visibility: hidden !important;
     pointer-events: none !important;
 }
-
 
 /* 气泡本体去掉头像占位 */
 #chat-interface-screen
@@ -2647,7 +2581,6 @@ Source: -ee
     overflow: visible !important;
 }
 
-
 /* 独立头像节点不参与排版 */
 #chat-interface-screen
 #chat-messages
@@ -2675,7 +2608,6 @@ Source: -ee
     visibility: hidden !important;
     pointer-events: none !important;
 }
-
 
 /* 心声类按钮保持可点 */
 #chat-interface-screen
@@ -2735,23 +2667,20 @@ Source: -ee
     z-index: 50 !important;
 }
 
-
 /* 双方离屏幕近一点但不贴边，不用 translateX */
 #chat-interface-screen
 #chat-messages
 .message-wrapper.ai {
-    padding-left: 14px !important;
+    padding-left: 4px !important;
     padding-right: 0 !important;
 }
-
 
 #chat-interface-screen
 #chat-messages
 .message-wrapper.user {
-    padding-right: 14px !important;
+    padding-right: 4px !important;
     padding-left: 0 !important;
 }
-
 
 /* 系统提示不吃这个边距规则 */
 #chat-interface-screen
@@ -2765,7 +2694,6 @@ Source: -ee
     padding-right: 0 !important;
 }
 
-
 /* 气泡尾巴不拦截点击 */
 #chat-interface-screen
 #chat-messages
@@ -2778,7 +2706,6 @@ Source: -ee
 .content::after {
     pointer-events: none !important;
 }
-
 
 /* ========================================================= */
 /* 夜间飞行｜贴边微调 */
@@ -2830,15 +2757,7 @@ Source: -ee
     margin-top: -8px !important;
 }
 
-:root{--flight-wrap:72vw;--flight-kit-card-1:#303238;--flight-kit-card-2:#1B1C20;--flight-kit-line:rgba(255,255,255,.13);--flight-kit-text:#F4F5F7;--flight-kit-soft:#B8BBC3;--flight-kit-badge-1:#F8F9FB;--flight-kit-badge-2:#D9DDE4;--flight-kit-badge-text:#24262B;--flight-kit-badge-line:rgba(255,255,255,.18);--flight-kit-quote-line:rgba(255,255,255,.22);--flight-kit-separator:rgba(255,255,255,.10);--flight-kit-shadow:rgba(0,0,0,.20);--flight-kit-inset:rgba(255,255,255,.08)}
-
-#chat-interface-screen #chat-messages
-.message-bubble.user:not(.is-transfer):not(.is-voice-message):not(.has-image):not(.is-realimag):not(.is-sticker):not(.is-ai-image):not(.is-waimai-request):not(.is-red-packet):not(.is-poll):not(.is-link-share):not(.is-location-share) .content,
-#chat-interface-screen #chat-messages
-.message-bubble.ai:not(.is-transfer):not(.is-voice-message):not(.has-image):not(.is-realimag):not(.is-sticker):not(.is-ai-image):not(.is-waimai-request):not(.is-red-packet):not(.is-poll):not(.is-link-share):not(.is-location-share) .content {
-  flex:0 1 auto!important;width:fit-content!important;max-width:var(--flight-wrap)!important;
-  white-space:normal!important;word-break:break-word!important;overflow-wrap:anywhere!important;box-sizing:border-box!important;
-}
+:root{--flight-kit-card-1:#303238;--flight-kit-card-2:#1B1C20;--flight-kit-line:rgba(255,255,255,.13);--flight-kit-text:#F4F5F7;--flight-kit-soft:#B8BBC3;--flight-kit-badge-1:#F8F9FB;--flight-kit-badge-2:#D9DDE4;--flight-kit-badge-text:#24262B;--flight-kit-badge-line:rgba(255,255,255,.18);--flight-kit-quote-line:rgba(255,255,255,.22);--flight-kit-separator:rgba(255,255,255,.10);--flight-kit-shadow:rgba(0,0,0,.20);--flight-kit-inset:rgba(255,255,255,.08)}
 
 #phone-screen #chat-interface-screen #chat-messages
 .message-wrapper .message-bubble:is(.is-transfer,.is-voice-message,:has(.transfer-card),:has(.voice-message-body)),
@@ -2919,13 +2838,113 @@ Source: -ee
 #phone-screen #chat-interface-screen #chat-messages :is(.voice-play-btn,.voice-waveform,.voice-spinner){display:none!important}
 #phone-screen #chat-interface-screen #chat-messages .voice-duration{margin:0!important;color:var(--flight-kit-text)!important;-webkit-text-fill-color:var(--flight-kit-text)!important;font-size:11px!important;line-height:1!important;font-weight:560!important;white-space:nowrap!important;text-shadow:none!important}
 
-#phone-screen #chat-interface-screen #chat-messages .quoted-message{
-  margin:0 0 5px!important;padding:5px 7px!important;max-width:128px!important;border:1px solid var(--flight-kit-line)!important;
-  border-left:2px solid var(--flight-kit-quote-line)!important;border-radius:8px!important;
-  background:linear-gradient(180deg,var(--flight-kit-card-1),var(--flight-kit-card-2))!important;
-  color:var(--flight-kit-text)!important;-webkit-text-fill-color:var(--flight-kit-text)!important;
-  box-shadow:inset 0 1px 0 var(--flight-kit-inset)!important;opacity:1!important;overflow:hidden!important;text-shadow:none!important;
+#phone-screen #chat-interface-screen #chat-messages
+.message-wrapper.user .message-bubble .content > .quoted-message,
+#phone-screen #chat-interface-screen #chat-messages
+.message-wrapper.ai .message-bubble .content > .quoted-message {
+    display: block !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    margin: 0 0 5px !important;
+    padding: 6px 8px !important;
+    box-sizing: border-box !important;
+    background: #202227 !important;
+    background-color: #202227 !important;
+    background-image: none !important;
+    border: 1px solid #3B3E46 !important;
+    border-left: 2px solid #6D727D !important;
+    border-radius: 8px !important;
+    box-shadow: none !important;
+    color: #F3F4F6 !important;
+    -webkit-text-fill-color: #F3F4F6 !important;
+    opacity: 1 !important;
+    overflow: hidden !important;
+    text-shadow: none !important;
 }
-#phone-screen #chat-interface-screen #chat-messages .quoted-message *{color:var(--flight-kit-text)!important;-webkit-text-fill-color:var(--flight-kit-text)!important;background:transparent!important;opacity:1!important;text-shadow:none!important}
-#phone-screen #chat-interface-screen #chat-messages .quoted-sender{margin:0 0 2px!important;font-size:11.5px!important;line-height:1.15!important;font-weight:650!important}
-#phone-screen #chat-interface-screen #chat-messages .quoted-content{display:-webkit-box!important;margin:0!important;color:var(--flight-kit-soft)!important;-webkit-text-fill-color:var(--flight-kit-soft)!important;font-size:11.5px!important;line-height:1.22!important;white-space:normal!important;word-break:break-word!important;overflow-wrap:anywhere!important;-webkit-box-orient:vertical!important;-webkit-line-clamp:2!important;overflow:hidden!important}
+
+#phone-screen #chat-interface-screen #chat-messages
+.message-wrapper.user .quoted-message *,
+#phone-screen #chat-interface-screen #chat-messages
+.message-wrapper.ai .quoted-message * {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    color: #C5C8CF !important;
+    -webkit-text-fill-color: #C5C8CF !important;
+    opacity: 1 !important;
+    text-shadow: none !important;
+}
+
+#phone-screen #chat-interface-screen #chat-messages
+.message-wrapper.user .quoted-message .quoted-sender,
+#phone-screen #chat-interface-screen #chat-messages
+.message-wrapper.user .quoted-message .quoted-sender *,
+#phone-screen #chat-interface-screen #chat-messages
+.message-wrapper.ai .quoted-message .quoted-sender,
+#phone-screen #chat-interface-screen #chat-messages
+.message-wrapper.ai .quoted-message .quoted-sender * {
+    margin: 0 0 2px !important;
+    color: #F3F4F6 !important;
+    -webkit-text-fill-color: #F3F4F6 !important;
+    font-size: 11.5px !important;
+    line-height: 1.18 !important;
+    font-weight: 650 !important;
+}
+
+#phone-screen #chat-interface-screen #chat-messages
+.message-wrapper.user .quoted-message .quoted-content,
+#phone-screen #chat-interface-screen #chat-messages
+.message-wrapper.user .quoted-message .quoted-content *,
+#phone-screen #chat-interface-screen #chat-messages
+.message-wrapper.ai .quoted-message .quoted-content,
+#phone-screen #chat-interface-screen #chat-messages
+.message-wrapper.ai .quoted-message .quoted-content * {
+    display: -webkit-box !important;
+    margin: 0 !important;
+    color: #C5C8CF !important;
+    -webkit-text-fill-color: #C5C8CF !important;
+    font-size: 11.5px !important;
+    line-height: 1.24 !important;
+    font-weight: 400 !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+    overflow-wrap: anywhere !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-line-clamp: 2 !important;
+    overflow: hidden !important;
+}
+
+/* 夜间飞行｜普通文字气泡 68vw */
+#phone-screen #chat-interface-screen #chat-messages
+.message-wrapper.user
+.message-bubble:not(.is-transfer):not(.is-voice-message):not(:has(.transfer-card)):not(:has(.voice-message-body))
+> .content,
+
+#phone-screen #chat-interface-screen #chat-messages
+.message-wrapper.ai
+.message-bubble:not(.is-transfer):not(.is-voice-message):not(:has(.transfer-card)):not(:has(.voice-message-body))
+> .content {
+    flex: 0 1 auto !important;
+    width: fit-content !important;
+    min-width: 0 !important;
+    max-width: 68vw !important;
+    box-sizing: border-box !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+    overflow-wrap: anywhere !important;
+}
+
+#phone-screen #chat-interface-screen #chat-messages
+.message-wrapper.user
+.message-bubble:not(.is-transfer):not(.is-voice-message):not(:has(.transfer-card)):not(:has(.voice-message-body))
+> .content *,
+
+#phone-screen #chat-interface-screen #chat-messages
+.message-wrapper.ai
+.message-bubble:not(.is-transfer):not(.is-voice-message):not(:has(.transfer-card)):not(:has(.voice-message-body))
+> .content * {
+    white-space: normal !important;
+    word-break: break-word !important;
+    overflow-wrap: anywhere !important;
+}
