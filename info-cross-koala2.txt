@@ -1,0 +1,5 @@
+title: Koala 2
+author: 天使
+tags: 330/萌物/紫/绿
+series: Koala
+wallpaper: wallpaper-koala2.jpg
