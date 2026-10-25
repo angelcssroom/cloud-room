@@ -1,0 +1,691 @@
+/* =========================================================
+   koala1 — uwu 适配版
+   原美化：by 天使  适配：小君
+     ========================================================= */
+
+/* 1. 主题变量（仅限聊天室） */
+#chat-room-screen {
+    --angel-bottom-icon-size: 22px;
+    --angel-control-icon: url("https://i.postimg.cc/CxC3r71K/B9E7664B-0A5E-49BB-B578-14847FF4C67C.png");
+    --angel-header-icon: url("https://i.postimg.cc/RCXqy1Wk/62EAE5CB-B2A0-42AA-8B61-D43A3D93D2E9.png");
+    --koala-user-bg: #D0D0D0; /* 原码普通气泡底色，用于 user */
+    --koala-char-bg: #9DE1D3; /* 原码主题覆盖底色，用于 char */
+    --koala-user-border: #8B8B8B;
+    --koala-char-border: #8B8B8B;
+    --angel-bubble-decoration: url("https://i.postimg.cc/J0wKLwYt/842AAA10-25D6-4BA7-B804-DCE83B34B72D.png");
+    --angel-header-image: url("https://i.postimg.cc/8zkDLxkD/AEFCE2B7-F2A3-4848-B367-D1D748FCDB00.jpg");
+    --angel-header-text: #333333;
+    --angel-bottom-bg: #EAF1F9;
+}
+body.night-mode-active #chat-room-screen {
+    --angel-header-image: url("https://i.postimg.cc/5y2BS89G/IMG-3008.jpg");
+    --angel-header-text: #333333;
+    --angel-bottom-bg: #f3f3f3;
+}
+
+/* 2. 顶栏：保留 Uwu 的正常文档流，避免覆盖聊天记录。
+   不强制 display，普通顶栏/多选顶栏继续由原 JS 切换。 */
+#chat-room-screen #chat-room-header-default {
+    position: relative !important;
+    flex-shrink: 0 !important;
+    width: 100% !important;
+    height: calc(58px + env(safe-area-inset-top, 0px)) !important;
+    min-height: calc(58px + env(safe-area-inset-top, 0px)) !important;
+    padding: env(safe-area-inset-top, 0px) 18px 0 !important;
+    box-sizing: border-box !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    background: transparent var(--angel-header-image) center / 100% 100% no-repeat !important;
+    border: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    overflow: visible !important;
+}
+#chat-room-screen #chat-room-header-default .title-container {
+    position: absolute !important;
+    left: 50% !important;
+    top: calc(env(safe-area-inset-top, 0px) + 25px) !important;
+    transform: translate(-50%, -50%) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: max-content !important;
+    max-width: calc(100% - 184px) !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    gap: 0 !important;
+    text-align: center !important;
+    pointer-events: none !important;
+}
+#chat-room-screen #chat-room-header-default .title-container > div {
+    max-width: 100% !important;
+    min-width: 0 !important;
+}
+#chat-room-screen #chat-room-header-default #chat-room-title {
+    position: static !important;
+    transform: none !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+    white-space: nowrap !important;
+    text-overflow: ellipsis !important;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    line-height: 1.2 !important;
+    letter-spacing: 0 !important;
+    color: var(--angel-header-text) !important;
+    text-align: center !important;
+    text-shadow: none !important;
+    -webkit-text-stroke: 0 !important;
+    font-synthesis: none !important;
+}
+#chat-room-screen #chat-room-title * {
+    font-family: inherit !important;
+    font-size: inherit !important;
+    font-weight: inherit !important;
+    line-height: inherit !important;
+    color: inherit !important;
+    text-shadow: none !important;
+}
+#chat-room-screen #chat-room-subtitle {
+    display: none !important;
+}
+/* 将 Uwu 原状态按钮的透明点击区域覆盖到备注名上。
+   不强制 display：仅私聊且开启「启用角色状态栏」时生效。
+   复用原按钮绑定的打开逻辑，群聊及多选模式保持原行为。 */
+#chat-room-screen #char-status-btn {
+    position: absolute !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: 100% !important;
+    min-width: 44px !important;
+    height: 44px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    opacity: 0 !important;
+    z-index: 3 !important;
+    cursor: pointer !important;
+    pointer-events: auto !important;
+}
+/* 键盘导航时给备注名显示可见焦点。 */
+#chat-room-screen .title-container:has(#char-status-btn:focus-visible) #chat-room-title {
+    outline: 1px solid #B9CBDC !important;
+    outline-offset: 4px !important;
+    border-radius: 3px !important;
+}
+#chat-room-screen #chat-room-header-default .action-btn-group {
+    position: relative !important;
+    z-index: 2 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 12px !important;
+    flex-shrink: 0 !important;
+}
+#chat-room-screen #chat-room-header-default :is(.back-btn, .action-btn) {
+    position: relative !important;
+    width: 30px !important;
+    min-width: 30px !important;
+    height: 30px !important;
+    min-height: 30px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    font-size: 0 !important;
+    color: transparent !important;
+    cursor: pointer !important;
+}
+#chat-room-screen #chat-room-header-default :is(.back-btn, .action-btn) > :is(svg, img) {
+    opacity: 0 !important;
+    visibility: hidden !important;
+}
+#chat-room-screen #chat-room-header-default :is(.back-btn, .action-btn)::before {
+    content: "" !important;
+    position: absolute !important;
+    width: 22px !important;
+    height: 22px !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    background: var(--angel-header-icon) center / contain no-repeat !important;
+    pointer-events: none !important;
+}
+#chat-room-screen #chat-room-header-default .back-btn::before {
+    width: 21px !important;
+    height: 21px !important;
+}
+
+/* 3. 普通文字气泡。
+   Uwu：sent = 用户，received = 对方，正文直接在 .message-bubble。
+   图片、表情、转账等使用独立类，不套文字壳。
+   语音条沿用原码通用气泡外观，原播放/暂停逻辑不变。
+   HTML 卡片和调试消息明确排除；保留上下文禁用标识。 */
+#chat-room-screen .message-time {
+    display: none !important;
+}
+#chat-room-screen .message-bubble:is(.sent, .received):not(.html-bubble):not(.debug-visible),
+#chat-room-screen .voice-bubble {
+    position: relative !important;
+    padding: 4px 8px !important;
+    font-size: calc(16px * var(--app-font-scale, 1)) !important;
+    line-height: 1.34 !important;
+    font-weight: 400 !important;
+    color: #474747 !important;
+    background: var(--koala-user-bg) !important;
+    border: 2px solid var(--koala-user-border) !important;
+    border-radius: 5px !important;
+    box-shadow: 0 1px 2px rgba(120, 130, 140, 0.08) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    overflow: visible !important;
+    word-break: break-word !important;
+    overflow-wrap: anywhere !important;
+}
+/* 按双方分开映射原码两套底色，避免 [data-theme] 共用覆盖抹平差异。 */
+#chat-room-screen .message-bubble.received:not(.html-bubble):not(.debug-visible),
+#chat-room-screen .message-wrapper.received .voice-bubble {
+    background: var(--koala-char-bg) !important;
+    border-color: var(--koala-char-border) !important;
+}
+#chat-room-screen .message-bubble.sent:not(.html-bubble):not(.debug-visible),
+#chat-room-screen .message-wrapper.sent .voice-bubble {
+    background: var(--koala-user-bg) !important;
+    border-color: var(--koala-user-border) !important;
+}
+
+/* 使用 ::before，避免覆盖 Uwu 在 ::after 上显示的上下文禁用提示。 */
+#chat-room-screen .message-bubble:is(.sent, .received):not(.html-bubble):not(.debug-visible)::before,
+#chat-room-screen .voice-bubble::before {
+    content: "" !important;
+    display: block !important;
+    position: absolute !important;
+    top: -8px !important;
+    width: 14px !important;
+    height: 14px !important;
+    background: var(--angel-bubble-decoration) center / contain no-repeat !important;
+    transform: none !important;
+    pointer-events: none !important;
+    z-index: 2 !important;
+}
+#chat-room-screen .message-bubble.received:not(.html-bubble):not(.debug-visible)::before,
+#chat-room-screen .message-wrapper.received .voice-bubble::before {
+    right: -1px !important;
+    left: auto !important;
+}
+#chat-room-screen .message-bubble.sent:not(.html-bubble):not(.debug-visible)::before,
+#chat-room-screen .message-wrapper.sent .voice-bubble::before {
+    left: -1px !important;
+    right: auto !important;
+}
+
+/* 语音适配说明：原码没有单独的语音条或语音转文字美化段。
+   原通用气泡规则未排除语音类型；此处将同款外观用于 Uwu 的
+   .voice-bubble（Uwu 的语音条与 .message-bubble 是不同结构）。
+   保留语音条的 flex、宽度、方向、时长、播放/暂停及转文字显隐；
+   .voice-transcript 使用下方新增的配套薄荷灰文字面板。 */
+
+/* 4. 输入栏：保留 Uwu 的布局与键盘处理，不改成 absolute/fixed。 */
+#chat-room-screen .chat-input-wrapper {
+    flex-shrink: 0 !important;
+    background: var(--angel-bottom-bg) !important;
+}
+#chat-room-screen #message-input-default {
+    position: relative !important;
+    padding: 7px 10px !important;
+    padding-bottom: calc(7px + env(safe-area-inset-bottom, 0px)) !important;
+    gap: 8px !important;
+    align-items: center !important;
+    background: var(--angel-bottom-bg) !important;
+    border: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    box-sizing: border-box !important;
+}
+#chat-room-screen #message-input-default .input-wrapper {
+    position: relative !important;
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+}
+#chat-room-screen #message-input {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 30px !important;
+    padding: 5px 34px 5px 13px !important;
+    box-sizing: border-box !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    border-radius: 999px !important;
+    background: #ffffff !important;
+    color: #3d3d3d !important;
+    caret-color: #6f8eaa !important;
+    font-family: -apple-system, BlinkMacSystemFont, system-ui, "SF Pro Text", "Helvetica Neue", "PingFang SC", sans-serif !important;
+    font-size: max(16px, calc(16px * var(--app-font-scale, 1))) !important;
+    font-weight: 400 !important;
+    line-height: 20px !important;
+}
+#chat-room-screen #message-input:focus {
+    background: #ffffff !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+#chat-room-screen #message-input::placeholder {
+    color: transparent !important;
+    opacity: 0 !important;
+}
+/* 不强制 display/opacity/pointer-events：保留发送/等待切换及禁用状态。 */
+#chat-room-screen #message-input-default :is(#toggle-expansion-btn, #get-reply-btn, #send-message-btn) {
+    position: relative !important;
+    width: 30px !important;
+    min-width: 30px !important;
+    height: 30px !important;
+    min-height: 30px !important;
+    flex-shrink: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    font-size: 0 !important;
+    color: transparent !important;
+}
+#chat-room-screen #message-input-default :is(#toggle-expansion-btn, #get-reply-btn, #send-message-btn) > :is(img, svg, span) {
+    opacity: 0 !important;
+    visibility: hidden !important;
+}
+#chat-room-screen #message-input-default :is(#toggle-expansion-btn, #get-reply-btn, #send-message-btn)::before {
+    content: "" !important;
+    position: absolute !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: var(--angel-bottom-icon-size) !important;
+    height: var(--angel-bottom-icon-size) !important;
+    background: var(--angel-control-icon) center / contain no-repeat !important;
+    pointer-events: none !important;
+}
+#chat-room-screen #toggle-expansion-btn::before {
+    opacity: 0.7 !important;
+}
+/* 菜单按钮展开时保持正向，覆盖 Uwu 的 rotate-45。
+   ::before 的 translate 仅用于居中，保留即可。 */
+#chat-room-screen #toggle-expansion-btn,
+#chat-room-screen #toggle-expansion-btn.rotate-45 {
+    transform: none !important;
+    rotate: none !important;
+    scale: none !important;
+    transition: none !important;
+}
+
+/* 表情键换成菜单键的同款雪人图标，保留按钮点击范围。 */
+#chat-room-screen #sticker-toggle-btn {
+    width: 28px !important;
+    height: 28px !important;
+    right: 4px !important;
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    font-size: 0 !important;
+    color: transparent !important;
+}
+#chat-room-screen #sticker-toggle-btn > :is(img, svg) {
+    opacity: 0 !important;
+    visibility: hidden !important;
+}
+#chat-room-screen #sticker-toggle-btn::before {
+    content: "" !important;
+    position: absolute !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: var(--angel-bottom-icon-size) !important;
+    height: var(--angel-bottom-icon-size) !important;
+    background: var(--angel-control-icon) center / contain no-repeat !important;
+    pointer-events: none !important;
+}
+
+/* 5. 菜单内容使用 Uwu 原版。
+   删除之前对功能区、图标、标签、网格的全部覆盖规则。
+   Uwu 自带样式负责图标尺寸、名称、间距和分页。
+   本文件需要整体替换上一版，不能追加。 */
+
+/* 6. 转账卡片：Uwu 的 .transfer-content 是卡片内层，不是弹窗。 */
+#chat-room-screen .transfer-card {
+    position: relative !important;
+    width: 164px !important;
+    min-width: 164px !important;
+    max-width: 164px !important;
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+    border: 1px solid #D5DCE2 !important;
+    border-radius: 14px !important;
+    color: #2F3438 !important;
+    background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(248,250,252,0.94)) !important;
+    box-shadow: 0 0 0 2px #E8EEF3, 0 2px 6px rgba(80,95,110,0.10) !important;
+    overflow: hidden !important;
+    font-family: -apple-system, BlinkMacSystemFont, system-ui, "PingFang SC", sans-serif !important;
+}
+#chat-room-screen .transfer-card::before {
+    content: "" !important;
+    position: absolute !important;
+    right: 9px !important;
+    top: 8px !important;
+    width: 9px !important;
+    height: 9px !important;
+    border-radius: 50% !important;
+    background: #C9DCEC !important;
+    opacity: 0.75 !important;
+    pointer-events: none !important;
+}
+#chat-room-screen .transfer-card::after {
+    content: none !important;
+}
+#chat-room-screen .transfer-card .transfer-content {
+    padding: 9px 10px 8px !important;
+    gap: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+#chat-room-screen .transfer-card .transfer-title {
+    margin: 0 12px 4px 0 !important;
+    font-size: 10px !important;
+    line-height: 1.2 !important;
+    font-weight: 500 !important;
+    color: #7E93A6 !important;
+    text-shadow: none !important;
+}
+#chat-room-screen .transfer-card .transfer-title::before {
+    content: none !important;
+    display: none !important;
+}
+#chat-room-screen .transfer-card .transfer-amount {
+    margin: 0 0 6px !important;
+    font-size: 21px !important;
+    line-height: 1.08 !important;
+    font-weight: 650 !important;
+    letter-spacing: -0.4px !important;
+    color: #2F3438 !important;
+    text-shadow: none !important;
+}
+#chat-room-screen .transfer-card .transfer-remark {
+    margin: 0 !important;
+    font-size: 10px !important;
+    line-height: 1.28 !important;
+    font-weight: 400 !important;
+    color: #7B8792 !important;
+    overflow-wrap: anywhere !important;
+}
+/* 分隔线放在真实状态栏上，备注换行时也不会压到文字。 */
+#chat-room-screen .transfer-card .transfer-status {
+    margin: 7px 0 0 !important;
+    padding: 6px 0 0 !important;
+    border-top: 1px solid #CCD2D7 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    color: #7B8792 !important;
+    font-size: 10px !important;
+    line-height: 1.28 !important;
+    text-align: left !important;
+}
+#chat-room-screen .transfer-card:active {
+    transform: scale(0.985);
+}
+
+/* 7. 发起转账弹窗及收款操作面板：只改视觉，不改变显示开关。 */
+#send-transfer-modal,
+#receive-transfer-actionsheet {
+    background-color: rgba(245,246,248,0.48) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+}
+#send-transfer-modal .modal-window {
+    width: 260px !important;
+    max-width: calc(100vw - 32px) !important;
+    padding: 16px !important;
+    box-sizing: border-box !important;
+    border: 1px solid #D5DCE2 !important;
+    border-radius: 18px !important;
+    background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(247,249,251,0.96)) !important;
+    box-shadow: 0 0 0 2px #E8EEF3, 0 10px 28px rgba(70,82,95,0.16) !important;
+    color: #2F3438 !important;
+}
+#send-transfer-modal h3 {
+    margin: 0 0 14px !important;
+    font-size: 16px !important;
+    line-height: 1.2 !important;
+    font-weight: 650 !important;
+    color: #2F3438 !important;
+    text-align: center !important;
+}
+#send-transfer-modal .form-group {
+    margin-bottom: 11px !important;
+}
+#send-transfer-modal .form-group label {
+    margin-bottom: 5px !important;
+    font-size: 11px !important;
+    line-height: 1.2 !important;
+    font-weight: 500 !important;
+    color: #2F3438 !important;
+}
+#send-transfer-modal :is(#transfer-amount-input, #transfer-remark-input) {
+    width: 100% !important;
+    height: 34px !important;
+    padding: 6px 10px !important;
+    box-sizing: border-box !important;
+    border: 1px solid #D5DCE2 !important;
+    border-radius: 999px !important;
+    background: #ffffff !important;
+    color: #2F3438 !important;
+    font-size: 16px !important;
+    line-height: 20px !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+#send-transfer-modal :is(#transfer-amount-input, #transfer-remark-input):focus {
+    border-color: #b8c9d9 !important;
+    box-shadow: 0 0 0 2px #e8eef3 !important;
+}
+#send-transfer-modal button[type="submit"],
+#receive-transfer-actionsheet .action-sheet-button {
+    min-height: 32px !important;
+    padding: 7px 10px !important;
+    border: none !important;
+    border-radius: 999px !important;
+    background: #DCE9F3 !important;
+    color: #3E607D !important;
+    font-size: 13px !important;
+    line-height: 1.4 !important;
+    font-weight: 550 !important;
+    box-shadow: none !important;
+}
+#receive-transfer-actionsheet .action-sheet {
+    width: 260px !important;
+    max-width: calc(100% - 32px) !important;
+    margin-inline: auto !important;
+    padding: 16px !important;
+    padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px)) !important;
+    box-sizing: border-box !important;
+    border: 1px solid #D5DCE2 !important;
+    border-radius: 18px 18px 0 0 !important;
+    background: linear-gradient(180deg, #ffffff, #f7f9fb) !important;
+    box-shadow: 0 0 0 2px #E8EEF3, 0 -5px 28px rgba(70,82,95,0.10) !important;
+}
+#receive-transfer-actionsheet #accept-transfer-btn {
+    background: #DCE9F3 !important;
+    color: #3E607D !important;
+    margin-bottom: 8px !important;
+}
+#send-transfer-modal button[type="submit"]:active,
+#receive-transfer-actionsheet .action-sheet-button:active {
+    transform: scale(0.97);
+}
+
+#receive-transfer-actionsheet #return-transfer-btn {
+    background: #E9E9EA !important;
+    color: #4A4F55 !important;
+}
+
+/* 8. 系统时间/通知：保留中间时间条，只隐藏每条消息的时间戳。 */
+#chat-room-screen .message-wrapper.system-notification:not(.independent-summary-wrapper) {
+    align-items: center !important;
+    margin: 6px auto !important;
+    max-width: 80% !important;
+}
+#chat-room-screen .system-notification-bubble {
+    width: fit-content !important;
+    max-width: 100% !important;
+    padding: 2px 9px !important;
+    margin: 0 auto !important;
+    box-sizing: border-box !important;
+    border: 1px solid #CCD2D7 !important;
+    border-radius: 999px !important;
+    background: #EAF1F9 !important;
+    box-shadow: 0 1px 2px rgba(120,130,140,0.08) !important;
+    color: #999999 !important;
+    font-size: 10px !important;
+    line-height: 1.25 !important;
+    font-weight: 500 !important;
+    text-align: center !important;
+    text-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+/* 9. 引用回复：Uwu 默认浮在气泡外，改成气泡内轻薄标签。 */
+#chat-room-screen .message-wrapper:has(.message-bubble > .quoted-message) {
+    margin-bottom: 12px !important;
+}
+#chat-room-screen .message-wrapper.group-message:has(.message-bubble > .quoted-message) {
+    margin-bottom: 18px !important;
+}
+#chat-room-screen .quoted-message {
+    position: relative !important;
+    inset: auto !important;
+    display: block !important;
+    width: auto !important;
+    height: auto !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    margin: 0 0 5px !important;
+    padding: 5px 8px 5px 10px !important;
+    box-sizing: border-box !important;
+    border: none !important;
+    border-radius: 9px !important;
+    background: rgba(232,238,243,0.46) !important;
+    box-shadow: inset 0 0 0 1px rgba(198,210,220,0.42) !important;
+    text-align: left !important;
+    white-space: normal !important;
+    overflow: hidden !important;
+    line-height: 1.32 !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+#chat-room-screen .quoted-message::before {
+    content: "" !important;
+    position: absolute !important;
+    left: 5px !important;
+    top: 7px !important;
+    bottom: 7px !important;
+    width: 2px !important;
+    border-radius: 999px !important;
+    background: #B9CBDC !important;
+    opacity: 0.86 !important;
+    pointer-events: none !important;
+}
+#chat-room-screen .quoted-message::after,
+#chat-room-screen .quoted-sender::after {
+    content: none !important;
+}
+#chat-room-screen .quoted-message :is(.quoted-sender, .quoted-text) {
+    display: block !important;
+    margin: 0 !important;
+    padding-left: 4px !important;
+    color: #9AA3AD !important;
+    font-size: 10px !important;
+    line-height: 1.32 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    text-shadow: none !important;
+}
+#chat-room-screen .quoted-message .quoted-sender {
+    margin-bottom: 2px !important;
+    color: #7E93A6 !important;
+    font-weight: 650 !important;
+}
+#chat-room-screen .quoted-message .quoted-text {
+    font-weight: 450 !important;
+}
+body.night-mode-active #chat-room-screen .quoted-message {
+    background: rgba(232,238,243,0.46) !important;
+    box-shadow: inset 0 0 0 1px rgba(198,210,220,0.42) !important;
+}
+body.night-mode-active #chat-room-screen .quoted-message .quoted-sender {
+    color: #7e93a6 !important;
+}
+body.night-mode-active #chat-room-screen .quoted-message .quoted-text {
+    color: #9aa3ad !important;
+}
+/* 输入框上方的待发送引用预览也使用同一配色，显隐仍由 Uwu 控制。 */
+#chat-room-screen #reply-preview-bar {
+    background: rgba(232,238,243,0.46) !important;
+    border-color: #CCD2D7 !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+#chat-room-screen .reply-preview-content {
+    border-left-color: #B9CBDC !important;
+}
+#chat-room-screen :is(.reply-preview-name, .reply-preview-text, #cancel-reply-btn) {
+    color: #9AA3AD !important;
+}
+
+
+/* 10. 新增配套翻译：浅薄荷灰小卡片，实心文字，无文字描边。
+   气泡外模式沿用 .active 开关；气泡内两种模式沿用原双语布局。
+   不强制 display，避免翻译默认展开或无法收起。 */
+#chat-room-screen .translation-text,
+#chat-room-screen .voice-transcript {
+    padding: 5px 8px !important;
+    margin-top: 5px !important;
+    border: 1px solid #B9CDC7 !important;
+    border-radius: 5px !important;
+    background: #EDF7F3 !important;
+    color: #596D65 !important;
+    font-size: calc(13px * var(--app-font-scale, 1)) !important;
+    line-height: 1.45 !important;
+    box-shadow: none !important;
+    overflow-wrap: anywhere !important;
+    box-sizing: border-box !important;
+}
+#chat-room-screen .bilingual-bubble .translation-inner {
+    color: #596D65 !important;
+    font-size: 0.82em !important;
+    line-height: 1.45 !important;
+    opacity: 1 !important;
+    overflow-wrap: anywhere !important;
+}
+#chat-room-screen .bilingual-bubble .bilingual-divider {
+    background: #B9CDC7 !important;
+    height: 1px !important;
+    margin: 5px 0 !important;
+}
+#chat-room-screen :is(.translation-text, .translation-inner, .voice-transcript),
+#chat-room-screen :is(.translation-text, .translation-inner, .voice-transcript) * {
+    text-shadow: none !important;
+    -webkit-text-stroke: 0 !important;
+    -webkit-text-fill-color: currentColor !important;
+}
